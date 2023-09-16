@@ -1,0 +1,31 @@
+<div  class="row">
+    <div class="col">
+        <div id="cria-bot-container">
+            <div id="cria-conversation">
+
+            </div>
+            <div id="cria-input-container">
+                <input type="hidden" id="cria-chat-id" value="{{chat_id}}">
+                <input type="text" id="user-prompt" class="form-control"
+                       placeholder="{{#str}}ask_a_question, local_cria{{/str}}">
+                <button
+                        id="submit-question"
+                        class="btn btn-primary mt-2"
+                        data-bot_id="{{bot_id}}"
+                >{{#str}}submit, local_cria{{/str}}
+                </button>
+                <div id="starting-process" class="progress" style="display:none; height: 30px; width: 100%;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                         role="progressbar"
+                         aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        Give me a moment while I work on that!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+            {{> local_cria/test_bot_statistics}}
+        </div>
+</div>

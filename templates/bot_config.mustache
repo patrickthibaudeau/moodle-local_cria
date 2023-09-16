@@ -1,0 +1,152 @@
+<!--
+{
+  "bots": [
+    {
+      "id": "8",
+      "name": "AL Course Assistant",
+      "description": "",
+      "bot_type": "1",
+      "bot_system_message": "",
+      "usermodified": "2",
+      "timecreated": "1690567122",
+      "timemodified": "1690741894"
+    },
+    {
+      "id": "9",
+      "name": "Ariane",
+      "description": "",
+      "bot_type": "1",
+      "bot_system_message": "",
+      "usermodified": "2",
+      "timecreated": "1690678802",
+      "timemodified": "1690678802"
+    },
+    {
+      "id": "10",
+      "name": "Champlain",
+      "description": "",
+      "bot_type": "1",
+      "bot_system_message": "",
+      "usermodified": "2",
+      "timecreated": "1690733150",
+      "timemodified": "1690733150"
+    },
+    {
+      "id": "11",
+      "name": "Léonie (Glendon)",
+      "description": "",
+      "bot_type": "1",
+      "bot_system_message": "",
+      "usermodified": "2",
+      "timecreated": "1691171925",
+      "timemodified": "1691171925"
+    }
+  ],
+  "can_edit": true,
+  "can_delete": true,
+  "can_test": true,
+  "can_view_bot_types": true,
+  "can_edit_bot_content": true,
+  "can_view_bot_logs": true,
+}
+-->
+<div class="row mt-2">
+    <div class="col">
+        <div class="card">
+            <h3 class="card-header">
+                {{#can_edit}}
+                    <a href="bot.php" class="btn btn-outline-primary float-right">
+                        {{#str}}add_bot, local_cria{{/str}}
+                    </a>
+                {{/can_edit}}
+            </h3>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{#str}}name, local_cria{{/str}}</th>
+                        <th>{{#str}}bot_type, local_cria{{/str}}</th>
+                        <th>{{#str}}actions, local_cria{{/str}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#bots}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>{{type_name}}</td>
+                            <td>
+                                {{#can_edit}}
+                                    <a href="bot.php?id={{id}}" class="btn btn-outline-primary">
+                                    {{#str}}edit, local_cria{{/str}}
+                                    </a>
+                                {{/can_edit}}
+                                {{#can_edit_bot_content}}
+                                    {{#use_bot_server}}
+                                        <a href="content.php?id={{id}}" class="btn btn-outline-primary">
+                                        {{#str}}content, local_cria{{/str}}
+                                        </a>
+                                    {{/use_bot_server}}
+                                {{/can_edit_bot_content}}
+                                {{#can_test}}
+                                    <a href="test_bot.php?id={{id}}" class="btn btn-outline-primary">
+                                    {{#str}}test_bot, local_cria{{/str}}
+                                    </a>
+                                {{/can_test}}
+                                {{#can_view_bot_logs}}
+                                    <a href="bot_logs.php?id={{id}}" class="btn btn-outline-primary">
+                                    {{#str}}logs, local_cria{{/str}}
+                                    </a>
+                                {{/can_view_bot_logs}}
+                                {{#can_delete}}
+                                    {{^system_reserved}}
+                                        <button class="btn btn-outline-danger delete-bot" data-id="{{id}}">
+                                            {{#str}}delete, local_cria{{/str}}
+                                        </button>
+                                    {{/system_reserved}}
+                                {{/can_delete}}
+                                {{#can_share_bots}}
+                                    {{#use_bot_server}}
+                                    <button
+                                            class="btn btn-outline-primary share-bot"
+                                            data-id="{{id}}"
+                                            data-share='{{criachat}}'>
+                                        {{#str}}share, local_cria{{/str}}
+                                    </button>
+                                    {{/use_bot_server}}
+                                {{/can_share_bots}}
+                            </td>
+                        </tr>
+                    {{/bots}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sahre Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="shareModalLabel">{{#str}}embed_code, local_cria{{/str}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    {{#str}}embed_code_help, local_cria{{/str}}
+                </div>
+                <div id="share-code">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <a href="bot_logs.php?id={{bot_id}}" class="btn btn-outline-primary mr-1 float-right" target="_blank">
+                {{#str}}logs, local_cria{{/str}}
+                </a>
+                <a href="bot_config.php" class="btn btn-outline-primary mr-1 float-right">
+                {{#str}}bots, local_cria{{/str}}
+                </a>
+                {{#use_bot_server}}
+                <a href="auto_test.php?id={{bot_id}}" class="btn btn-outline-primary mr-1 float-right">
+                    {{#str}}auto_test, local_cria{{/str}}
+                </a>
+                {{/use_bot_server}}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        <div class="card">
+            <h3 class="card-header">
+                {{name}}
+            </h3>
+            <div class="card-body">
+                {{#use_bot_server}}
+                    {{> local_cria/indexing_server_test}}
+                {{/use_bot_server}}
+                {{^use_bot_server}}
+                    {{> local_cria/none_indexing_server_test}}
+                {{/use_bot_server}}
+
+            </div>
+        </div>
+    </div>
+</div>

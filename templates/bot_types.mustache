@@ -1,0 +1,36 @@
+<div class="row mt-2">
+    <div class="col">
+        <div class="card">
+            <h3 class="card-header">
+                <a href="edit_bot_type.php" class="btn btn-outline-primary float-right">
+                    {{#str}}add_type, local_cria{{/str}}
+                </a>
+            </h3>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{#str}}name, local_cria{{/str}}</th>
+                            <th>{{#str}}actions, local_cria{{/str}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#bot_types}}
+                        <tr>
+                            <td>{{name}}</td>
+                            <td>
+                                <a href="edit_bot_type.php?id={{id}}" class="btn btn-outline-primary">
+                                    {{#str}}edit, local_cria{{/str}}
+                                </a>
+                                <button class="btn btn-outline-danger delete-bot-type" data-id="{{id}}">
+                                    {{#str}}delete, local_cria{{/str}}
+                                </button>
+                            </td>
+                        </tr>
+                        {{/bot_types}}
+                    </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>

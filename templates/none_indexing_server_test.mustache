@@ -1,0 +1,41 @@
+<div  class="row">
+    <div class="col">
+        <h3>{{#str}}paste_text, local_cria{{/str}}</h3>
+        <textarea id="cria-test-input" style="width: 100%;" rows="20"></textarea>
+        <div id="cria-bot-container">
+
+            <div id="cria-input-container">
+                <input type="hidden" id="cria-chat-id" value="0">
+                <textarea id="user-prompt" class="form-control mt-2" >{{user_prompt}}</textarea>
+                <button
+                        id="submit-question"
+                        class="btn btn-primary mt-2"
+                        data-bot_id="{{bot_id}}"
+                >{{#str}}submit, local_cria{{/str}}
+                </button>
+                <div id="starting-process" class="progress mt-2" style="display:none; height: 30px; width: 100%;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                         role="progressbar"
+                         aria-valuenow="100"
+                         aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        Give me a moment while I work on that!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        {{> local_cria/test_bot_statistics}}
+        <div class="card mt-3">
+            <h3 class="card-header">
+                {{#str}}response, local_cria{{/str}}
+            </h3>
+            <div class="card-body">
+                <div id="cria-conversation">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
