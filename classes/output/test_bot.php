@@ -15,10 +15,6 @@
 
 namespace local_cria\output;
 
-require_once($CFG->dirroot . '/local/cria/classes/gpttokenizer/Gpt3Tokenizer.php');
-require_once($CFG->dirroot . '/local/cria/classes/gpttokenizer/Gpt3TokenizerConfig.php');
-require_once($CFG->dirroot . '/local/cria/classes/gpttokenizer/Vocab.php');
-require_once($CFG->dirroot . '/local/cria/classes/gpttokenizer/Merges.php');
 
 use local_cria\bot;
 use local_cria\files;
