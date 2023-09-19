@@ -73,7 +73,7 @@ class logs
                 From
                     {local_cria_logs} fl Inner Join
                     {user} u On u.id = fl.userid Inner Join
-                    {local_cria} f On f.id = fl.bot_id
+                    {local_cria_bot} f On f.id = fl.bot_id
                 WHERE 
                     bot_id = ? ";
 

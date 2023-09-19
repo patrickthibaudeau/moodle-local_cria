@@ -40,14 +40,14 @@ class content implements \renderable, \templatable
     {
         global $USER, $CFG, $DB;
 
-        $SFILES = new cria_files($this->bot_id);
+        $FILES = new files($this->bot_id);
 
-        $files = $SFILES->get_records();
+        $files = $FILES->get_records();
         $files = array_values($files);
-        $word_count = str_word_count($SFILES->concatenate_content());
+        $word_count = str_word_count($FILES->concatenate_content());
         $data = [
             'bot_id' => $this->bot_id,
-            'bot_name' => $SFILES->get_bot_name(),
+            'bot_name' => $FILES->get_bot_name(),
             'files' => $files,
             'word_count' => $word_count,
         ];
