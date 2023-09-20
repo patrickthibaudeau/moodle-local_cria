@@ -1,0 +1,96 @@
+{{^bot_id}}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-danger">
+                <h1 class="alert-heading">
+                    {{#str}}no_bot_id, local_cria{{/str}}
+                </h1>
+                <p>{{#str}}no_bot_defined, local_cria{{/str}}</p>
+
+            </div>
+        </div>
+    </div>
+{{/bot_id}}
+{{#bot_id}}
+    <input id="cria-chat-id" type="hidden" name="chat_id" value="0">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <h3 class="alert-heading">
+                <span id="cria-cost" class="badge badge-pill badge-success float-right" style="display:none;">
+
+                    </span>
+                </h3>
+                <p>{{{description}}}</p>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12 h-100">
+                            <h3>{{#str}}rubric, local_cria{{/str}}</h3>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="20" id="rubric"
+                                          aria-describedby="notes_help"></textarea>
+                                <small id="rubrichelp" class="form-text text-muted">{{#str}}
+                                    rubric_help, local_cria{{/str}}</small>
+                            </div>
+                            <hr>
+                            <h3>{{#str}}assignment, local_cria{{/str}}</h3>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="20" id="assignment"
+                                          aria-describedby="assignment_help"></textarea>
+                                <small id="assignment_help" class="form-text text-muted">{{#str}}
+                                    assignment_help, local_cria{{/str}}</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 h-100">
+                            <div class="form-group">
+                                <h3>{{#str}}response, local_cria{{/str}}</h3>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div id="cria-translation-container"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-end">
+                        <div id="starting-process" class="progress" style="display:none; height: 30px; width: 100%;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                                 role="progressbar"
+                                 aria-valuenow="100"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                Reading your notes and creating minutes...
+                            </div>
+                        </div>
+                        <div id="almost-done" class="progress" style="display:none; height: 30px; width: 100%;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning"
+                                 role="progressbar"
+                                 aria-valuenow="100"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                Almost done...
+                            </div>
+                        </div>
+                        <div id="process-complete" class="progress" style="display:none; height: 30px; width: 100%;">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                 role="progressbar"
+                                 aria-valuenow="100"
+                                 aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                Downloading your minutes...
+                            </div>
+                        </div>
+                        <button id="process-notes" type="button" class="btn btn-outline-primary btn-lg"
+                                data-bot_id="{{bot_id}}">
+                            {{#str}}process, local_cria{{/str}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{/bot_id}}

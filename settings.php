@@ -90,6 +90,13 @@ if ($hassiteconfig) {
         '', PARAM_INT, 10
     ));
 
+    // Second Opinion id
+    $settings->add( new admin_setting_configtext(
+        'local_cria/secondopinion',
+        get_string('secondopinion_id', 'local_cria'),
+        get_string('secondopinion_id_help', 'local_cria'),
+        '', PARAM_INT, 10
+    ));
     $ADMIN->add('localplugins', $settings);
 
     // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf

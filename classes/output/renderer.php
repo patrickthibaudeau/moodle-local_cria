@@ -91,7 +91,7 @@ class renderer extends \plugin_renderer_base {
     }
 
     /**
-     * @param \templatable $bot_types
+     * @param \templatable bot_app
      * @return bool|string
      * @throws \moodle_exception
      */
@@ -101,12 +101,22 @@ class renderer extends \plugin_renderer_base {
     }
 
     /**
-     * @param \templatable $bot_types
+     * @param \templatable translation
      * @return bool|string
      * @throws \moodle_exception
      */
     public function render_translate(\templatable $message) {
         $data = $message->export_for_template($this);
         return $this->render_from_template('local_cria/translate', $data);
+    }
+
+    /**
+     * @param \templatable $secondopinion
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_secondopinion(\templatable $message) {
+        $data = $message->export_for_template($this);
+        return $this->render_from_template('local_cria/secondopinion', $data);
     }
 }

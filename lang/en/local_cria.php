@@ -83,6 +83,7 @@ $string['name'] = 'Name';
 $string['paste_text'] = 'Paste your text here';
 $string['pluginname'] = 'Cria';
 $string['privacy:metadata'] = 'This plugin stores no personal data.';
+$string['process'] = 'Process';
 $string['prompt'] = 'Prompt';
 $string['prompt_cost'] = 'Prompt cost';
 $string['prompt_tokens'] = 'Prompt tokens';
@@ -170,3 +171,13 @@ $string['translation_app_help'] = 'LinguaLlama allows you to quickly translate o
 $string['unchanged'] = 'None';
 $string['voice'] = 'Voice';
 $string['voice_help'] = 'Select the voice you would like your translation in';
+
+// SecondOpinion
+$string['secondopinion_id'] = 'SecondOpinion Bot ID';
+$string['secondopinion_id_help'] = 'Enter the Bot ID for SecondOpinion';
+$string['secondopinion'] = 'SecondOpinion';
+$string['rubric'] = 'Rubric';
+$string['rubric_help'] = 'Paste your rubric here. The rubric format must be the following:<br><p>Skill (X point)<br><br>Description</p>';
+$string['assignment'] = 'Assignment';
+$string['assignment_help'] = 'Paste the student assignment here. Maximum 3000 words';
+
