@@ -23,8 +23,8 @@ function process_notes() {
         prompt += 'Evaluate the following student assessment based on the provided rubric. Separate each skills into a list and always provide a sentence ' +
             'on why that score was provided. Provide the final ' +
             'numerical score as a percentage and a corresponding letter grade. The total possible score is the highest ' +
-            'points that can be obtained in each criteria. Do the math based on the following formula: ((total score obtained on the assignment / total possible score)*100)\n' +
-            'Do not show the math formula in the response. Only print the Final score result. At the bottom, provide 3-5 answers to the student on improving their writing moving forward.'
+            'points that can be obtained in each criteria. To provide a final score, do the math based on the following formula: ((total score obtained on the assignment / total possible score)*100)\n' +
+            'Do not show the math formula in the response. Only print the Final score result based on the previous formula. At the bottom, provide 3-5 answers to the student on improving their writing moving forward.'
         prompt += '[/INSTRUCTIONS]';
 
 
