@@ -34,6 +34,7 @@ function process_notes() {
             alert('An error has occurred. Prompt was not returned properly');
         });
         prompt += '[/INSTRUCTIONS]';
+        console.log(prompt);
         // Now that we have the prompt, make the call to GPT for results
         $('#process-notes').hide();
         $('#starting-process').show();
