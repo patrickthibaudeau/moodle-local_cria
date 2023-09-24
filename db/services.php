@@ -36,4 +36,13 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_get_bot_prompt' => array(
+        'classname' => 'local_cria_external_bot',
+        'methodname' => 'get_prompt',
+        'classpath' => 'local/cria/classes/external/bot.php',
+        'description' => 'Get default user prompt for bot',
+        'type' => 'read',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );

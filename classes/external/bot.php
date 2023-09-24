@@ -83,4 +83,49 @@ class local_cria_external_bot extends external_api {
         return new external_value(PARAM_INT, 'Boolean');
     }
 
+
+    /**
+     * Returns description of method parameters for get_prompt methof
+     * @return external_function_parameters
+     */
+    public static function get_prompt_parameters() {
+        return new external_function_parameters(
+            array(
+                'bot_id' => new external_value(PARAM_INT, 'Bot id', false, 0)
+            )
+        );
+    }
+
+    /**
+     * @param $bot_id
+     * @return string The prompt if there is one available
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws restricted_context_exception
+     */
+    public static function get_prompt($bot_id) {
+        global $CFG, $USER, $DB, $PAGE;
+
+        //Parameter validation
+        $params = self::validate_parameters(self::delete_parameters(), array(
+                'bot_id' => $bot_id
+            )
+        );
+
+        //Context validation
+        //OPTIONAL but in most web service it should present
+        $context = \context_system::instance();
+        self::validate_context($context);
+        $BOT = new bot($bot_id);
+
+        return $BOT->get_user_prompt();
+    }
+
+    /**
+     * Returns prompt if there is one available
+     * @return external_description
+     */
+    public static function get_prompt_returns() {
+        return new external_value(PARAM_RAW, 'Prompt if there is one available');
+    }
 }
