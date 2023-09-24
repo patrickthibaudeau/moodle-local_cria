@@ -20,10 +20,10 @@ function process_notes() {
         var voice = $('input[name=voice]:checked').val();
         var paraphrase = $('#paraphrase').val();
         var prompt = '[INSTRUCTIONS]';
-        prompt += 'Please evaluate the following student assessment based on the provided rubric. Separate each skills into a list and always provide a sentence ' +
+        prompt += 'Evaluate the following student assessment based on the provided rubric. Separate each skills into a list and always provide a sentence ' +
             'on why that score was provided. Provide the final ' +
             'numerical score as a percentage and a corresponding letter grade. The total possible score is the highest ' +
-            'points that can be obtained in each criteria. Final score = (total score obtained on the assignment / total possible score)*100\n' +
+            'points that can be obtained in each criteria. Final score = ((total score obtained on the assignment / total possible score)*100)\n' +
             'At the bottom, provide 3-5 answers to the student on improving their writing moving forward.'
         prompt += '[/INSTRUCTIONS]';
 
