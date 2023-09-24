@@ -107,7 +107,7 @@ class local_cria_external_bot extends external_api {
         global $CFG, $USER, $DB, $PAGE;
 
         //Parameter validation
-        $params = self::validate_parameters(self::delete_parameters(), array(
+        $params = self::validate_parameters(self::get_prompt_parameters(), array(
                 'bot_id' => $bot_id
             )
         );
