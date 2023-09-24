@@ -169,10 +169,7 @@ foreach ($rubrics as $rubric) {
             $rubric_formatted .= str_replace("\n", '', $skill[0]) . "(" . $rubric[count($rubric) - 1]->score . " Points)" . "\n";
             unset($skill[0]);
             $rubric_formatted .= implode("\n", $skill);
-//            $rubric_formatted .= $rubric[$i]->definition . "\n";
         } else {
-
-//           $rubric_formatted .= $rubric[$i]->definition . "\n";
            if ($i == count($rubric) - 1) {
                $rubric_formatted .="\n";
            }
