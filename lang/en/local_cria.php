@@ -81,6 +81,7 @@ $string['model'] = 'Model';
 $string['model_name'] = 'Model name';
 $string['name'] = 'Name';
 $string['paste_text'] = 'Paste your text here';
+$string['plugin_path'] = 'Plugin path';
 $string['pluginname'] = 'Cria';
 $string['privacy:metadata'] = 'This plugin stores no personal data.';
 $string['process'] = 'Process';

@@ -1,56 +1,28 @@
-<div class="row">
-    <div class="col-md-12 col-m-1">
-        <div class="card-deck">
-        <div class="card card-outline card-primary h-100">
-            <h3 class="card-header">
-                {{#str}}create_meeting_notes, local_cria{{/str}}
-            </h3>
-            <div class="card-body">
-                <p>
-                    {{#str}}create_meeting_notes_help, local_cria{{/str}}
-                </p>
+{{#published_bots}}
+    <div class="row mb-3">
+        <div class="col">
+            <div class="card-deck">
+                {{#items}}
+                    <div class="card card-outline card-primary">
+                        <h3 class="card-header">
+                            {{{name}}}
+                        </h3>
+                        <div class="card-body">
+                            <p>
+                                {{{description}}}
+                            </p>
 
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{plugin_path}}" class="btn btn-outline-primary
+                            btn-sm float-right">
+                                {{#str}}take_me_there, local_cria{{/str}}
+                            </a>
+                        </div>
+                    </div>
+                {{/items}}
             </div>
-            <div class="card-footer">
-                <a href="{{config.wwwroot}}/local/cria/minutes_master/" class="btn btn-outline-primary btn-sm float-right">
-                    {{#str}}take_me_there, local_cria{{/str}}
-                </a>
         </div>
     </div>
-            <div class="card card-outline card-primary h-100">
-                <h3 class="card-header">
-                    {{#str}}translation_app, local_cria{{/str}}
-                </h3>
-                <div class="card-body">
-                    <p>
-                        {{#str}}translation_app_help, local_cria{{/str}}
-                    </p>
+{{/published_bots}}
 
-                </div>
-                <div class="card-footer">
-                    <a href="{{config.wwwroot}}/local/cria/translate/" class="btn btn-outline-primary btn-sm float-right">
-                        {{#str}}take_me_there, local_cria{{/str}}
-                    </a>
-                </div>
-            </div>
-            {{#published_bots}}
-                <div class="card card-outline card-primary h-100">
-                    <h3 class="card-header">
-                        {{{name}}}
-                    </h3>
-                    <div class="card-body">
-                        <p>
-                            {{{description}}}
-                        </p>
-
-                    </div>
-                    <div class="card-footer">
-                        <a href="{{config.wwwroot}}/local/cria/bot_apps/?id={{id}}" class="btn btn-outline-primary btn-sm float-right">
-                            {{#str}}take_me_there, local_cria{{/str}}
-                        </a>
-                    </div>
-                </div>
-            {{/published_bots}}
-</div>
-    </div>
-</div>

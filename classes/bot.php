@@ -78,6 +78,12 @@ class bot extends crud
      *
      * @var string
      */
+    private $plugin_path;
+
+    /**
+     *
+     * @var string
+     */
     private $bot_system_message;
 
     /**
@@ -137,6 +143,7 @@ class bot extends crud
         $this->description = $result->description ?? '';
         $this->bot_type = $result->bot_type ?? 0;
         $this->system_reserved = $result->system_reserved ?? 0;
+        $this->plugin_path = $result->plugin_path ?? '';
         $this->model_id = $result->model_id ?? 0;
         $this->publish = $result->publish ?? 0;
         $this->requires_user_prompt = $result->requires_user_prompt ?? 0;
@@ -211,6 +218,13 @@ class bot extends crud
      */
     public function get_system_reserved() {
         return $this->system_reserved;
+    }
+
+    /**
+     * @return system_reserved - string (255)
+     */
+    public function get_plugin_path() {
+        return $this->plugin_path;
     }
 
     /**

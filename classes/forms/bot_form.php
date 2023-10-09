@@ -88,6 +88,17 @@ class bot_form extends \moodleform
             );
         }
 
+        // Plugin path
+        $mform->addElement(
+            'text',
+            'plugin_path',
+            get_string('plugin_path', 'local_cria')
+        );
+        $mform->setType(
+            'plugin_path',
+            PARAM_TEXT
+        );
+
         // Model id form element
         $mform->addElement(
             'select', 'model_id',

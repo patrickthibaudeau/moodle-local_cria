@@ -84,12 +84,15 @@ class bots {
     }
 
     public function get_published_bots() {
-        global $DB;
+        global $CFG, $DB;
+        $path = $CFG->wwwroot . '/local/cria/bot_apps/?id=';
+        $plugin_path = $CFG->wwwroot . '/local/cria/plugins';
         $sql = "
         Select
             b.id,
             b.name,
             b.description,
+            b.plugin_path,
             b.bot_type,
             b.system_reserved,
             b.publish,
@@ -106,8 +109,25 @@ class bots {
             b.name";
 
         $result = $DB->get_records_sql($sql);
-        $result = array_values($result);
-	    return $result;
+        foreach ($result as $r) {
+            if($r->plugin_path == '') {
+                $r->plugin_path = $path . $r->id;
+            } else {
+                $r->plugin_path = $plugin_path . $r->plugin_path;
+            }
+
+        }
+        // Based on the number of results, create a new array with no more than 3 elements per chunk. Each new chunk
+        // is identified as items and elemnets are added to it.
+        $result = array_chunk($result, 3, true);
+
+        $results = [];
+        for ($i = 0; $i < count($result); $i++) {
+            $results[$i]['items'] = array_values($result[$i]);
+        }
+
+        $results = array_values($results);
+	    return $results;
     }
 
 }

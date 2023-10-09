@@ -1,5 +1,5 @@
 <?php
-require_once('../../../config.php');
+require_once('../../../../config.php');
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
@@ -9,12 +9,12 @@ $context = context_system::instance();
 
 \local_cria\base::page(
     new moodle_url('/local/cria/minutes_master/index.php'),
-    get_string('minutes_master', 'local_cria'),
-    get_string('minutes_master', 'local_cria'),
+    get_string('translation_app', 'local_cria'),
+    get_string('translation_app', 'local_cria'),
     $context
 );
 
-$PAGE->requires->js_call_amd('local_cria/minutes_master', 'init');
+$PAGE->requires->js_call_amd('local_cria/translate', 'init');
 
 //**************** ******
 //*** DISPLAY HEADER ***
@@ -22,8 +22,8 @@ $PAGE->requires->js_call_amd('local_cria/minutes_master', 'init');
 echo $OUTPUT->header();
 
 $output = $PAGE->get_renderer('local_cria');
-$dashboard = new \local_cria\output\minutes_master();
-echo $output->render_minutes_master($dashboard);
+$dashboard = new \local_cria\output\translate();
+echo $output->render_translate($dashboard);
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************
