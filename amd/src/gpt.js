@@ -13,8 +13,13 @@ function get_response() {
     $("#submit-question").off();
     $("#submit-question").on('click', function () {
         var bot_id = $(this).data('bot_id');
-        var prompt = '[INSTRUCTIONS]' + $('#user-prompt').val() + '[/INSTRUCTIONS]'
-        var content  = '[CONTEXT]' + $('#cria-test-input').val() + '[/CONTEXT]'
+        var prompt = '[INSTRUCTIONS]' +
+            $('#default-user-prompt').val() +
+            $('#user-prompt').val() +
+            '[/INSTRUCTIONS]'
+        var content = '[CONTEXT]' +
+            $('#cria-test-input').val() +
+            '[/CONTEXT]'
         var chat_id = $('#cria-chat-id').val();
         $("#submit-question").hide();
         $("#starting-process").show();

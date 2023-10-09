@@ -21,5 +21,29 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023100800, 'local', 'cria');
     }
 
+    if ($oldversion < 2023100900) {
+
+        // Define field requires_content_prompt to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('requires_content_prompt', XMLDB_TYPE_INTEGER, '1', null, null, null, '1', 'bot_type');
+
+        // Conditionally launch add field requires_content_prompt.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field has_user_prompt to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('has_user_prompt', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'requires_user_prompt');
+
+        // Conditionally launch add field has_user_prompt.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023100900, 'local', 'cria');
+    }
+
     return true;
 }

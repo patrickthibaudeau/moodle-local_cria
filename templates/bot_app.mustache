@@ -2,17 +2,18 @@
     <div class="col">
         <div class="card">
             <div class="card-body">
+                {{#requires_content_prompt}}
                 <h3>{{#str}}paste_text, local_cria{{/str}}</h3>
                 <textarea id="cria-test-input" style="width: 100%;" rows="20"></textarea>
+                {{/requires_content_prompt}}
                 <div id="cria-bot-container">
-
                     <div id="cria-input-container">
                         <input type="hidden" id="cria-chat-id" value="0">
-                        {{^user_prompt}}
+                        {{#requires_user_prompt}}
                             <textarea id="user-prompt" class="form-control mt-2" ></textarea>
-                        {{/user_prompt}}
+                        {{/requires_user_prompt}}
                         {{#user_prompt}}
-                            <input type="hidden" id="user-prompt" value="{{user_prompt}}">
+                            <input type="hidden" id="default-user-prompt" value="{{user_prompt}}">
                         {{/user_prompt}}
                         <button
                                 id="submit-question"

@@ -53,6 +53,18 @@ class bot extends crud
 
     /**
      *
+     * @var int
+     */
+    private $requires_content_prompt;
+
+    /**
+     *
+     * @var int
+     */
+    private $has_user_prompt;
+
+    /**
+     *
      * @var string
      */
     private $user_prompt;
@@ -146,6 +158,8 @@ class bot extends crud
         $this->plugin_path = $result->plugin_path ?? '';
         $this->model_id = $result->model_id ?? 0;
         $this->publish = $result->publish ?? 0;
+        $this->has_user_prompt = $result->has_user_prompt ?? 0;
+        $this->requires_content_prompt = $result->requires_content_prompt ?? 0;
         $this->requires_user_prompt = $result->requires_user_prompt ?? 0;
         $this->user_prompt = $result->user_prompt ?? '';
         $this->embedding_id = $result->embedding_id ?? 0;
@@ -195,6 +209,22 @@ class bot extends crud
     public function get_publish()
     {
         return $this->publish;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_has_user_prompt()
+    {
+        return $this->has_user_prompt;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_requires_content_prompt()
+    {
+        return $this->requires_content_prompt;
     }
 
     /**

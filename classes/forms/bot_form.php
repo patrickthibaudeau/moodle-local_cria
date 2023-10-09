@@ -138,6 +138,22 @@ class bot_form extends \moodleform
             'local_cria'
         );
 
+        // Requires content prompt form element
+        $mform->addElement(
+            'selectyesno',
+            'requires_content_prompt',
+            get_string('requires_content_prompt', 'local_cria')
+        );
+        $mform->setType(
+            'requires_content_prompt',
+            PARAM_INT
+        );
+        $mform->addHelpButton(
+            'requires_content_prompt',
+            'requires_content_prompt',
+            'local_cria'
+        );
+
         // Requires user prompt form element
         $mform->addElement(
             'selectyesno',
@@ -148,23 +164,26 @@ class bot_form extends \moodleform
             'requires_user_prompt',
             PARAM_INT
         );
+        $mform->addHelpButton(
+            'requires_user_prompt',
+            'requires_user_prompt',
+            'local_cria'
+        );
 
         // User prompt form element
         $mform->addElement(
             'textarea',
             'user_prompt',
-            get_string('user_prompt', 'local_cria')
+            get_string('default_user_prompt', 'local_cria')
         );
         $mform->setType(
             'user_prompt',
             PARAM_TEXT
         );
-
-        $mform->hideIf(
+        $mform->addHelpButton(
             'user_prompt',
-            'requires_user_prompt',
-            'eq',
-            0
+            'default_user_prompt',
+            'local_cria'
         );
 
         // Publish form element

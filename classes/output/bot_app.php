@@ -60,6 +60,8 @@ class bot_app implements \renderable, \templatable
             'use_bot_server' => $BOT->use_bot_server(),
             'chat_id' => $chat_id,
             'user_prompt' => $BOT->get_user_prompt(),
+            'requires_content_prompt' => $BOT->get_requires_content_prompt(),
+            'requires_user_prompt' => $BOT->get_requires_user_prompt(),
         ];
         return $data;
     }

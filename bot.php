@@ -25,7 +25,8 @@ if ($id) {
 
 } else {
     $formdata = new stdClass();
-    $formdata->requires_user_prompt = 0;
+    $formdata->requires_user_prompt = 1;
+    $formdata->requires_content_prompt = 1;
 }
 
 

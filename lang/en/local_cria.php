@@ -47,6 +47,9 @@ $string['content_for'] = 'Content for';
 $string['cost'] = 'Cost';
 $string['create_meeting_notes'] = 'MinutesMaster';
 $string['create_meeting_notes_help'] = 'Use this tool to create meeting notes based on a transcription';
+$string['default_user_prompt'] = 'Default user prompt';
+$string['default_user_prompt_help'] = 'If your but has a default prompt, enter it here. If the requires user prompt ' .
+    ' above is set to Yes, this prompt will prepended to the user propmt. Note it is not visible on the page.';
 $string['deployment_name'] = 'Deployment name';
 $string['deployment_name_help'] = 'The model deployment name in Azure';
 $string['delete'] = 'Delete';
@@ -89,7 +92,11 @@ $string['prompt'] = 'Prompt';
 $string['prompt_cost'] = 'Prompt cost';
 $string['prompt_tokens'] = 'Prompt tokens';
 $string['publish'] = 'Publish';
+$string['requires_content_prompt'] = 'Requires content prompt';
+$string['requires_content_prompt_help'] = 'Select Yes if you want a text area to paste content that can be used with a user prompt';
 $string['requires_user_prompt'] = 'Requires user prompt';
+$string['requires_user_prompt_help'] = 'Select Yes if you want a text area to enter a user prompt. If you select No,' .
+    ' make sure you set a default user prompt below.';
 $string['response'] = 'Response';
 $string['select'] = 'Select';
 $string['share'] = 'Share';
