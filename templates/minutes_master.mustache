@@ -12,6 +12,7 @@
     </div>
 {{/bot_id}}
 {{#bot_id}}
+    <input id="cria-bot-id" type="hidden" name="bot_id" value="{{bot_id}}">
     <input id="cria-chat-id" type="hidden" name="chat_id" value="0">
     <div class="row">
         <div class="col-md-12">
@@ -106,6 +107,7 @@
                         <button id="process-notes" type="button" class="btn btn-outline-primary btn-lg"
                                 data-bot_id="{{bot_id}}">
                             {{#str}}process_notes, local_cria{{/str}}
+                            <span id="cria-aprox-cost" class="badge badge-pill badge-danger" style="display:none;"></span>
                         </button>
                     </div>
                 </div>
