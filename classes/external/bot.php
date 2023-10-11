@@ -70,7 +70,7 @@ class local_cria_external_bot extends external_api {
             cria::delete_bot($id);
         }
         $DB->delete_records('local_cria_files', array('bot_id' => $id));
-        $DB->delete_records('local_cria', array('id' => $id));
+        $DB->delete_records('local_cria_bot', array('id' => $id));
 
         return true;
     }
