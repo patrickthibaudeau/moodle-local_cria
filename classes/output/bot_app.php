@@ -49,9 +49,6 @@ class bot_app implements \renderable, \templatable
         if ($BOT->use_bot_server()) {
             $session = cria::start_chat($this->bot_id);
             $chat_id = $session->chat_id;
-        } else {
-            $cache = \cache::make('local_cria', 'cria_system_messages');
-            $system_message = $cache->set($BOT->get_bot_type() . '_' . sesskey(), $BOT->get_bot_type_system_message()  . ' ' . $BOT->get_bot_system_message());
         }
 
         $data = [

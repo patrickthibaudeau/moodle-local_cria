@@ -53,9 +53,6 @@ class test_bot implements \renderable, \templatable
         if ($BOT->use_bot_server()) {
             $session = cria::start_chat($this->bot_id);
             $chat_id = $session->chat_id;
-        } else {
-            $cache = \cache::make('local_cria', 'cria_system_messages');
-            $system_message = $cache->set($BOT->get_bot_type() . '_' . sesskey(), $BOT->get_bot_type_system_message()  . ' ' . $BOT->get_bot_system_message());
         }
 
         $data = [
@@ -64,6 +61,8 @@ class test_bot implements \renderable, \templatable
             'use_bot_server' => $BOT->use_bot_server(),
             'chat_id' => $chat_id,
             'user_prompt' => $BOT->get_user_prompt(),
+            'requires_content_prompt' => $BOT->get_requires_content_prompt(),
+            'requires_user_prompt' => $BOT->get_requires_user_prompt(),
         ];
         return $data;
     }
