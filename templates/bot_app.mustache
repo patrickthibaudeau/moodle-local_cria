@@ -6,6 +6,9 @@
                 <h3>{{#str}}paste_text, local_cria{{/str}}</h3>
                 <textarea id="cria-test-input" style="width: 100%;" rows="20"></textarea>
                 {{/requires_content_prompt}}
+                {{^requires_content_prompt}}
+                    <input type="hidden" id="cria-test-input" value="">
+                {{/requires_content_prompt}}
                 <div id="cria-bot-container">
                     <div id="cria-input-container">
                         <input type="hidden" id="cria-chat-id" value="0">
