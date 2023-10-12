@@ -16,6 +16,9 @@
                         {{#requires_user_prompt}}
                             <textarea id="user-prompt" class="form-control mt-2 mb-2" ></textarea>
                         {{/requires_user_prompt}}
+                        {{^requires_user_prompt}}
+                            <input type="hidden" id="user-prompt">
+                        {{/requires_user_prompt}}
                         <button
                                 id="submit-question"
                                 class="btn btn-primary mt-2"
