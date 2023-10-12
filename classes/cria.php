@@ -131,7 +131,7 @@ class cria
 
         $data = json_encode($data);
         // Create bot
-        return gpt::_make_call($bot_id, $data, 'config', 'PATCH', true);
+        return gpt::_make_call($bot_id, $data, 'config_bulk', 'PATCH', true);
     }
 
     /**
