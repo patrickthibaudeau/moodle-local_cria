@@ -128,7 +128,7 @@ class cria
             "embed_bot_greeting" => $BOT->get_welcome_message(),
             "embed_bot_icon_url" => null
         ];
-file_put_contents('/var/www/fakesmartsdata/temp/data.json', json_encode($data));
+
         $data = json_encode($data);
         // Create bot
         return gpt::_make_call($bot_id, $data, 'config', 'PATCH', true);

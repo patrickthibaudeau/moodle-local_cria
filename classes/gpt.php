@@ -55,6 +55,7 @@ class gpt
         }
         $result = json_decode(curl_exec($ch));
         curl_close($ch);
+        file_put_contents('/var/www/fakesmartsdata/temp/data.json', json_encode($result));
         return $result;
     }
 
