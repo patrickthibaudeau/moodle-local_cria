@@ -100,6 +100,12 @@ class bot extends crud
 
     /**
      *
+     * @var string
+     */
+    private $theme_color;
+
+    /**
+     *
      * @var int
      */
     private $usermodified;
@@ -165,6 +171,7 @@ class bot extends crud
         $this->embedding_id = $result->embedding_id ?? 0;
         $this->bot_system_message = $result->bot_system_message ?? '';
         $this->welcome_message = $result->welcome_message ?? '';
+        $this->theme_color = $result->theme_color ?? '';
         $this->usermodified = $result->usermodified ?? 0;
         $this->timecreated = $result->timecreated ?? 0;
         $this->timemodified = $result->timemodified ?? 0;
@@ -320,6 +327,13 @@ class bot extends crud
      */
     public function get_welcome_message() {
         return $this->welcome_message;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_theme_color() {
+        return $this->theme_color;
     }
 
     /**

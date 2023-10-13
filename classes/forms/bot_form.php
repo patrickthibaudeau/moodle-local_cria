@@ -213,6 +213,18 @@ class bot_form extends \moodleform
             PARAM_RAW
         );
 
+        // Welcome message element
+        $mform->addElement(
+            'text',
+            'theme_color',
+            get_string('theme_color', 'local_cria'),
+            ['data-jscolor' => '']
+        );
+        $mform->setType(
+            'theme_color',
+            PARAM_TEXT
+        );
+
 
         $this->add_action_buttons();
         $this->set_data($formdata);

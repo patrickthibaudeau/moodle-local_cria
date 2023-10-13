@@ -44,7 +44,8 @@ function share_bot() {
     $(".share-bot").on('click', function () {
         let bot_id = $(this).data('id');
         let share = $(this).data('share');
-        $('#share-code').html(`<code> \t&lt;script type="text/javascript" src="${share}/embed?botId=${bot_id}" async&gt; \t&lt;/script&gt;</code>`);
+        let theme = $(this).data('theme');
+        $('#share-code').html(`<code> \t&lt;script type="text/javascript" src="${share}/embed?botId=${bot_id}&theme=${theme}" async&gt; \t&lt;/script&gt;</code>`);
         $('#shareModal').modal('show');
     });
 }

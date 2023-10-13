@@ -58,7 +58,7 @@ class bot_config implements \renderable, \templatable
             'can_share_bots' => has_capability('local/cria:share_bots', $context),
             "criachat" => $config->embedding_server_url
         ];
-
+print_object($bots);
         return $data;
     }
 

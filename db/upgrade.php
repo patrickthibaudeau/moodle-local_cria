@@ -45,5 +45,20 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023100900, 'local', 'cria');
     }
 
+    if ($oldversion < 2023101200) {
+
+        // Define field theme_color to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('theme_color', XMLDB_TYPE_CHAR, '7', null, null, null, '#e31837', 'welcome_message');
+
+        // Conditionally launch add field theme_color.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023101200, 'local', 'cria');
+    }
+
     return true;
 }

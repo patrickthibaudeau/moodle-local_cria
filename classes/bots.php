@@ -37,6 +37,7 @@ class bots {
             ct.name As type_name,
             ct.use_bot_server,
             b.bot_system_message,
+            b.theme_color,
             ct.use_bot_server,
             b.usermodified,
             b.timecreated,

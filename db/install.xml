@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/cria/db" VERSION="20231009" COMMENT="XMLDB file for Moodle local/cria"
+<XMLDB PATH="local/cria/db" VERSION="20231013" COMMENT="XMLDB file for Moodle local/cria"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -20,6 +20,7 @@
         <FIELD NAME="has_user_prompt" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Does this bot have a default user prompt?"/>
         <FIELD NAME="user_prompt" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="welcome_message" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="theme_color" TYPE="char" LENGTH="7" NOTNULL="false" DEFAULT="#e31837" SEQUENCE="false" COMMENT="Hex color values only"/>
         <FIELD NAME="bot_system_message" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Appends to bot type system message"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
