@@ -46,7 +46,7 @@ function share_bot() {
         let share = $(this).data('share');
         let theme = $(this).data('theme');
         theme = theme.replace(/\#/g, "");
-        $('#share-code').html(`<code> \t&lt;script type="text/javascript" src="${share}/embed?botId=${bot_id}&theme=${theme}" async&gt; \t&lt;/script&gt;</code>`);
+        $('#share-code').html(`<code> \t&lt;script type="text/javascript" src="${share}/embed?botId=${bot_id}&embedTheme=${theme}" async&gt; \t&lt;/script&gt;</code>`);
         $('#shareModal').modal('show');
     });
 }
