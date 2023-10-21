@@ -119,4 +119,14 @@ class renderer extends \plugin_renderer_base {
         $data = $message->export_for_template($this);
         return $this->render_from_template('local_cria/secondopinion', $data);
     }
+
+    /**
+     * @param \templatable $botpermissions
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_botpermissions(\templatable $message) {
+        $data = $message->export_for_template($this);
+        return $this->render_from_template('local_cria/permissions', $data);
+    }
 }
