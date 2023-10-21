@@ -89,6 +89,15 @@ function local_cria_navdrawer_items()
         );
     }
 
+    if (has_capability('local/cria:groups', $context)) {
+        $items[] = navdrawer::add(
+            get_string('groups', 'local_cria'),
+            null,
+            new moodle_url('/group/index.php?id=1'),
+            'bi-people',
+        );
+    }
+
     // Only add reports if user has capability
 //    if (has_capability('local/order:reports_view', $context)) {
 //        $items[] = navdrawer::add(

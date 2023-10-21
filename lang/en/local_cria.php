@@ -70,6 +70,7 @@ $string['cria_suite'] = 'Cria Suite';
 $string['file'] = 'File';
 $string['gpt_cost'] = 'GPT cost?';
 $string['gpt_cost_help'] = 'Cost of GPT based per 1000 tokens';
+$string['groups'] = 'Groups';
 $string['index_context'] = 'Index context';
 $string['indexing_server_api_key'] = 'Indexing server API Key';
 $string['indexing_server_api_key_help'] = 'Enter the API key for the indexing server';
@@ -84,6 +85,7 @@ $string['model'] = 'Model';
 $string['model_name'] = 'Model name';
 $string['name'] = 'Name';
 $string['paste_text'] = 'Paste your text here';
+$string['permissions'] = 'Permissions';
 $string['plugin_path'] = 'Plugin path';
 $string['pluginname'] = 'Cria';
 $string['privacy:metadata'] = 'This plugin stores no personal data.';
@@ -121,6 +123,7 @@ $string['welcome_message_help'] = 'The welcome message to be displayed when the 
 $string['word_count'] = 'Word count';
 
 // Capabilites
+$string['cria:bot_permissions'] = 'Bot permissions';
 $string['cria:delete_bots'] = 'Delete bots';
 $string['cria:edit_bots'] = 'Add/Edit bots';
 $string['cria:test_bots'] = 'Test bots';
@@ -137,6 +140,7 @@ $string['cria:view_models'] = 'View models';
 $string['cria:edit_system_reserved'] = 'Edit system reserved bots';
 $string['cria:share_bots'] = 'Share bots';
 $string['cria:translate'] = 'Translate';
+$string['cria:groups'] = 'groups';
 
 // MinutesMaster
 $string['convert'] = 'Convert';

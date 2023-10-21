@@ -87,6 +87,11 @@
                                         </a>
                                     {{/use_bot_server}}
                                 {{/can_edit_bot_content}}
+                                {{#can_add_bot_permission}}
+                                        <a href="permissions.php?id={{id}}" class="btn btn-outline-primary">
+                                        {{#str}}permissions, local_cria{{/str}}
+                                        </a>
+                                {{/can_add_bot_permission}}
                                 {{#can_test}}
                                     <a href="test_bot.php?id={{id}}" class="btn btn-outline-primary">
                                     {{#str}}test_bot, local_cria{{/str}}

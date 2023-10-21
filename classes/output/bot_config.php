@@ -56,6 +56,7 @@ class bot_config implements \renderable, \templatable
             'can_view_bot_logs' => has_capability('local/cria:view_bot_logs', $context),
             'can_view_bot_models' => has_capability('local/cria:view_models', $context),
             'can_share_bots' => has_capability('local/cria:share_bots', $context),
+            'can_add_bot_permission' => has_capability('local/cria:bot_permissions', $context),
             "criachat" => $config->embedding_server_url
         ];
 
