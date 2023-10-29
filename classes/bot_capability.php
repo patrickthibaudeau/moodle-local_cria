@@ -104,88 +104,12 @@ class bot_capability extends crud {
           }
 	}
 
-    /**
-     * Get record
-     *
-     * @global \moodle_database $DB
-     * 
-     */
-	public function getRecord(){
-	    global $DB;
-	    $result = $DB->get_record($this->table, ['id' => $this->id]);
-	    return  $result;
 
-	}
-
-    /**
-     * Delete the row 
-     *
-     * @global \moodle_database $DB
-     *
-     */
-	public function deleteRecord(){
-	    global $DB;
-		$DB->delete_records($this->table,['id' => $this->id]);
-	}
-
-    /**
-     * Insert record into selected table
-     * @global \moodle_database $DB
-     * @global \stdClass $USER
-     * @param array or object $data
-     */
-	public function insertRecord($data){
-		global $DB, $USER;
-
-		if (is_object($data)) {
-		    $data = convert_to_array($data);
-		}
-
-		if (!isset($data['timecreated'])) {
-		    $data['timecreated'] = time();
-		}
-
-		if (!isset($data['timemodified'])) {
-		    $data['timemodified'] = time();
-		}
-
-		//Set user
-		$data['usermodified'] = $USER->id;
-
-		$id = $DB->insert_record($this->table, $data);
-
-		return $id;
-	}
-
-    /**
-     * Update record into selected table
-     * @global \moodle_database $DB
-     * @global \stdClass $USER
-     * @param array or object $data
-     */
-	public function updateRecord($data){
-		global $DB, $USER;
-
-		if (is_object($data)) {
-		    $data = convert_to_array($data);
-		}
-
-		if (!isset($data['timemodified'])) {
-		    $data['timemodified'] = time();
-		}
-
-		//Set user
-		$data['usermodified'] = $USER->id;
-
-		$id = $DB->update_record($this->table, $data);
-
-		return $id;
-	}
 
 	/**
 	 * @return id - bigint (18)
 	 */
-	public function getId(){
+	public function get_id(){
 		return $this->id;
 	}
 
@@ -199,42 +123,42 @@ class bot_capability extends crud {
 	/**
 	 * @return capability - varchar (255)
 	 */
-	public function getCapability(){
+	public function get_capability(){
 		return $this->capability;
 	}
 
 	/**
 	 * @return permission - bigint (18)
 	 */
-	public function getPermission(){
+	public function get_permission(){
 		return $this->permission;
 	}
 
 	/**
 	 * @return usermodified - bigint (18)
 	 */
-	public function getUsermodified(){
+	public function get_usermodified(){
 		return $this->usermodified;
 	}
 
 	/**
 	 * @return timecreated - bigint (18)
 	 */
-	public function getTimecreated(){
+	public function get_timecreated(){
 		return $this->timecreated;
 	}
 
 	/**
 	 * @return timemodified - bigint (18)
 	 */
-	public function getTimemodified(){
+	public function get_timemodified(){
 		return $this->timemodified;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setId($id){
+	public function set_id($id){
 		$this->id = $id;
 	}
 
@@ -248,35 +172,35 @@ class bot_capability extends crud {
 	/**
 	 * @param Type: varchar (255)
 	 */
-	public function setCapability($capability){
+	public function set_capability($capability){
 		$this->capability = $capability;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setPermission($permission){
+	public function set_permission($permission){
 		$this->permission = $permission;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setUsermodified($usermodified){
+	public function set_usermodified($usermodified){
 		$this->usermodified = $usermodified;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setTimecreated($timecreated){
+	public function set_timecreated($timecreated){
 		$this->timecreated = $timecreated;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setTimemodified($timemodified){
+	public function set_timemodified($timemodified){
 		$this->timemodified = $timemodified;
 	}
 

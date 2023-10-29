@@ -162,14 +162,14 @@ class model extends crud
      * Return record
      * @return mixed
      */
-    public function get_result() {
+    public function get_result(): \stdClass {
         return $this->result;
     }
 
     /**
      * @return id - bigint (18)
      */
-    public function get_id()
+    public function get_id(): int
     {
         return $this->id;
     }
@@ -177,7 +177,7 @@ class model extends crud
     /**
      * @return name - varchar (255)
      */
-    public function get_name()
+    public function get_name(): string
     {
         return $this->name;
     }
@@ -185,7 +185,7 @@ class model extends crud
     /**
      * @return azure_endpoint - varchar (255)
      */
-    public function get_azure_endpoint()
+    public function get_azure_endpoint(): string
     {
         return $this->azure_endpoint;
     }
@@ -193,7 +193,7 @@ class model extends crud
     /**
      * @return azure_api_version - varchar (50)
      */
-    public function get_azure_api_version()
+    public function get_azure_api_version(): string
     {
         return $this->azure_api_version;
     }
@@ -201,7 +201,7 @@ class model extends crud
     /**
      * @return azure_key - varchar (1333)
      */
-    public function get_azure_key()
+    public function get_azure_key(): string
     {
         return $this->azure_key;
     }
@@ -209,7 +209,7 @@ class model extends crud
     /**
      * @return azure_deployment_name - varchar (255)
      */
-    public function get_azure_deployment_name()
+    public function get_azure_deployment_name(): string
     {
         return $this->azure_deployment_name;
     }
@@ -217,14 +217,15 @@ class model extends crud
     /**
      * @return is_embedding - int (1)
      */
-    public function get_is_embedding() {
+    public function get_is_embedding(): int
+    {
         return $this->is_embedding;
     }
 
     /**
      * @return model_name - varchar (50)
      */
-    public function get_model_name()
+    public function get_model_name(): string
     {
         return $this->model_name;
     }
@@ -232,7 +233,7 @@ class model extends crud
     /**
      * @return prompt_cost - decimal (8)
      */
-    public function get_prompt_cost()
+    public function get_prompt_cost(): string
     {
         return $this->prompt_cost;
     }
@@ -240,7 +241,7 @@ class model extends crud
     /**
      * @return completion_cost - decimal (8)
      */
-    public function get_completion_cost()
+    public function get_completion_cost(): string
     {
         return $this->completion_cost;
     }
@@ -248,7 +249,7 @@ class model extends crud
     /**
      * @return usermodified - bigint (18)
      */
-    public function get_usermodified()
+    public function get_usermodified(): int
     {
         return $this->usermodified;
     }
@@ -256,7 +257,7 @@ class model extends crud
     /**
      * @return timecreated - bigint (18)
      */
-    public function get_timecreated()
+    public function get_timecreated(): int
     {
         return $this->timecreated;
     }
@@ -264,7 +265,7 @@ class model extends crud
     /**
      * @return timemodified - bigint (18)
      */
-    public function get_timemodified()
+    public function get_timemodified(): int
     {
         return $this->timemodified;
     }
@@ -272,7 +273,7 @@ class model extends crud
     /**
      * @param Type: bigint (18)
      */
-    public function set_id($id)
+    public function set_id($id): void
     {
         $this->id = $id;
     }
@@ -280,7 +281,7 @@ class model extends crud
     /**
      * @param Type: varchar (255)
      */
-    public function set_name($name)
+    public function set_name($name): void
     {
         $this->name = $name;
     }
@@ -288,7 +289,7 @@ class model extends crud
     /**
      * @param Type: varchar (255)
      */
-    public function set_azure_endpoint($azure_endpoint)
+    public function set_azure_endpoint($azure_endpoint): void
     {
         $this->azure_endpoint = $azure_endpoint;
     }
@@ -296,7 +297,7 @@ class model extends crud
     /**
      * @param Type: varchar (50)
      */
-    public function set_azure_api_version($azure_api_version)
+    public function set_azure_api_version($azure_api_version): void
     {
         $this->azure_api_version = $azure_api_version;
     }
@@ -304,7 +305,7 @@ class model extends crud
     /**
      * @param Type: varchar (1333)
      */
-    public function set_azure_key($azure_key)
+    public function set_azure_key($azure_key): void
     {
         $this->azure_key = $azure_key;
     }
@@ -312,7 +313,7 @@ class model extends crud
     /**
      * @param Type: varchar (255)
      */
-    public function set_azure_deployment_name($azure_deployment_name)
+    public function set_azure_deployment_name($azure_deployment_name): void
     {
         $this->azure_deployment_name = $azure_deployment_name;
     }
@@ -320,7 +321,7 @@ class model extends crud
     /**
      * @param Type: varchar (50)
      */
-    public function set_model_name($model_name)
+    public function set_model_name($model_name): void
     {
         $this->model_name = $model_name;
     }
@@ -328,7 +329,7 @@ class model extends crud
     /**
      * @param Type: decimal (8)
      */
-    public function set_prompt_cost($prompt_cost)
+    public function set_prompt_cost($prompt_cost): void
     {
         $this->prompt_cost = $prompt_cost;
     }
@@ -336,7 +337,7 @@ class model extends crud
     /**
      * @param Type: decimal (8)
      */
-    public function set_completion_cost($completion_cost)
+    public function set_completion_cost($completion_cost): void
     {
         $this->completion_cost = $completion_cost;
     }
@@ -344,7 +345,7 @@ class model extends crud
     /**
      * @param Type: bigint (18)
      */
-    public function set_usermodified($usermodified)
+    public function set_usermodified($usermodified): void
     {
         $this->usermodified = $usermodified;
     }
@@ -352,7 +353,7 @@ class model extends crud
     /**
      * @param Type: bigint (18)
      */
-    public function set_timecreated($timecreated)
+    public function set_timecreated($timecreated): void
     {
         $this->timecreated = $timecreated;
     }
@@ -360,7 +361,7 @@ class model extends crud
     /**
      * @param Type: bigint (18)
      */
-    public function set_timemodified($timemodified)
+    public function set_timemodified($timemodified): void
     {
         $this->timemodified = $timemodified;
     }

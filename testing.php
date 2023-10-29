@@ -8,6 +8,7 @@ require_once("$CFG->dirroot/local/cria/classes/gpttokenizer/Vocab.php");
 use local_cria\gpt;
 use local_cria\Gpt3Tokenizer;
 use local_cria\Gpt3TokenizerConfig;
+use local_cria\bot_role;
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
@@ -29,10 +30,12 @@ $context = context_system::instance();
 //**********************
 echo $OUTPUT->header();
 
-$GPT = new gpt();
+$BOTROLE = new bot_role();
+$BOTROLE->insert_record(['name' => 'test', 'shortname' => 'test', 'description' => 'test', 'usermodified' => 1, 'timecreated' => time(), 'timemodified' => time()]);
+//$GPT = new gpt();
 
-$config = new Gpt3TokenizerConfig();
-$tokenizer = new Gpt3Tokenizer($config);
+//$config = new Gpt3TokenizerConfig();
+//$tokenizer = new Gpt3Tokenizer($config);
 $text = "[Rob Finlayson] 09:07:07
 Share it and keep working. But I won't be sending any confirmation to anybody until we're in agreement that we're on the right path.
 
@@ -2412,12 +2415,11 @@ Yup, I'm good.
 Okay. Patrick, on your side.";
 
 //$text = 'You miss 100% of the shots you don\'t take';
-$numberOfTokens = ceil((strlen($text) / 4) * 0.15);
-$completion = 200; // This is just a guess based on logs.
-$cost = $GPT->_get_cost(1, $numberOfTokens, $completion);
+//$numberOfTokens = ceil((strlen($text) / 4) * 0.15);
+//$completion = 200; // This is just a guess based on logs.
+//$cost = $GPT->_get_cost(1, $numberOfTokens, $completion);
 
-print_object($numberOfTokens);
-print_object($cost);
+
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

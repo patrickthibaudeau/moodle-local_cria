@@ -109,98 +109,112 @@ class file extends crud {
 	/**
 	 * @return id - bigint (18)
 	 */
-	public function get_id(){
+	public function get_id(): int
+    {
 		return $this->id;
 	}
 
 	/**
 	 * @return bot_id - bigint (18)
 	 */
-	public function get_cria_id(){
+	public function get_cria_id(): int
+    {
 		return $this->bot_id;
 	}
 
 	/**
 	 * @return name - varchar (255)
 	 */
-	public function get_name(){
+	public function get_name(): string
+    {
 		return $this->name;
 	}
 
 	/**
 	 * @return content - longtext (-1)
 	 */
-	public function get_content(){
+	public function get_content(): string
+    {
 		return $this->content;
 	}
 
 	/**
 	 * @return usermodified - bigint (18)
 	 */
-	public function get_usermodified(){
+	public function get_usermodified(): int
+    {
 		return $this->usermodified;
 	}
 
 	/**
 	 * @return timecreated - bigint (18)
 	 */
-	public function get_timecreated(){
+	public function get_timecreated(): int
+    {
 		return $this->timecreated;
 	}
 
 	/**
 	 * @return timemodified - bigint (18)
 	 */
-	public function get_timemodified(){
+	public function get_timemodified(): int
+    {
 		return $this->timemodified;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function set_id($id){
+	public function set_id($id): void
+    {
 		$this->id = $id;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function set_bot_id($bot_id){
+	public function set_bot_id($bot_id): void
+    {
 		$this->bot_id = $bot_id;
 	}
 
 	/**
 	 * @param Type: varchar (255)
 	 */
-	public function set_name($name){
+	public function set_name($name): void
+    {
 		$this->name = $name;
 	}
 
 	/**
 	 * @param Type: longtext (-1)
 	 */
-	public function set_content($content){
+	public function set_content($content): void
+    {
 		$this->content = $content;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function set_usermodified($usermodified){
+	public function set_usermodified($usermodified): void
+    {
 		$this->usermodified = $usermodified;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function set_timecreated($timecreated){
+	public function set_timecreated($timecreated): void
+    {
 		$this->timecreated = $timecreated;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function set_timemodified($timemodified){
+	public function set_timemodified($timemodified): void
+    {
 		$this->timemodified = $timemodified;
 	}
 
@@ -209,7 +223,8 @@ class file extends crud {
      * @param $bot_id
      * @return void
      */
-    public function upload_files_to_indexing_server($bot_id, $file_path, $file_name) {
+    public function upload_files_to_indexing_server($bot_id, $file_path, $file_name)
+    {
 
         // upload new file
         return cria::add_file($bot_id, $file_path, $file_name);
@@ -219,7 +234,8 @@ class file extends crud {
      * Get file name for file on indexing server
      * @return string
      */
-    public function get_indexing_server_file_name() {
+    public function get_indexing_server_file_name(): string
+    {
         $file_name = $this->get_name() . '_' . $this->get_cria_id() . '.txt';
         $file_name = str_replace(' ', '_', $file_name);
         $file_name = str_replace('(', '_', $file_name);

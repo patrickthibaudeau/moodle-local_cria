@@ -31,7 +31,7 @@ abstract class crud
      * @global \moodle_database $DB
      *
      */
-    public function get_record()
+    public function get_record(): \stdClass
     {
         global $DB;
         $result = $DB->get_record($this->table, ['id' => $this->id]);
@@ -45,10 +45,14 @@ abstract class crud
      * @global \moodle_database $DB
      *
      */
-    public function delete_record()
+    public function delete_record(): bool
     {
         global $DB;
-        $DB->delete_records($this->table, ['id' => $this->id]);
+        if ($DB->delete_records($this->table, ['id' => $this->id])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -57,7 +61,7 @@ abstract class crud
      * @global \stdClass $USER
      * @global \moodle_database $DB
      */
-    public function insert_record($data)
+    public function insert_record($data): int
     {
         global $DB, $USER;
 
@@ -83,7 +87,7 @@ abstract class crud
      * @global \stdClass $USER
      * @global \moodle_database $DB
      */
-    public function update_record($data)
+    public function update_record($data): int
     {
         global $DB, $USER;
 
@@ -102,7 +106,7 @@ abstract class crud
     /**
      * /* get id
      **/
-    public function get_id()
+    public function get_id(): int
     {
         return $this->id;
     }
@@ -110,7 +114,7 @@ abstract class crud
     /**
      * /* get table
      **/
-    public function get_table()
+    public function get_table(): string
     {
         return $this->table;
     }
@@ -118,15 +122,15 @@ abstract class crud
     /**
      * @param mixed $table
      */
-    public function set_table($table)
+    public function set_table($table): void
     {
         $this->table = $table;
     }
 
     /**
-     * @param mixed $table
+     * @param int $id
      */
-    public function set_id($id)
+    public function set_id($id): void
     {
         $this->id = $id;
     }

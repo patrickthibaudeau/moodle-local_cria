@@ -179,9 +179,9 @@ class bot extends crud
     }
 
     /**
-     * @return id - bigint (18)
+     * @return id - int
      */
-    public function get_id()
+    public function get_id(): int
     {
         return $this->id;
     }
@@ -189,7 +189,7 @@ class bot extends crud
     /**
      * @return name - varchar (255)
      */
-    public function get_name()
+    public function get_name(): string
     {
         return $this->name;
     }
@@ -197,7 +197,7 @@ class bot extends crud
     /**
      * @return description - longtext (-1)
      */
-    public function get_description()
+    public function get_description(): string
     {
         return $this->description;
     }
@@ -205,7 +205,7 @@ class bot extends crud
     /**
      * @return bot_type - tinyint (2)
      */
-    public function get_bot_type()
+    public function get_bot_type(): int
     {
         return $this->bot_type;
     }
@@ -213,7 +213,7 @@ class bot extends crud
     /**
      * @return int
      */
-    public function get_publish()
+    public function get_publish(): int
     {
         return $this->publish;
     }
@@ -221,7 +221,7 @@ class bot extends crud
     /**
      * @return int
      */
-    public function get_has_user_prompt()
+    public function get_has_user_prompt(): int
     {
         return $this->has_user_prompt;
     }
@@ -229,7 +229,7 @@ class bot extends crud
     /**
      * @return int
      */
-    public function get_requires_content_prompt()
+    public function get_requires_content_prompt(): int
     {
         return $this->requires_content_prompt;
     }
@@ -237,7 +237,7 @@ class bot extends crud
     /**
      * @return int
      */
-    public function get_requires_user_prompt()
+    public function get_requires_user_prompt(): int
     {
         return $this->requires_user_prompt;
     }
@@ -245,7 +245,7 @@ class bot extends crud
     /**
      * @return string
      */
-    public function get_user_prompt()
+    public function get_user_prompt():  string
     {
         return $this->user_prompt;
     }
@@ -253,14 +253,16 @@ class bot extends crud
     /**
      * @return system_reserved - int (1)
      */
-    public function get_system_reserved() {
+    public function get_system_reserved(): int
+    {
         return $this->system_reserved;
     }
 
     /**
      * @return system_reserved - string (255)
      */
-    public function get_plugin_path() {
+    public function get_plugin_path(): string
+    {
         return $this->plugin_path;
     }
 
@@ -268,7 +270,8 @@ class bot extends crud
      * Get Model record
      * @return mixed|\stdClass
      */
-    public function get_model_config() {
+    public function get_model_config(): \stdClass
+    {
         $MODEL = new model($this->model_id);
         return $MODEL->get_result();
     }
@@ -277,7 +280,8 @@ class bot extends crud
      * Get Embedding record
      * @return mixed|\stdClass
      */
-    public function get_embedding_config() {
+    public function get_embedding_config(): \stdClass
+    {
         $MODEL = new model($this->embedding_id);
         return $MODEL->get_result();
     }
@@ -307,7 +311,7 @@ class bot extends crud
     /**
      * @return bot_system_message - longtext (-1)
      */
-    public function get_bot_system_message()
+    public function get_bot_system_message(): string
     {
         return $this->bot_system_message;
     }
@@ -325,21 +329,23 @@ class bot extends crud
     /**
      * @return string
      */
-    public function get_welcome_message() {
+    public function get_welcome_message(): string
+    {
         return $this->welcome_message;
     }
 
     /**
      * @return string
      */
-    public function get_theme_color() {
+    public function get_theme_color(): string
+    {
         return $this->theme_color;
     }
 
     /**
      * @return usermodified - bigint (18)
      */
-    public function get_usermodified()
+    public function get_usermodified(): int
     {
         return $this->usermodified;
     }
@@ -347,7 +353,7 @@ class bot extends crud
     /**
      * @return timecreated - bigint (18)
      */
-    public function get_timecreated()
+    public function get_timecreated(): int
     {
         return $this->timecreated;
     }
@@ -355,7 +361,7 @@ class bot extends crud
     /**
      * @return timemodified - bigint (18)
      */
-    public function get_timemodified()
+    public function get_timemodified(): int
     {
         return $this->timemodified;
     }
@@ -363,7 +369,7 @@ class bot extends crud
     /**
      * @param Type: bigint (18)
      */
-    public function set_id($id)
+    public function set_id($id): void
     {
         $this->id = $id;
     }
@@ -371,7 +377,7 @@ class bot extends crud
     /**
      * @param Type: varchar (255)
      */
-    public function set_name($name)
+    public function set_name($name): void
     {
         $this->name = $name;
     }
@@ -379,7 +385,7 @@ class bot extends crud
     /**
      * @param Type: longtext (-1)
      */
-    public function set_description($description)
+    public function set_description($description): void
     {
         $this->description = $description;
     }
@@ -387,7 +393,7 @@ class bot extends crud
     /**
      * @param Type: tinyint (2)
      */
-    public function set_bot_type($bot_type)
+    public function set_bot_type($bot_type): void
     {
         $this->bot_type = $bot_type;
     }
@@ -396,7 +402,7 @@ class bot extends crud
      * @param $public
      * @return void
      */
-    public function set_pulish($publish)
+    public function set_pulish($publish): void
     {
         $this->publish = $publish;
     }
@@ -405,7 +411,7 @@ class bot extends crud
      * @param $requires_user_prompt
      * @return void
      */
-    public function set_requires_user_prompt($requires_user_prompt)
+    public function set_requires_user_prompt($requires_user_prompt): void
     {
         $this->requires_user_prompt = $requires_user_prompt;
     }
@@ -414,7 +420,7 @@ class bot extends crud
      * @param $user_prompt
      * @return void
      */
-    public function set_user_prompt($user_prompt)
+    public function set_user_prompt($user_prompt): void
     {
         $this->user_prompt = $user_prompt;
     }
@@ -422,7 +428,7 @@ class bot extends crud
     /**
      * @param Type: longtext (-1)
      */
-    public function set_bot_system_message($bot_system_message)
+    public function set_bot_system_message($bot_system_message): void
     {
         $this->bot_system_message = $bot_system_message;
     }
@@ -430,7 +436,7 @@ class bot extends crud
     /**
      * @param Type: bigint (18)
      */
-    public function set_usermodified($usermodified)
+    public function set_usermodified($usermodified): void
     {
         $this->usermodified = $usermodified;
     }
@@ -438,7 +444,7 @@ class bot extends crud
     /**
      * @param Type: bigint (18)
      */
-    public function set_timecreated($timecreated)
+    public function set_timecreated($timecreated): void
     {
         $this->timecreated = $timecreated;
     }
@@ -446,7 +452,7 @@ class bot extends crud
     /**
      * @param Type: bigint (18)
      */
-    public function set_timemodified($timemodified)
+    public function set_timemodified($timemodified): void
     {
         $this->timemodified = $timemodified;
     }

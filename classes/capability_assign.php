@@ -104,88 +104,11 @@ class capability_assign extends crud {
           }
 	}
 
-    /**
-     * Get record
-     *
-     * @global \moodle_database $DB
-     * 
-     */
-	public function getRecord(){
-	    global $DB;
-	    $result = $DB->get_record($this->table, ['id' => $this->id]);
-	    return  $result;
-
-	}
-
-    /**
-     * Delete the row 
-     *
-     * @global \moodle_database $DB
-     *
-     */
-	public function deleteRecord(){
-	    global $DB;
-		$DB->delete_records($this->table,['id' => $this->id]);
-	}
-
-    /**
-     * Insert record into selected table
-     * @global \moodle_database $DB
-     * @global \stdClass $USER
-     * @param array or object $data
-     */
-	public function insertRecord($data){
-		global $DB, $USER;
-
-		if (is_object($data)) {
-		    $data = convert_to_array($data);
-		}
-
-		if (!isset($data['timecreated'])) {
-		    $data['timecreated'] = time();
-		}
-
-		if (!isset($data['timemodified'])) {
-		    $data['timemodified'] = time();
-		}
-
-		//Set user
-		$data['usermodified'] = $USER->id;
-
-		$id = $DB->insert_record($this->table, $data);
-
-		return $id;
-	}
-
-    /**
-     * Update record into selected table
-     * @global \moodle_database $DB
-     * @global \stdClass $USER
-     * @param array or object $data
-     */
-	public function updateRecord($data){
-		global $DB, $USER;
-
-		if (is_object($data)) {
-		    $data = convert_to_array($data);
-		}
-
-		if (!isset($data['timemodified'])) {
-		    $data['timemodified'] = time();
-		}
-
-		//Set user
-		$data['usermodified'] = $USER->id;
-
-		$id = $DB->update_record($this->table, $data);
-
-		return $id;
-	}
 
 	/**
 	 * @return id - bigint (18)
 	 */
-	public function getId(){
+	public function get_id(){
 		return $this->id;
 	}
 
@@ -199,84 +122,84 @@ class capability_assign extends crud {
 	/**
 	 * @return user_id - bigint (18)
 	 */
-	public function getUser_id(){
+	public function get_user_id(){
 		return $this->user_id;
 	}
 
 	/**
 	 * @return groupid - bigint (18)
 	 */
-	public function getGroupid(){
+	public function get_groupid(){
 		return $this->groupid;
 	}
 
 	/**
 	 * @return usermodified - bigint (18)
 	 */
-	public function getUsermodified(){
+	public function get_usermodified(){
 		return $this->usermodified;
 	}
 
 	/**
 	 * @return timecreated - bigint (18)
 	 */
-	public function getTimecreated(){
+	public function get_yimecreated(){
 		return $this->timecreated;
 	}
 
 	/**
 	 * @return timemodified - bigint (18)
 	 */
-	public function getTimemodified(){
+	public function get_timemodified(){
 		return $this->timemodified;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setId($id){
+	public function set_id($id){
 		$this->id = $id;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setBot_role_id($bot_role_id){
+	public function set_bot_role_id($bot_role_id){
 		$this->bot_role_id = $bot_role_id;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setUser_id($user_id){
+	public function set_user_id($user_id){
 		$this->user_id = $user_id;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setGroupid($groupid){
+	public function set_groupid($groupid){
 		$this->groupid = $groupid;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setUsermodified($usermodified){
+	public function set_usermodified($usermodified){
 		$this->usermodified = $usermodified;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setTimecreated($timecreated){
+	public function set_timecreated($timecreated){
 		$this->timecreated = $timecreated;
 	}
 
 	/**
 	 * @param Type: bigint (18)
 	 */
-	public function setTimemodified($timemodified){
+	public function set_timemodified($timemodified){
 		$this->timemodified = $timemodified;
 	}
 

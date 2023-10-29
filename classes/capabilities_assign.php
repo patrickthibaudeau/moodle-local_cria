@@ -27,7 +27,7 @@ class capabilities_assign {
 	/**
 	  * Get records
 	 */
-	public function getRecords() {
+	public function get_records() {
 	    return $this->results;
 	}
 
@@ -36,7 +36,7 @@ class capabilities_assign {
 	  * Defaults used key = record id, value = name 
 	  * Modify as required. 
 	 */
-	public function getSelectArray() {
+	public function get_select_array() {
 	    $array = [
 	        '' => get_string('select', 'local_cria')
 	      ];
