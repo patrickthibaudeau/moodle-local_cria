@@ -303,5 +303,19 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023110800, 'local', 'cria');
     }
 
+    if ($oldversion < 2023110801) {
+
+        // Define table local_cria_permission to be dropped.
+        $table = new xmldb_table('local_cria_permission');
+
+        // Conditionally launch drop table for local_cria_permission.
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023110801, 'local', 'cria');
+    }
+
     return true;
 }
