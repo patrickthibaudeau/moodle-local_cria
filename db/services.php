@@ -54,4 +54,13 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_delete_bot_role' => array(
+        'classname' => 'local_cria_external_bot_role',
+        'methodname' => 'delete',
+        'classpath' => 'local/cria/classes/external/bot_role.php',
+        'description' => 'Delete bot role and all permissions associated with it',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );

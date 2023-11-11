@@ -317,5 +317,96 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023110801, 'local', 'cria');
     }
 
+    if ($oldversion < 2023110802) {
+
+        // Define field bot_id to be added to local_cria_bot_role.
+        $table = new xmldb_table('local_cria_bot_role');
+        $field = new xmldb_field('bot_id', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'id');
+
+        // Conditionally launch add field bot_id.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023110802, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023110803) {
+
+        // Define field sortorder to be added to local_cria_bot_role.
+        $table = new xmldb_table('local_cria_bot_role');
+        $field = new xmldb_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'description');
+
+        // Conditionally launch add field sortorder.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023110803, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023110900) {
+
+        // Define table local_cria_bot_capabilities to be dropped.
+        $table = new xmldb_table('local_cria_bot_capabilities');
+
+        // Conditionally launch drop table for local_cria_bot_capabilities.
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+        // Define table local_cria_bot_capabilities to be created.
+        $table = new xmldb_table('local_cria_bot_capabilities');
+
+        // Adding fields to table local_cria_bot_capabilities.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '19', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('bot_role_id', XMLDB_TYPE_INTEGER, '19', null, null, null, '0');
+        $table->add_field('capability', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('permission', XMLDB_TYPE_INTEGER, '1', null, null, null, '-1');
+        $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '19', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '19', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '19', null, XMLDB_NOTNULL, null, '0');
+
+        // Adding keys to table local_cria_bot_capabilities.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('usermodified', XMLDB_KEY_FOREIGN, ['usermodified'], 'user', ['id']);
+
+        // Conditionally launch create table for local_cria_bot_capabilities.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023110900, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023110901) {
+
+        // Define field system_reserved to be added to local_cria_bot_role.
+        $table = new xmldb_table('local_cria_bot_role');
+        $field = new xmldb_field('system_reserved', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'description');
+
+        // Conditionally launch add field system_reserved.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023110901, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023110903) {
+
+        // Rename field capability on table local_cria_bot_capabilities to NEWNAMEGOESHERE.
+        $table = new xmldb_table('local_cria_bot_capabilities');
+        $field = new xmldb_field('capability', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'bot_role_id');
+
+        // Launch rename field capability.
+        $dbman->rename_field($table, $field, 'name');
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023110903, 'local', 'cria');
+    }
+
     return true;
 }

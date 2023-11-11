@@ -1,6 +1,12 @@
 <?php
 
 use theme_fakesmarts\navdrawer;
+use local_cria\bot_role;
+use local_cria\bot_roles;
+use local_cria\bot_capability;
+use local_cria\bot_capabilities;
+use local_cria\capability_assign;
+use local_cria\capabilities_assign;
 /**
  * Build navdrawer menu items
  * @return array
@@ -110,4 +116,14 @@ function local_cria_navdrawer_items()
 
 
     return $items;
+}
+
+/**
+ * @param $capability
+ * @param $bot_id
+ * @return true
+ */
+function has_bot_capability($capability, $bot_id)
+{
+    return true;
 }

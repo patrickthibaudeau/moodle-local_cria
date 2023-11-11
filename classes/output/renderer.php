@@ -125,8 +125,18 @@ class renderer extends \plugin_renderer_base {
      * @return bool|string
      * @throws \moodle_exception
      */
-    public function render_botpermissions(\templatable $message) {
+    public function render_bot_permissions(\templatable $message) {
         $data = $message->export_for_template($this);
-        return $this->render_from_template('local_cria/permissions', $data);
+        return $this->render_from_template('local_cria/bot_permissions', $data);
+    }
+
+    /**
+     * @param \templatable $role
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_edit_bot_role(\templatable $message) {
+        $data = $message->export_for_template($this);
+        return $this->render_from_template('local_cria/edit_bot_role', $data);
     }
 }

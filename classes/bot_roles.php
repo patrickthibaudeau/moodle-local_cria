@@ -19,9 +19,9 @@ class bot_roles {
 	 *
 	 *@global \moodle_database $DB
 	 */
-	public function __construct() {
+	public function __construct(int $bot_id) {
 	    global $DB;
-	    $this->results = $DB->get_records('local_cria_bot_role');
+	    $this->results = $DB->get_records('local_cria_bot_role', ['bot_id' => $bot_id], 'sortorder ASC');
 	}
 
 	/**
@@ -30,6 +30,10 @@ class bot_roles {
 	public function get_records() {
 	    return $this->results;
 	}
+
+    public function get_records_for_template() {
+        return array_values($this->results);
+    }
 
 	/**
 	  * Array to be used for selects

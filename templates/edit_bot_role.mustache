@@ -1,0 +1,68 @@
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <a href="{{config.wwwroot}}/local/cria/bot_permissions.php?id={{bot_id}}" class="btn
+                btn-outline-primary">
+                {{#str}}cancel, local_cria{{/str}}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <form id="edit-role-form" action="?" method="post">
+                    <input type="hidden" name="id" value="{{role_id}}">
+                    <input type="hidden" name="from_system" value="{{from_system}}">
+                    <input id="botid" type="hidden" name="botid" value="{{bot_id}}">
+                    <div class="form-group">
+                        <label for="role_name">{{#str}}role_name, local_cria{{/str}}</label>
+                        <input type="text" class="form-control" id="role_name" name="name"
+                               placeholder="{{#str}}role_name, local_cria{{/str}}"
+                               value="{{role_name}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="role_shortname">{{#str}}role_name, local_cria{{/str}}</label>
+                        <input type="text" class="form-control" id="role_shortname" name="shortname"
+                               placeholder="{{#str}}role_shortname, local_cria{{/str}}"
+                               value="{{role_name}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="role_description">{{#str}}role_description, local_cria{{/str}}</label>
+                        <textarea class="form-control" id="role_description" name="description"
+                                  placeholder="{{#str}}role_description, local_cria{{/str}}">{{description}}</textarea>
+                    </div>
+                    <h3>{{#str}}role_permissions, local_cria{{/str}}</h3>
+                    <table id="bot_role_capabilities" class="table table-striped w-100">
+                        <tbody>
+                        {{#capabilites}}
+                            <tr>
+                                <td>{{stringname}}<br>
+                                    {{{name}}}
+                                </td>
+                                <td>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input"
+                                                   id="customSwitch_{{id}}" name="{{name}}" {{checked}}>
+                                            <label class="custom-control-label" for="customSwitch_{{id}}"></label>
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        {{/capabilites}}
+                        </tbody>
+                    </table>
+                    <button name="save" type="submit" class="btn btn-primary">{{#str}}save, local_cria{{/str}}</button>
+                    <a href="{{config.wwwroot}}/local/cria/bot_permissions.php?id={{bot_id}}"
+                    class="btn btn-outline-primary">{{#str}}cancel, local_cria{{/str}}</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
