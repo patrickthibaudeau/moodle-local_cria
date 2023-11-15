@@ -34,9 +34,12 @@ abstract class crud
     public function get_record(): \stdClass
     {
         global $DB;
-        $result = $DB->get_record($this->table, ['id' => $this->id]);
-        return $result;
+        if ($result = $DB->get_record($this->table, ['id' => $this->id])) {
+            return $result;
+        }
+        $result = new \stdClass();
 
+        return $result;
     }
 
     /**
