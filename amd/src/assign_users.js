@@ -22,8 +22,19 @@ function initialize_modal() {
         assign_users();
         // Unassign users
         unassign_users();
+        // Search assigned users on keyup
+        $('#cria-search-unassigned-user').on('keyup', function () {
+            let name = $(this).val();
+            if (name.length == 0) {
+                get_all_users(role_id);
+            }
+            if (name.length >= 3) {
+                get_all_users(role_id, name);
+            }
+        });
         // Show modal
         $("#assign-users-modal").modal("show");
+
     });
 }
 
@@ -55,7 +66,7 @@ function get_assigned_users(role_id) {
 /**
  * Get all users
  */
-function get_all_users(role_id) {
+function get_all_users(role_id, name = '') {
     $('#cria-unassigned-users').empty();
     // Using ajax, get all users
     var all_users = ajax.call([{
@@ -63,7 +74,7 @@ function get_all_users(role_id) {
         args: {
             role_id: role_id,
             id: -1,
-            name: ''
+            name: name
         }
     }]);
 

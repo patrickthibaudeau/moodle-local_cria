@@ -13,11 +13,6 @@ $bot_id = required_param('id', PARAM_INT);
 
 $BOT = new bot($bot_id);
 
-if (!has_capability('local/cria:view_bots', $context)) {
-    throw new moodle_exception('nopermissions', 'error', '', 'You do not have permissions to access this page');
-}
-
-
 \local_cria\base::page(
     new moodle_url('/local/cria/bot_permissions.php', ['bot_id' => $bot_id]),
     get_string('role', 'local_cria') . ' - ' . $BOT->get_name(),
