@@ -6,7 +6,7 @@
                     {{#str}}bots, local_cria{{/str}}
                 </a>
                 <a href="edit_bot_role.php?botid={{bot_id}}" class="btn btn-outline-primary float-right">
-                    {{#str}}new_role, local_cria{{/str}}
+                {{#str}}new_role, local_cria{{/str}}
                 </a>
             </div>
         </div>
@@ -33,12 +33,14 @@
                             <td>{{{shortname}}}</td>
                             <td>{{{description}}}</td>
                             <td>
-                                <a href="assign_bot_capability.php?id={{id}}" class="btn btn-outline-primary bt-sm">
-                                {{#str}}assign_users, local_cria{{/str}}
-                                </a>
+                                <button class="btn btn-outline-primary bt-sm btn-assign-users" data-roleid="{{id}}"
+                                        data-botid="{{bot_id}}">
+                                    {{#str}}assign_users, local_cria{{/str}}
+                                </button>
                                 {{^system_reserved}}
-                                    <a href="edit_bot_role.php?id={{{id}}}&botid={{bot_id}}" class="btn btn-outline-primary bt-sm">
-                                        {{#str}}edit, local_cria{{/str}}
+                                    <a href="edit_bot_role.php?id={{{id}}}&botid={{bot_id}}" class="btn
+                                    btn-outline-primary bt-sm">
+                                    {{#str}}edit, local_cria{{/str}}
                                     </a>
                                     <button class="btn btn-outline-danger bt-sm delete-bot-role" data-id="{{id}}">
                                         {{#str}}delete, local_cria{{/str}}
@@ -49,6 +51,27 @@
                     {{/roles}}
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="assign-users-modal" aria-labelledby="assign-users-modal-lable"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="eassign-users-modal-lable">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{> local_cria/assign_users}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -63,4 +63,40 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_assign_user_role' => array(
+        'classname' => 'local_cria_external_permission',
+        'methodname' => 'assign_user_role',
+        'classpath' => 'local/cria/classes/external/permission.php',
+        'description' => 'Adds a user to a role',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_unassign_user_role' => array(
+        'classname' => 'local_cria_external_permission',
+        'methodname' => 'unassign_user_role',
+        'classpath' => 'local/cria/classes/external/permission.php',
+        'description' => 'Removes a user from a role',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_get_assigned_users' => array(
+        'classname' => 'local_cria_external_permission',
+        'methodname' => 'get_assigned_users',
+        'classpath' => 'local/cria/classes/external/permission.php',
+        'description' => 'Get all users assigned to a role',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_get_users' => array(
+        'classname' => 'local_cria_external_permission',
+        'methodname' => 'get_users',
+        'classpath' => 'local/cria/classes/external/permission.php',
+        'description' => 'Get all system users',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );

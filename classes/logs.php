@@ -53,27 +53,27 @@ class logs
         global $DB, $USER;
 
         $sql = "Select
-                    fl.id,
-                    fl.bot_id,
-                    f.name As bot_name,
-                    fl.userid,
+                    cl.id,
+                    cl.bot_id,
+                    b.name As bot_name,
+                    cl.userid,
                     u.firstname,
                     u.lastname,
                     u.idnumber,
                     u.email,
-                    fl.prompt,
-                    fl.message,
-                    fl.index_context,
-                    fl.prompt_tokens,
-                    fl.completion_tokens,
-                    fl.total_tokens,
-                    fl.cost,
-                    fl.ip,
-                    DATE_FORMAT(FROM_UNIXTIME(fl.timecreated), '%m/%d/%Y %h:%i') as timecreated
+                    cl.prompt,
+                    cl.message,
+                    cl.index_context,
+                    cl.prompt_tokens,
+                    cl.completion_tokens,
+                    cl.total_tokens,
+                    cl.cost,
+                    cl.ip,
+                    DATE_FORMAT(FROM_UNIXTIME(cl.timecreated), '%m/%d/%Y %h:%i') as timecreated
                 From
-                    {local_cria_logs} fl Inner Join
-                    {user} u On u.id = fl.userid Inner Join
-                    {local_cria_bot} f On f.id = fl.bot_id
+                    {local_cria_logs} cl Inner Join
+                    {user} u On u.id = cl.userid Inner Join
+                    {local_cria_bot} b On b.id = cl.bot_id
                 WHERE 
                     bot_id = ? ";
 
@@ -82,12 +82,12 @@ class logs
         ];
 
         // Site admins can see all logs, users can only see their own
-        if (!is_siteadmin()) {
-            $sql .= " AND f.userid = ?";
-            $params['userid'] = $USER->id;
-        }
+//        if (!is_siteadmin()) {
+//            $sql .= " AND fl.userid = ?";
+//            $params['userid'] = $USER->id;
+//        }
 
-        $sql .= " ORDER BY f.timecreated DESC";
+        $sql .= " ORDER BY b.timecreated DESC";
 
         $logs = $DB->get_records_sql($sql, $params);
         return array_values($logs);

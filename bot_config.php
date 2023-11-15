@@ -7,11 +7,6 @@ global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
 require_login(1, false);
 $context = context_system::instance();
 
-if (!has_capability('local/cria:view_bots', $context)) {
-    throw new moodle_exception('nopermissions', 'error', '', 'You do not have permissions to access this page');
-}
-
-
 \local_cria\base::page(
     new moodle_url('/local/cria/bot_config.php'),
     get_string('bot_configurations', 'local_cria'),

@@ -75,41 +75,41 @@
                             <td>{{name}}</td>
                             <td>{{type_name}}</td>
                             <td>
-                                {{#can_edit}}
+                                {{#local/cria:edit_bots}}
                                     <a href="bot.php?id={{id}}" class="btn btn-outline-primary">
                                     {{#str}}edit, local_cria{{/str}}
                                     </a>
-                                {{/can_edit}}
-                                {{#can_edit_bot_content}}
+                                {{/local/cria:edit_bots}}
+                                {{#local/cria:edit_bot_content}}
                                     {{#use_bot_server}}
                                         <a href="content.php?id={{id}}" class="btn btn-outline-primary">
                                         {{#str}}content, local_cria{{/str}}
                                         </a>
                                     {{/use_bot_server}}
-                                {{/can_edit_bot_content}}
-                                {{#can_add_bot_permission}}
+                                {{/local/cria:edit_bot_content}}
+                                {{#local/cria:bot_permissions}}
                                         <a href="bot_permissions.php?id={{id}}" class="btn btn-outline-primary">
                                         {{#str}}permissions, local_cria{{/str}}
                                         </a>
-                                {{/can_add_bot_permission}}
-                                {{#can_test}}
+                                {{/local/cria:bot_permissions}}
+                                {{#local/cria:test_bots}}
                                     <a href="test_bot.php?id={{id}}" class="btn btn-outline-primary">
                                     {{#str}}test_bot, local_cria{{/str}}
                                     </a>
-                                {{/can_test}}
-                                {{#can_view_bot_logs}}
+                                {{/local/cria:test_bots}}
+                                {{#local/cria:view_bot_logs}}
                                     <a href="bot_logs.php?id={{id}}" class="btn btn-outline-primary">
                                     {{#str}}logs, local_cria{{/str}}
                                     </a>
-                                {{/can_view_bot_logs}}
-                                {{#can_delete}}
+                                {{/local/cria:view_bot_logs}}
+                                {{#local/cria:delete_bots}}
                                     {{^system_reserved}}
                                         <button class="btn btn-outline-danger delete-bot" data-id="{{id}}">
                                             {{#str}}delete, local_cria{{/str}}
                                         </button>
                                     {{/system_reserved}}
-                                {{/can_delete}}
-                                {{#can_share_bots}}
+                                {{/local/cria:delete_bots}}
+                                {{#local/cria:share_bots}}
                                     {{#use_bot_server}}
                                     <button
                                             class="btn btn-outline-primary share-bot"
@@ -119,7 +119,7 @@
                                         {{#str}}share, local_cria{{/str}}
                                     </button>
                                     {{/use_bot_server}}
-                                {{/can_share_bots}}
+                                {{/local/cria:share_bots}}
                             </td>
                         </tr>
                     {{/bots}}

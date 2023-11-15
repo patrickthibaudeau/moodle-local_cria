@@ -20,12 +20,18 @@ class bots {
 	 */
 	private $results;
 
+    private $user_id;
+
 	/**
 	 *
 	 *@global \moodle_database $DB
 	 */
-	public function __construct() {
+	public function __construct($user_id = null) {
 	    global $DB, $USER;
+
+        if ($user_id == null) {
+            $user_id = $USER->id;
+        }
         $sql = "
         Select
             b.id,
@@ -46,8 +52,17 @@ class bots {
             date_format(from_unixtime(b.timemodified), '%d/%m/%Y') as timemodified_hr
         From
             {local_cria_bot} b Inner Join
-            {local_cria_type} ct On ct.id = b.bot_type
-        Order By
+            {local_cria_type} ct On ct.id = b.bot_type";
+        // if not site admin, only show bots user has access too
+        if (!is_siteadmin($user_id)) {
+            $sql .= " Inner Join
+            {local_cria_bot_role} cbr On cbr.bot_id = b.id Inner Join
+            {local_cria_capability_assign} cca On cca.bot_role_id = cbr.id
+        Where
+            cca.user_id = $user_id";
+        }
+
+      $sql .=  "\n Order By
             b.name";
 	    $this->results = $DB->get_records_sql($sql);
 	}
@@ -55,7 +70,17 @@ class bots {
 	/**
 	  * Get records
 	 */
-	public function get_records() {
+	public function get_records(): array {
+        global $CFG;
+        include_once($CFG->dirroot . '/local/cria/lib.php');
+        // For each bot, get user capabilities
+        $BOT_CAPABILITIES = new bot_capabilities();
+        $system_capabilites = $BOT_CAPABILITIES->get_cria_system_capabilities();
+        foreach ($this->results as $bot) {
+           foreach($system_capabilites as $sc) {
+               $bot->{$sc->name} = has_bot_capability($sc->name, $bot->id);
+           }
+        }
 	    return $this->results;
 	}
 
@@ -64,7 +89,7 @@ class bots {
 	  * Defaults used key = record id, value = name 
 	  * Modify as required. 
 	 */
-	public function get_select_array() {
+	public function get_select_array(): array {
 	    $array = [
 	        '' => get_string('select', 'local_cria')
 	      ];

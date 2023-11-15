@@ -7,6 +7,7 @@ use local_cria\bot_capability;
 use local_cria\bot_capabilities;
 use local_cria\capability_assign;
 use local_cria\capabilities_assign;
+
 /**
  * Build navdrawer menu items
  * @return array
@@ -86,14 +87,14 @@ function local_cria_navdrawer_items()
         );
     }
 
-    if (has_capability('local/cria:view_bots', $context)) {
+
         $items[] = navdrawer::add(
             get_string('bots', 'local_cria'),
             null,
             new moodle_url('/local/cria/bot_config.php'),
             'bi-robot',
         );
-    }
+
 
     if (has_capability('local/cria:groups', $context)) {
         $items[] = navdrawer::add(
@@ -123,7 +124,26 @@ function local_cria_navdrawer_items()
  * @param $bot_id
  * @return true
  */
-function has_bot_capability($capability, $bot_id)
+function has_bot_capability($capability, $bot_id, $user_id = null)
 {
-    return true;
+    global $USER, $DB;
+    // If no user id is provided, use the current user
+    if (is_null($user_id)) {
+        $user_id = $USER->id;
+    }
+
+    // Get user roles
+    $CAPABILITIES = new capabilities_assign($bot_id, $user_id);
+    $role = $CAPABILITIES->get_record();
+    if (is_siteadmin($user_id)) {
+        $capabilites = $CAPABILITIES->get_user_capabilities();
+    } else {
+        $capabilites = $CAPABILITIES->get_user_capabilities($role->bot_role_id);
+    }
+    // If capability is in array, return true
+    if (in_array($capability, $capabilites)) {
+        return true;
+    }
+    return false;
+
 }

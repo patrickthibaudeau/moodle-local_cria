@@ -1,0 +1,43 @@
+<input type="hidden" id="roleid">
+<input type="hidden" id="botid">
+
+<div class="row h-100">
+    <div class="col-md-5">
+        <div class="form-group">
+            <label for="cria-assigned-users">Users</label>
+            <select id="cria-assigned-users" class="form-control" multiple="multiple" size="15">
+            </select>
+        </div>
+        <div class="form-group mb-2">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" id="cria-search-unassigned-user" placeholder="Search">
+                <div class="input-group-append">
+                    <button id="btn-search-user" class="btn btn-outline-secondary" type="button"><i
+                            class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 justify-content-center align-self-center">
+        <div class="form-group">
+            <button id="cria-assign-users" class="btn btn-primary btn-block" type="button">Add</button>
+            <button id="cria-unassign-users" class="btn btn-primary btn-block" type="button">Remove</button>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <div class="form-group">
+            <label for="cria-unassigned-users">Unassigned Users</label>
+            <select id="cria-unassigned-users" class="form-control" multiple="multiple" size="15">
+            </select>
+        </div>
+        <div class="form-group mb-2">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" id="cria-search-unassigned-user" placeholder="Search">
+                <div class="input-group-append">
+                    <button id="btn-search-unassigned-user" class="btn btn-outline-secondary" type="button"><i
+                            class="fa fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -15,15 +15,22 @@
 
 namespace local_cria\output;
 
-use local_cria\bots;
+use local_cria\bot_roles;
+use local_cria\bot_role;
+use local_cria\bot;
 
-class bot_config implements \renderable, \templatable
+class assign_users implements \renderable, \templatable
 {
 
+    /**
+     * @var int
+     */
+    private $bot_id;
 
-    public function __construct()
+    public function __construct($role_id, $bot_id)
     {
-
+        $this->role_id = $role_id;
+        $this->bot_id = $bot_id;
     }
 
     /**
@@ -39,19 +46,14 @@ class bot_config implements \renderable, \templatable
         global $USER, $CFG, $DB;
 
         $context = \context_system::instance();
-        $config = get_config('local_cria');
-
-        $BOTS = new bots();
-
-        $bots = $BOTS->get_records();
-        $bots = array_values($bots);
+        $BOT_ROLE = new bot_role($this->role_id);
+        $BOT = new bot($this->bot_id);
 
         $data = [
-            'bots' => $bots,
-            'can_edit' => has_capability('local/cria:edit_bots', $context),
-            'can_view_bot_types' => has_capability('local/cria:view_bot_types', $context),
-            'can_view_bot_models' => has_capability('local/cria:view_models', $context),
-            "criachat" => $config->embedding_server_url
+            'role_id' => $this->role_id,
+            'bot_id' => $this->bot_id,
+            'role_name' => $BOT_ROLE->get_name(),
+            'bot_name' => $BOT->get_name(),
         ];
 
         return $data;

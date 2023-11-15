@@ -139,4 +139,14 @@ class renderer extends \plugin_renderer_base {
         $data = $message->export_for_template($this);
         return $this->render_from_template('local_cria/edit_bot_role', $data);
     }
+
+    /**
+     * @param \templatable $role
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_assign_users(\templatable $message) {
+        $data = $message->export_for_template($this);
+        return $this->render_from_template('local_cria/assign_users', $data);
+    }
 }
