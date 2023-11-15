@@ -90,6 +90,9 @@ function get_all_users(role_id, name = '') {
     });
 }
 
+/**
+ * Assign users
+ */
 function assign_users() {
     $('#cria-assign-users').off();
     $('#cria-assign-users').on('click', function () {
@@ -106,15 +109,23 @@ function assign_users() {
             }]);
 
             assign_users[0].done(function (results) {
-                get_assigned_users(role_id);
-                get_all_users(role_id);
             }).fail(function () {
                 alert('An error has occurred.');
             });
         });
+        // Set a delay, otherwise the refresh does not happen
+        setTimeout(function () {
+            get_all_users(role_id);
+        }, 500);
+        setTimeout(function () {
+            get_assigned_users(role_id);
+        }, 500);
     });
 }
 
+/**
+ * Unassign users
+ */
 function unassign_users() {
     $('#cria-unassign-users').off();
     $('#cria-unassign-users').on('click', function () {
@@ -130,11 +141,17 @@ function unassign_users() {
             }]);
 
             unassign_users[0].done(function (results) {
-                get_assigned_users(role_id);
-                get_all_users(role_id);
             }).fail(function () {
                 alert('An error has occurred.');
             });
         });
+        // Set a delay, otherwise the refresh does not happen
+        setTimeout(function () {
+            get_all_users(role_id);
+        }, 500);
+        setTimeout(function () {
+            get_assigned_users(role_id);
+        }, 500);
+
     });
 }
