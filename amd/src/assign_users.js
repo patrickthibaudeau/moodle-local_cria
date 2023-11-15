@@ -12,6 +12,9 @@ function initialize_modal() {
     $('.btn-assign-users').on('click', function () {
         let role_id = $(this).data('roleid');
         let bot_id = $(this).data('botid');
+        let role_name = $(this).data('rolename');
+        // Set modal title
+        $('#cria-modal-title').html('Assign Users to ' + role_name);
         $('#roleid').val(role_id);
         $('#botid').val(bot_id);
         // Using ajax, add all users to assigned users list

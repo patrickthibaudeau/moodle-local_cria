@@ -34,7 +34,7 @@
                             <td>{{{description}}}</td>
                             <td>
                                 <button class="btn btn-outline-primary bt-sm btn-assign-users" data-roleid="{{id}}"
-                                        data-botid="{{bot_id}}">
+                                        data-botid="{{bot_id}}" data-rolename="{{name}}">
                                     {{#str}}assign_users, local_cria{{/str}}
                                 </button>
                                 {{^system_reserved}}
@@ -62,7 +62,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="eassign-users-modal-lable">Modal title</h5>
+                <h5 class="modal-title" id="eassign-users-modal-lable"><span id="cria-modal-title"></span></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
