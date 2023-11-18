@@ -155,7 +155,7 @@ class local_cria_external_permission extends external_api
             array(
                 'role_id' => new external_value(PARAM_INT, 'Role id', true, 0),
                 'id' => new external_value(PARAM_INT, 'User id', false, -1),
-                'name' => new external_value(PARAM_TEXT, 'User first or last name', false)
+                'name' => new external_value(PARAM_TEXT, 'User first or last name', false, '')
             )
         );
     }

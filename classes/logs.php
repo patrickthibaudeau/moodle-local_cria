@@ -5,30 +5,50 @@ namespace local_cria;
 class logs
 {
     /**
-     * Insert a log record
-     *
-     * @param int $bot_id
-     * @param string $prompt
-     * @param string $message
-     * @param string $prompt_tokens
-     * @param string $response_tokens
-     * @param int $cost
+     * @param $bot_id
+     * @param $prompt
+     * @param $message
+     * @param $prompt_tokens
+     * @param $completion_tokens
+     * @param $total_tokens
+     * @param $cost
+     * @param $context
+     * @param $ip
+     * @return void
      * @throws \dml_exception
      */
-    public static function insert($bot_id, $prompt, $message, $prompt_tokens, $completion_tokens, $total_tokens, $cost, $context = '') {
+    public static function insert(
+        $bot_id,
+        $prompt,
+        $message,
+        $prompt_tokens,
+        $completion_tokens,
+        $total_tokens,
+        $cost,
+        $context = '',
+        $ip = '',
+        $user_id = 0
+    )
+    {
         global $DB, $USER;
         // Get client IP
-        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-            $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } else {
-            $ip = $_SERVER['REMOTE_ADDR'];
+        if (empty($ip)) {
+            if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+                $ip = $_SERVER['HTTP_CLIENT_IP'];
+            } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            } else {
+                $ip = $_SERVER['REMOTE_ADDR'];
+            }
+        }
+
+        if (!$user_id) {
+            $user_id = $USER->id;
         }
 
         $data = [
             'bot_id' => $bot_id,
-            'userid' => $USER->id,
+            'userid' => $user_id,
             'prompt' => $prompt,
             'message' => $message,
             'prompt_tokens' => $prompt_tokens,
@@ -40,7 +60,8 @@ class logs
             'timecreated' => time()
         ];
 
-        $DB->insert_record('local_cria_logs', $data);
+        $id = $DB->insert_record('local_cria_logs', $data);
+        return $id;
     }
 
     /**
@@ -49,7 +70,8 @@ class logs
      * @param int $bot_id
      * @return array
      */
-    public static function get_logs($bot_id) {
+    public static function get_logs($bot_id)
+    {
         global $DB, $USER;
 
         $sql = "Select
@@ -99,7 +121,8 @@ class logs
      * @param int $bot_id
      * @return array
      */
-    public static function get_total_usage_cost($bot_id, $currency = 'CAD') {
+    public static function get_total_usage_cost($bot_id, $currency = 'CAD')
+    {
         global $DB;
         $sql = "SELECT 
                     SUM(cost) as total_cost
@@ -108,7 +131,7 @@ class logs
                 WHERE
                     bot_id = ?";
         $logs = $DB->get_records_sql($sql, [$bot_id]);
-        $fmt = new \NumberFormatter( 'en_CA', \NumberFormatter::CURRENCY );
+        $fmt = new \NumberFormatter('en_CA', \NumberFormatter::CURRENCY);
         $value = $fmt->formatCurrency(array_values($logs)[0]->total_cost, $currency);
         return $value;
     }

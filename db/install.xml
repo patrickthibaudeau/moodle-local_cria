@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/cria/db" VERSION="20231115" COMMENT="XMLDB file for Moodle local/cria"
+<XMLDB PATH="local/cria/db" VERSION="20231116" COMMENT="XMLDB file for Moodle local/cria"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -13,15 +13,15 @@
         <FIELD NAME="plugin_path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="publish" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="bot_system_message" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Appends to bot type system message"/>
         <FIELD NAME="bot_type" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="requires_content_prompt" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="requires_user_prompt" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="has_user_prompt" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Does this bot have a default user prompt?"/>
         <FIELD NAME="user_prompt" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="publish" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="welcome_message" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="theme_color" TYPE="char" LENGTH="7" NOTNULL="false" DEFAULT="#e31837" SEQUENCE="false" COMMENT="Hex color values only"/>
-        <FIELD NAME="bot_system_message" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Appends to bot type system message"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
@@ -94,6 +94,27 @@
         <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
+    <TABLE NAME="local_cria_models" COMMENT="GPT Models">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="azure_endpoint" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="azure_api_version" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="azure_key" TYPE="char" LENGTH="1333" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="azure_deployment_name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="is_embedding" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="model_name" TYPE="char" LENGTH="50" NOTNULL="false" DEFAULT="gpt-35-turbo-16k" SEQUENCE="false"/>
+        <FIELD NAME="prompt_cost" TYPE="number" LENGTH="8" NOTNULL="false" DEFAULT="0" SEQUENCE="false" DECIMALS="4"/>
+        <FIELD NAME="completion_cost" TYPE="number" LENGTH="8" NOTNULL="false" DEFAULT="0" SEQUENCE="false" DECIMALS="4"/>
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+    </TABLE>
     <TABLE NAME="local_cria_type" COMMENT="Bot types">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
@@ -137,27 +158,6 @@
         <FIELD NAME="question" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="answer" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="accuracy" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Boolean. Did the bot provide the correct answer?"/>
-        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-      </FIELDS>
-      <KEYS>
-        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="usermodified" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
-      </KEYS>
-    </TABLE>
-    <TABLE NAME="local_cria_models" COMMENT="GPT Models">
-      <FIELDS>
-        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="azure_endpoint" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="azure_api_version" TYPE="char" LENGTH="50" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="azure_key" TYPE="char" LENGTH="1333" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="azure_deployment_name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
-        <FIELD NAME="is_embedding" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="model_name" TYPE="char" LENGTH="50" NOTNULL="false" DEFAULT="gpt-35-turbo-16k" SEQUENCE="false"/>
-        <FIELD NAME="prompt_cost" TYPE="number" LENGTH="8" NOTNULL="false" DEFAULT="0" SEQUENCE="false" DECIMALS="4"/>
-        <FIELD NAME="completion_cost" TYPE="number" LENGTH="8" NOTNULL="false" DEFAULT="0" SEQUENCE="false" DECIMALS="4"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>

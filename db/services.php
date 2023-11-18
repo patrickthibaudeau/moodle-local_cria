@@ -99,4 +99,13 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_insert_log' => array(
+        'classname' => 'local_cria_external_logs',
+        'methodname' => 'insert_log',
+        'classpath' => 'local/cria/classes/external/logs.php',
+        'description' => 'Insert log record',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );
