@@ -15,6 +15,7 @@
 
 use local_cria\bot;
 use local_cria\cria;
+
 /**
  * External Web Service Template
  *
@@ -25,7 +26,8 @@ use local_cria\cria;
 require_once($CFG->libdir . "/externallib.php");
 require_once("$CFG->dirroot/config.php");
 
-class local_cria_external_bot extends external_api {
+class local_cria_external_bot extends external_api
+{
     //**************************** SEARCH USERS **********************
 
     /*     * ***********************
@@ -36,7 +38,8 @@ class local_cria_external_bot extends external_api {
      * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function delete_parameters() {
+    public static function delete_parameters()
+    {
         return new external_function_parameters(
             array(
                 'id' => new external_value(PARAM_INT, 'Content id', false, 0)
@@ -51,7 +54,8 @@ class local_cria_external_bot extends external_api {
      * @throws invalid_parameter_exception
      * @throws restricted_context_exception
      */
-    public static function delete($id) {
+    public static function delete($id)
+    {
         global $CFG, $USER, $DB, $PAGE;
 
         //Parameter validation
@@ -79,16 +83,127 @@ class local_cria_external_bot extends external_api {
      * Returns description of method result value
      * @return external_description
      */
-    public static function delete_returns() {
+    public static function delete_returns()
+    {
         return new external_value(PARAM_INT, 'Boolean');
     }
 
+    /******** Create new bot ************/
+
+    /**
+     * Returns description of method parameters
+     * @return external_function_parameters
+     */
+    public static function create_bot_parameters()
+    {
+        return new external_function_parameters(
+            array(
+                'name' => new external_value(PARAM_TEXT, 'Bot name', false, ''),
+                'description' => new external_value(PARAM_TEXT, 'Bot description', false, ''),
+                'bot_type' => new external_value(PARAM_INT, 'Bot type', false, 0),
+                'model_id' => new external_value(PARAM_INT, 'Cria GPT model used', false, 0),
+                'embedding_id' => new external_value(PARAM_INT, 'Bot server', false, 0),
+                'bot_system_message' => new external_value(PARAM_TEXT, 'Bot system message', false, ''),
+                'requires_content_prompt' => new external_value(PARAM_INT, 'Requires content prompt', false, 0),
+                'requires_user_prompt' => new external_value(PARAM_INT, 'Requires user prompt', false, 0),
+                'user_prompt' => new external_value(PARAM_TEXT, 'User prompt', false, ''),
+                'publish' => new external_value(PARAM_INT, 'Publish', false, 0),
+                'welcome_message' => new external_value(PARAM_TEXT, 'Welcome message for embedded bot', false, ''),
+                'theme_color' => new external_value(PARAM_TEXT, 'Hex code for embedded bot color. Default Red', false, '#e31837'),
+            )
+        );
+    }
+
+    /**
+     * @param $name
+     * @param $description
+     * @param $bot_type
+     * @param $model_id
+     * @param $embedding_id
+     * @param $bot_system_message
+     * @param $requires_content_prompt
+     * @param $requires_user_prompt
+     * @param $publish
+     * @param $welcome_message
+     * @param $theme_color
+     * @return true
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws restricted_context_exception
+     */
+    public static function create_bot(
+        $name,
+        $description,
+        $bot_type,
+        $model_id = 0,
+        $embedding_id = 0,
+        $bot_system_message = '',
+        $requires_content_prompt = 0,
+        $requires_user_prompt = 1,
+        $user_prompt = '',
+        $publish = 0,
+        $welcome_message = '',
+        $theme_color = '#e31837'
+    )
+    {
+        global $CFG, $USER, $DB, $PAGE;
+
+        //Parameter validation
+        $params = self::validate_parameters(self::create_bot_parameters(), array(
+                'name' => $name,
+                'description' => $description,
+                'bot_type' => $bot_type,
+                'model_id' => $model_id,
+                'embedding_id' => $embedding_id,
+                'bot_system_message' => $bot_system_message,
+                'requires_content_prompt' => $requires_content_prompt,
+                'requires_user_prompt' => $requires_user_prompt,
+                'user_prompt' => $user_prompt,
+                'publish' => $publish,
+                'welcome_message' => $welcome_message,
+                'theme_color' => $theme_color
+            )
+        );
+
+        //Context validation
+        //OPTIONAL but in most web service it should present
+        $context = \context_system::instance();
+        self::validate_context($context);
+        // Create bot
+        $BOT = new bot();
+        $id = $BOT->insert_record((object)$params);
+        $NEW_BOT = new bot($id);
+        if ($NEW_BOT->use_bot_server()) {
+            $NEW_BOT->create_bot_on_bot_server();
+        }
+
+        unset($BOT);
+        unset($NEW_BOT);
+
+        return $id;
+    }
+
+    /**
+     * Returns new bot id
+     * @return external_description
+     */
+    public static function create_bot_returns()
+    {
+        return new external_value(PARAM_INT, 'New bot id');
+    }
+
+
+
+
+
+    /***** Get Prompt *****/
 
     /**
      * Returns description of method parameters for get_prompt methof
      * @return external_function_parameters
      */
-    public static function get_prompt_parameters() {
+    public static function get_prompt_parameters()
+    {
         return new external_function_parameters(
             array(
                 'bot_id' => new external_value(PARAM_INT, 'Bot id', false, 0)
@@ -103,7 +218,8 @@ class local_cria_external_bot extends external_api {
      * @throws invalid_parameter_exception
      * @throws restricted_context_exception
      */
-    public static function get_prompt($bot_id) {
+    public static function get_prompt($bot_id)
+    {
         global $CFG, $USER, $DB, $PAGE;
 
         //Parameter validation
@@ -125,7 +241,8 @@ class local_cria_external_bot extends external_api {
      * Returns prompt if there is one available
      * @return external_description
      */
-    public static function get_prompt_returns() {
+    public static function get_prompt_returns()
+    {
         return new external_value(PARAM_RAW, 'Prompt if there is one available');
     }
 }

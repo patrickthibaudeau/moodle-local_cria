@@ -31,9 +31,8 @@ $context = context_system::instance();
 //**********************
 echo $OUTPUT->header();
 
-print_object(has_bot_capability('local/cria:delete_bot_content', 73, 3));
-
-
+$config = get_config('local_cria');
+print_object($config);
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

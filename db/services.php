@@ -86,7 +86,7 @@ $functions = array(
         'methodname' => 'get_assigned_users',
         'classpath' => 'local/cria/classes/external/permission.php',
         'description' => 'Get all users assigned to a role',
-        'type' => 'write',
+        'type' => 'read',
         'capabilities' => '',
         'ajax' => true
     ),
@@ -95,7 +95,7 @@ $functions = array(
         'methodname' => 'get_users',
         'classpath' => 'local/cria/classes/external/permission.php',
         'description' => 'Get all system users',
-        'type' => 'write',
+        'type' => 'read',
         'capabilities' => '',
         'ajax' => true
     ),
@@ -105,6 +105,24 @@ $functions = array(
         'classpath' => 'local/cria/classes/external/logs.php',
         'description' => 'Insert log record',
         'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_create_bot' => array(
+        'classname' => 'local_cria_external_bot',
+        'methodname' => 'create_bot',
+        'classpath' => 'local/cria/classes/external/bot.php',
+        'description' => 'Create a new bot',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_get_config' => array(
+        'classname' => 'local_cria_external_cria',
+        'methodname' => 'get_config',
+        'classpath' => 'local/cria/classes/external/cria.php',
+        'description' => 'Get cria config',
+        'type' => 'read',
         'capabilities' => '',
         'ajax' => true
     ),

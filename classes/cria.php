@@ -188,7 +188,7 @@ class cria
         // Upload file
         $result = curl_exec($curl);
         curl_close($curl);
-        file_put_contents('/var/www/moodledata/temp/results.json', json_encode($result));
+
         if ($result === false) {
             \core\notification::error('File upload failed.');
         } else {
