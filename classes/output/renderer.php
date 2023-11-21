@@ -10,6 +10,16 @@ namespace local_cria\output;
 class renderer extends \plugin_renderer_base {
 
     /**
+     * @param \templatable $role
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_provider_dashboard(\templatable $provider_dashboard) {
+        $data = $provider_dashboard->export_for_template($this);
+        return $this->render_from_template('local_cria/provider_dashboard', $data);
+    }
+
+    /**
      * Used with root/index.php
      * @param \templatable $dashboard
      * @return type

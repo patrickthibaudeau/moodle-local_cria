@@ -9,6 +9,31 @@ use local_cria\gpt;
 
 class cria
 {
+    public static function create_model() {
+        $data = [
+            "name" => "test",
+            "description" => "test",
+            "model_type" => "llm",
+            "azure_credentials" => [
+                "api_base" => "https://api.crai.ai",
+                "api_version" => "v1",
+                "api_key" => "crai-api-key",
+                "api_deployment" => "crai-deployment",
+                "api_model" => "crai-model"
+            ],
+            "azure_credentials" => [
+                "api_base" => "https://api.crai.ai",
+                "api_version" => "v1",
+                "api_key" => "crai-api-key",
+                "api_deployment" => "crai-deployment",
+                "api_model" => "crai-model"
+            ]
+        ];
+
+        $data = json_encode($data);
+        // Create bot
+        return gpt::_make_call($bot_id, $data, 'models', 'POST', true);
+    }
 
     /**
      * Create a bot on the indexing server

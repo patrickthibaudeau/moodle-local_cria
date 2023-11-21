@@ -38,16 +38,23 @@ if ($hassiteconfig) {
 
     //Bot Server
     $settings->add( new admin_setting_configtext(
-        'local_cria/bot_server_url',
-        get_string('bot_server_url', 'local_cria'),
-        get_string('bot_server_url_help', 'local_cria'),
+        'local_cria/criabot_url',
+        get_string('criabot_url', 'local_cria'),
+        get_string('criabot_url_help', 'local_cria'),
+        '', PARAM_TEXT, 255
+    ));
+
+    $settings->add( new admin_setting_configtext(
+        'local_cria/criadex_url',
+        get_string('criadex_url', 'local_cria'),
+        get_string('criadex_url_help', 'local_cria'),
         '', PARAM_TEXT, 255
     ));
 
     $settings->add( new admin_setting_configpasswordunmask(
-        'local_cria/bot_server_api_key',
-        get_string('bot_server_api_key', 'local_cria'),
-        get_string('bot_server_api_key_help', 'local_cria'),
+        'local_cria/criadex_api_key',
+        get_string('criadex_api_key', 'local_cria'),
+        get_string('criadex_api_key_help', 'local_cria'),
         '', PARAM_TEXT, 255
     ));
 
@@ -56,21 +63,6 @@ if ($hassiteconfig) {
         'local_cria/embedding_server_url',
         get_string('embedding_server_url', 'local_cria'),
         get_string('embedding_server_url_help', 'local_cria'),
-        '', PARAM_TEXT, 255
-    ));
-
-    // Indexing Server
-    $settings->add( new admin_setting_configtext(
-        'local_cria/indexing_server_url',
-        get_string('indexing_server_url', 'local_cria'),
-        get_string('indexing_server_url_help', 'local_cria'),
-        '', PARAM_TEXT, 255
-    ));
-
-    $settings->add( new admin_setting_configpasswordunmask(
-        'local_cria/indexing_server_api_key',
-        get_string('indexing_server_api_key', 'local_cria'),
-        get_string('indexing_server_api_key_help', 'local_cria'),
         '', PARAM_TEXT, 255
     ));
 

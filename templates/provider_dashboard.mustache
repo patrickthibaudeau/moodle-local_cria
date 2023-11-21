@@ -1,0 +1,34 @@
+<div class="row mt-2">
+    <div class="col">
+        <div class="card">
+            <h3 class="card-header">
+                    <a href="edit_provider.php" class="btn btn-outline-primary float-right">
+                        {{#str}}add_provider, local_cria{{/str}}
+                    </a>
+            </h3>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <div class="card-deck">
+                            {{#providers}}
+                                <div class="card">
+                                    <img src="{{image}}" class="card-img-top img-fluid" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{name}}</h5>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a href="edit_provider.php?id={{id}}" class="btn btn-outline-primary float-right">
+                                            {{#str}}edit, local_cria{{/str}}
+                                        </a>
+                                    </div>
+                                </div>
+                            {{/providers}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

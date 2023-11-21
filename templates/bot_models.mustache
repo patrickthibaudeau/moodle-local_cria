@@ -2,9 +2,9 @@
     <div class="col">
         <div class="card">
             <h3 class="card-header">
-                <a href="edit_model.php" class="btn btn-outline-primary float-right">
+                <button id="cria-add-model" class="btn btn-outline-primary float-right">
                     {{#str}}add_model, local_cria{{/str}}
-                </a>
+                </button>
             </h3>
             <div class="card-body">
                 <table class="table table-striped">
@@ -19,7 +19,7 @@
                         <tr>
                             <td>{{name}}</td>
                             <td>
-                                <a href="edit_model.php?id={{id}}" class="btn btn-outline-primary">
+                                <a href="{{config.wwwroot}}/local/cria/providers/{{provider_idnumber}}/model.php?id={{id}}" class="btn btn-outline-primary">
                                     {{#str}}edit, local_cria{{/str}}
                                 </a>
                                 <button class="btn btn-outline-danger delete-bot-type" data-id="{{id}}">
@@ -34,4 +34,33 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="/embed?botId=53" async> </script>
+
+<div class="modal fade" id="cria-provider-modal" tabindex="-1" aria-labelledby="cria-provider-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cria-provider-modal-label">{{#str}}providers, local_cria{{/str}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info">
+                    {{#str}}select_a_provider, local_cria{{/str}}
+                </div>
+                <ul class="list-group">
+                {{#providers}}
+                    <li class="list-group-item">
+                        <a href="#" class="btn-select-provider" data-idnumber="{{idnumber}}">
+                            <img src="{{image}}" class="img-fluis" style="height:60px; widht: auto; margin-right:10px;">{{name}}
+                        </a>
+                {{/providers}}
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -69,6 +69,15 @@ function local_cria_navdrawer_items()
 //    ];
 
     // Only add import submenu if user has capability
+    if (has_capability('local/cria:view_providers', $context)) {
+        $items[] = navdrawer::add(
+            get_string('providers', 'local_cria'),
+            null,
+            new moodle_url('/local/cria/providers.php'),
+            'bi-server',
+        );
+    }
+
     if (has_capability('local/cria:view_models', $context)) {
         $items[] = navdrawer::add(
             get_string('bot_models', 'local_cria'),
@@ -117,6 +126,42 @@ function local_cria_navdrawer_items()
 
 
     return $items;
+}
+
+function local_cria_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options = array())
+{
+    global $DB;
+
+    if ($context->contextlevel != CONTEXT_SYSTEM) {
+        return false;
+    }
+
+//    require_login(1, true);
+
+    $fileAreas = array(
+        'provider',
+        'bot',
+    );
+
+    if (!in_array($filearea, $fileAreas)) {
+        return false;
+    }
+
+
+    $itemid = array_shift($args);
+    $filename = array_pop($args);
+    $path = !count($args) ? '/' : '/' . implode('/', $args) . '/';
+
+    $fs = get_file_storage();
+
+    $file = $fs->get_file($context->id, 'local_cria', $filearea, $itemid, $path, $filename);
+
+    // If the file does not exist.
+    if (!$file) {
+        send_file_not_found();
+    }
+
+    send_stored_file($file, 86400, 0, $forcedownload); // Options.
 }
 
 /**

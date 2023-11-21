@@ -17,11 +17,9 @@ class gpt
      * @return mixed
      * @throws \dml_exception
      */
-    public static function _make_call($bot_id, $data, $call = '', $method = 'GET', $use_bot_server = true)
+    public static function _make_call($service_url, $api_key, $data, $call = '', $method = 'GET')
     {
         $config = get_config('local_cria');
-        $BOT = new bot($bot_id);
-        $bot_config = $BOT->get_model_config();
 
         $ch = curl_init();
         curl_setopt_array($ch, array(
@@ -33,28 +31,18 @@ class gpt
                 CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             )
         );
-        if ($use_bot_server) {
-            $url = $config->bot_server_url . 'bots/' . $bot_id . '/' . $call;
+
+            $url = $service_url . $call;
+            print_object($url);
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                     'Content-Type: application/json',
-                    'x-api-key: ' . $config->bot_server_api_key
+                    'x-api-key: ' . $api_key
                 )
             );
-        } else {
-            $url = $bot_config->azure_endpoint . 'openai/deployments/' .
-                $bot_config->azure_deployment_name .
-                '/chat/completions?api-version=' .
-                $bot_config->azure_api_version;
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
-                    'api-key: ' . $bot_config->azure_key
-                )
-            );
-        }
         $result = json_decode(curl_exec($ch));
         curl_close($ch);
+
         return $result;
     }
 

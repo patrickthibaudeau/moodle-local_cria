@@ -16,14 +16,14 @@
 namespace local_cria\output;
 
 use local_cria\providers;
-use local_cria\models;
 
-class bot_models implements \renderable, \templatable
+class provider_dashboard implements \renderable, \templatable
 {
 
 
     public function __construct()
     {
+
     }
 
     /**
@@ -38,17 +38,16 @@ class bot_models implements \renderable, \templatable
     {
         global $USER, $CFG, $DB;
 
-        $MODELS = new \local_cria\models();
-
-        $bot_models = array_values($MODELS->get_formated_records());
-
+        $context = \context_system::instance();
         $PROVIDERS = new providers();
 
-        $data = [
-            'bot_models' => $bot_models,
-            'providers' => $PROVIDERS->get_formated_records()
-        ];
+        $providers = $PROVIDERS->get_formated_records();
+        $providers = array_values($providers);
 
+        $data = [
+            'can_view_providers' => has_capability('local/cria:view_providers', $context),
+            'providers' => $providers
+        ];
         return $data;
     }
 

@@ -5,13 +5,12 @@
  * License: LGPL 
  * 
  */
-
 namespace local_cria;
 
 use local_cria\crud;
 use local_cria\base;
 
-class model extends crud
+class provider extends crud
 {
 
 
@@ -29,26 +28,15 @@ class model extends crud
 
     /**
      *
-     * @var int
-     */
-    private $provider_id;
-
-    /**
      * @var string
      */
-    private $value;
+    private $idnumber;
 
     /**
      *
      * @var string
      */
-    private $prompt_cost;
-
-    /**
-     *
-     * @var string
-     */
-    private $completion_cost;
+    private $llm_models;
 
     /**
      *
@@ -95,7 +83,7 @@ class model extends crud
     {
         global $CFG, $DB, $DB;
 
-        $this->table = 'local_cria_models';
+        $this->table = 'local_cria_providers';
 
         parent::set_table($this->table);
 
@@ -110,11 +98,10 @@ class model extends crud
         }
 
         $this->result = $result;
-        $this->provider_id = $result->provider_id ?? 0;
+
         $this->name = $result->name ?? '';
-        $this->value = $result->value ?? '';
-        $this->prompt_cost = $result->prompt_cost ?? '';
-        $this->completion_cost = $result->completion_cost ?? '';
+        $this->idnumber = $result->idnumber ?? '';
+        $this->llm_models = $result->llm_models ?? '';
         $this->usermodified = $result->usermodified ?? 0;
         $this->timecreated = $result->timecreated ?? 0;
         $this->timecreated_hr = '';
@@ -137,23 +124,15 @@ class model extends crud
     }
 
     /**
-     * @return id - bigint (18)
+     * @return \local_cria\id - bigint (18)
      */
     public function get_id(): int
     {
         return $this->id;
     }
 
-/**
-* @return provider_id - bigint (18)
-*/
-    public function get_provider_id(): int
-    {
-        return $this->provider_id;
-    }
-
     /**
-     * @return name - varchar (255)
+     * @return \local_cria\name - varchar (255)
      */
     public function get_name(): string
     {
@@ -161,43 +140,65 @@ class model extends crud
     }
 
     /**
-     * @return azure_endpoint - text
+     * @return \local_cria\idnumber - varchar (255)
      */
-    public function get_value(): string
+    public function get_idnumber(): string
     {
-        return $this->value;
+        return $this->idnumber;
     }
 
     /**
-     * @return prompt_cost - decimal (8)
+     * @return \local_cria\idnumber - varchar (255)
      */
-    public function get_prompt_cost(): string
+    public function get_llm_models(): string
     {
-        return $this->prompt_cost;
+        return $this->llm_models;
     }
 
     /**
-     * @return completion_cost - decimal (8)
+     * return array of llm models
      */
-    public function get_completion_cost(): string
+    public function get_llm_models_array(): array
     {
-        return $this->completion_cost;
-    }
-
-    public function get_provider_name(): string
-    {
-        $PROVIDER = new provider($this->provider_id);
-        return $PROVIDER->get_name();
-    }
-
-    public function get_provider_idnumber(): string
-    {
-        $PROVIDER = new provider($this->provider_id);
-        return $PROVIDER->get_idnumber();
+        $llm_models = explode("\n", $this->llm_models);
+        $models = [];
+        foreach ($llm_models as $key => $value) {
+            $models[trim($value)] = trim($value);
+        }
+        return $models;
     }
 
     /**
-     * @return usermodified - bigint (18)
+     * @return string
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function get_image(): string {
+        $context = \context_system::instance();
+        $fs = get_file_storage();
+        $files = $fs->get_area_files($context->id, 'local_cria', 'provider', $this->id);
+        foreach($files as $f) {
+            if ($f->get_filename() != '.') {
+                $file_name = trim($f->get_filename());
+                break;
+            }
+        }
+        $url = \moodle_url::make_pluginfile_url(
+            $context->id,
+            'local_cria',
+            'provider',
+            $this->id,
+            '/',
+            $file_name,
+            false
+        );
+        $image_url = $url->out();
+
+        return $image_url;
+    }
+
+    /**
+     * @return \local_cria\usermodified - bigint (18)
      */
     public function get_usermodified(): int
     {
@@ -205,7 +206,17 @@ class model extends crud
     }
 
     /**
-     * @return timecreated - bigint (18)
+     * @return \local_cria\usermodified - bigint (18)
+     */
+    public function get_usermodified_fullname(): string
+    {
+        global $DB;
+        $user = $DB->get_record('user', ['id' => $this->usermodified]);
+        return fullname($user);
+    }
+
+    /**
+     * @return \local_cria\timecreated - bigint (18)
      */
     public function get_timecreated(): int
     {
@@ -213,7 +224,7 @@ class model extends crud
     }
 
     /**
-     * @return timemodified - bigint (18)
+     * @return \local_cria\timemodified - bigint (18)
      */
     public function get_timemodified(): int
     {
@@ -221,7 +232,7 @@ class model extends crud
     }
 
     /**
-     * @param Type: bigint (18)
+     * @param \local_cria\Type: bigint (18)
      */
     public function set_id($id): void
     {
@@ -229,7 +240,15 @@ class model extends crud
     }
 
     /**
-     * @param Type: text
+     * @param \local_cria\name: varchar (255)
+     */
+    public function set_name($name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @param \local_cria\idnumber: varchar (255)
      */
     public function set_idnumber($idnumber): void
     {
@@ -237,32 +256,7 @@ class model extends crud
     }
 
     /**
-     * @param Type: varchar (255)
-     */
-    public function set_name($name): void
-    {
-        $this->name = $name;
-    }
-
-
-    /**
-     * @param Type: decimal (8)
-     */
-    public function set_prompt_cost($prompt_cost): void
-    {
-        $this->prompt_cost = $prompt_cost;
-    }
-
-    /**
-     * @param Type: decimal (8)
-     */
-    public function set_completion_cost($completion_cost): void
-    {
-        $this->completion_cost = $completion_cost;
-    }
-
-    /**
-     * @param Type: bigint (18)
+     * @param \local_cria\Type: bigint (18)
      */
     public function set_usermodified($usermodified): void
     {
@@ -270,7 +264,7 @@ class model extends crud
     }
 
     /**
-     * @param Type: bigint (18)
+     * @param \local_cria\Type: bigint (18)
      */
     public function set_timecreated($timecreated): void
     {
@@ -278,7 +272,7 @@ class model extends crud
     }
 
     /**
-     * @param Type: bigint (18)
+     * @param \local_cria\Type: bigint (18)
      */
     public function set_timemodified($timemodified): void
     {

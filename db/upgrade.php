@@ -408,5 +408,110 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023110903, 'local', 'cria');
     }
 
+    if ($oldversion < 2023112000) {
+
+        // Define table local_cria_models to be dropped.
+        $table = new xmldb_table('local_cria_models');
+
+        // Conditionally launch drop table for local_cria_models.
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+
+
+            // Define table local_cria_providers to be created.
+            $table = new xmldb_table('local_cria_providers');
+
+            // Adding fields to table local_cria_providers.
+            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+            $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+            // Adding keys to table local_cria_providers.
+            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $table->add_key('usermodified', XMLDB_KEY_FOREIGN, ['usermodified'], 'user', ['id']);
+
+            // Conditionally launch create table for local_cria_providers.
+            if (!$dbman->table_exists($table)) {
+                $dbman->create_table($table);
+            }
+
+        // Define table local_cria_models to be created.
+        $table = new xmldb_table('local_cria_models');
+
+        // Adding fields to table local_cria_models.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('provider_id', XMLDB_TYPE_INTEGER, '10', null, null, null, '0');
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('value', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('prompt_cost', XMLDB_TYPE_NUMBER, '8, 4', null, null, null, '0');
+        $table->add_field('completion_cost', XMLDB_TYPE_NUMBER, '8, 4', null, null, null, '0');
+        $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+        // Adding keys to table local_cria_models.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('usermodified', XMLDB_KEY_FOREIGN, ['usermodified'], 'user', ['id']);
+
+        // Conditionally launch create table for local_cria_models.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112000, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023112005) {
+
+        // Define field idnumber to be added to local_cria_providers.
+        $table = new xmldb_table('local_cria_providers');
+        $field = new xmldb_field('idnumber', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'name');
+
+        // Conditionally launch add field idnumber.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112005, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023112006) {
+
+        // Define field criadex_model_id to be added to local_cria_models.
+        $table = new xmldb_table('local_cria_models');
+        $field = new xmldb_field('criadex_model_id', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'value');
+
+        // Conditionally launch add field criadex_model_id.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112006, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023112008) {
+
+        // Define field llm_models to be added to local_cria_providers.
+        $table = new xmldb_table('local_cria_providers');
+        $field = new xmldb_field('llm_models', XMLDB_TYPE_TEXT, null, null, null, null, null, 'idnumber');
+
+        // Conditionally launch add field llm_models.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112008, 'local', 'cria');
+    }
+
+
     return true;
 }

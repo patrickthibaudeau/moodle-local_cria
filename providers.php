@@ -5,26 +5,28 @@ require_once('../../config.php');
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
 
 require_login(1, false);
-
 $context = context_system::instance();
 
+if (!has_capability('local/cria:view_providers', $context)) {
+    redirect(new moodle_url('/local/cria/index.php'));
+}
+
 \local_cria\base::page(
-    new moodle_url('/local/cria/bot_models.php'),
-    get_string('bot_models', 'local_cria'),
-    get_string('bot_models', 'local_cria'),
-    $context
-);
+    new moodle_url('/local/cria/bot_config.php'),
+    get_string('providers', 'local_cria'),
+    get_string('providers', 'local_cria'),
+    $context);
 
-$PAGE->requires->js_call_amd('local_cria/models', 'init');
 
+//$PAGE->requires->js_call_amd('local_cria/bot_config', 'init');
 //**************** ******
 //*** DISPLAY HEADER ***
 //**********************
 echo $OUTPUT->header();
 
 $output = $PAGE->get_renderer('local_cria');
-$bot_models = new \local_cria\output\bot_models();
-echo $output->render_bot_models($bot_models);
+$dashboard = new \local_cria\output\provider_dashboard();
+echo $output->render_provider_dashboard($dashboard);
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************
