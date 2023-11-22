@@ -103,6 +103,7 @@ class bots {
         global $DB;
         $types = $DB->get_records('local_cria_type', []);
         $bot_types = [];
+        $bot_types[0] = get_string('select', 'local_cria');
         foreach ($types as $type) {
             $bot_types[$type->id] = $type->name;
         }

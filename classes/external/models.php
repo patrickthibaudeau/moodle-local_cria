@@ -23,7 +23,7 @@
 require_once($CFG->libdir . "/externallib.php");
 require_once("$CFG->dirroot/config.php");
 
-class local_cria_external_bot_type extends external_api {
+class local_cria_external_models extends external_api {
     //**************************** SEARCH USERS **********************
 
     /*     * ***********************
@@ -37,7 +37,7 @@ class local_cria_external_bot_type extends external_api {
     public static function delete_parameters() {
         return new external_function_parameters(
             array(
-                'id' => new external_value(PARAM_INT, 'Content id', false, 0)
+                'id' => new external_value(PARAM_INT, 'Model id', false, 0)
             )
         );
     }
@@ -62,15 +62,16 @@ class local_cria_external_bot_type extends external_api {
         //OPTIONAL but in most web service it should present
         $context = \context_system::instance();
         self::validate_context($context);
-        // Get all bots for this type
-        $bots = $DB->get_records('local_cria', array('bot_type' => $id));
+
+        // Get all bots with model id
+        $bots = $DB->get_records('local_cria', array('model_id' => $id));
         // Delete all files for each bot and the bot
         foreach ($bots as $bot) {
             $DB->delete_records('local_cria_files', array('bot_id' => $bot->id));
-            $DB->delete_records('local_cria', array('id' => $bot->id));
+            $DB->delete_records('local_cria_bot', array('id' => $bot->id));
         }
         // Delete the type
-        $DB->delete_records('local_cria_type', array('id' => $id));
+        $DB->delete_records('local_cria_models', array('id' => $id));
 
         return true;
     }
@@ -84,17 +85,17 @@ class local_cria_external_bot_type extends external_api {
     }
 
     /*     * ***********************
-     * Get bot type system message
+     * Get max tokens
      */
 
     /**
      * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function get_system_message_parameters() {
+    public static function get_max_tokens_parameters() {
         return new external_function_parameters(
             array(
-                'id' => new external_value(PARAM_INT, 'Bot type id', false, 0)
+                'id' => new external_value(PARAM_INT, 'Model id', false, 0)
             )
         );
     }
@@ -106,11 +107,11 @@ class local_cria_external_bot_type extends external_api {
      * @throws invalid_parameter_exception
      * @throws restricted_context_exception
      */
-    public static function get_system_message($id) {
+    public static function get_max_tokens($id) {
         global $CFG, $USER, $DB, $PAGE;
 
         //Parameter validation
-        $params = self::validate_parameters(self::get_system_message_parameters(), array(
+        $params = self::validate_parameters(self::get_max_tokens_parameters(), array(
                 'id' => $id
             )
         );
@@ -120,18 +121,18 @@ class local_cria_external_bot_type extends external_api {
         $context = \context_system::instance();
         self::validate_context($context);
         // Get bot type system message
-        $bot_type = $DB->get_record('local_cria_type', array('id' => $id));
+        $bot_model = $DB->get_record('local_cria_models', array('id' => $id));
 
 
-        return $bot_type->system_message;
+        return $bot_model->max_tokens;
     }
 
     /**
      * Returns description of method result value
      * @return external_description
      */
-    public static function get_system_message_returns() {
-        return new external_value(PARAM_TEXT, 'Boolean');
+    public static function get_max_tokens_returns() {
+        return new external_value(PARAM_INT, 'Integer');
     }
 
 }

@@ -73,7 +73,7 @@ class models {
         if ($embedding) {
            $results =  $DB->get_records('local_cria_models', ['is_embedding' => 1], 'name ASC');
         } else {
-            $results = $this->results;
+            $results = $DB->get_records('local_cria_models', ['is_embedding' => 0], 'name ASC');
         }
 	      foreach($results as $r) {
 	            $array[$r->id] = $r->name;

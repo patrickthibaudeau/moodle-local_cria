@@ -115,6 +115,35 @@ class ms_azure_openai_model_form extends \moodleform
             PARAM_TEXT
         );
 
+        // MAx tokens
+        $mform->addElement(
+            'text',
+            'max_tokens',
+            'Max tokens'
+        );
+        $mform->setType(
+            'max_tokens',
+            PARAM_INT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'max_tokens',
+            'model_max_tokens',
+            'local_cria'
+        );
+
+        // is embedding modal
+        $mform->addElement(
+            'selectyesno',
+            'is_embedding',
+            'Embedding model?',
+            $PROVIDER->get_llm_models_array()
+        );
+        $mform->setType(
+            'is_embedding',
+            PARAM_INT
+        );
+
         // Prompt cost
         $mform->addElement(
             'text',

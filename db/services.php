@@ -27,6 +27,15 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_get_bot_type_message' => array(
+        'classname' => 'local_cria_external_bot_type',
+        'methodname' => 'get_system_message',
+        'classpath' => 'local/cria/classes/external/bot_type.php',
+        'description' => 'Returns bot type system message',
+        'type' => 'read',
+        'capabilities' => '',
+        'ajax' => true
+    ),
     'cria_get_gpt_response' => array(
         'classname' => 'local_cria_external_gpt',
         'methodname' => 'response',
@@ -122,6 +131,15 @@ $functions = array(
         'methodname' => 'get_config',
         'classpath' => 'local/cria/classes/external/cria.php',
         'description' => 'Get cria config',
+        'type' => 'read',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_get_model_max_tokens' => array(
+        'classname' => 'local_cria_external_models',
+        'methodname' => 'get_max_tokens',
+        'classpath' => 'local/cria/classes/external/models.php',
+        'description' => 'Get max tokens',
         'type' => 'read',
         'capabilities' => '',
         'ajax' => true

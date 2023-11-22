@@ -36,6 +36,19 @@ $capabilities = array(
         )
     ),
 
+    'local/cria:view_advanced_bot_options' => array(
+
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_SYSTEM,
+        'archetypes' => array(
+            'guest' => CAP_PROHIBIT,
+            'student' => CAP_PROHIBIT,
+            'teacher' => CAP_PROHIBIT,
+            'editingteacher' => CAP_PROHIBIT,
+            'manager' => CAP_ALLOW
+        )
+    ),
+
     'local/cria:edit_bots' => array(
 
         'captype' => 'write',

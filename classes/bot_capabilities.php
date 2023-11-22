@@ -90,6 +90,7 @@ class bot_capabilities
             'local/cria:view_bots',
             'local/cria:view_bot_types',
             'local/cria:view_models',
+            'local/cria:view_providers',
         ];
 
         foreach ($cria_capabilities as $key => $cc) {

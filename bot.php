@@ -27,6 +27,10 @@ if ($id) {
     $formdata = new stdClass();
     $formdata->requires_user_prompt = 1;
     $formdata->requires_content_prompt = 1;
+    $formdata->temperature = 0.1;
+    $formdata->top_p = 0.1;
+    $formdata->top_k = 0.1;
+    $formdata->minimum_relevance = 0.3;
     $formdata->theme_color = '#e31837';
 }
 
@@ -71,7 +75,7 @@ base::page(
     $context,
     'standard'
 );
-
+$PAGE->requires->js_call_amd('local_cria/bot_form', 'init');
 $PAGE->requires->js(new moodle_url('/local/cria/js/jscolor.js'));
 
 echo $OUTPUT->header();

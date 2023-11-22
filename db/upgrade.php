@@ -512,6 +512,94 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023112008, 'local', 'cria');
     }
 
+    if ($oldversion < 2023112009) {
+
+        // Define field max_tokens to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('max_tokens', XMLDB_TYPE_INTEGER, '10', null, null, null, '500', 'publish');
+
+        // Conditionally launch add field max_tokens.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field temperature to be added to local_cria_bot.
+        $field = new xmldb_field('temperature', XMLDB_TYPE_NUMBER, '2, 1', null, null, null, '0.3', 'max_tokens');
+
+        // Conditionally launch add field temperature.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('top_p', XMLDB_TYPE_NUMBER, '2, 1', null, null, null, '0.2', 'temperature');
+
+        // Conditionally launch add field top_p.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('top_k', XMLDB_TYPE_INTEGER, '3', null, null, null, '10', 'top_p');
+
+        // Conditionally launch add field top_k.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('min_relevance', XMLDB_TYPE_NUMBER, '2, 1', null, null, null, '0.9', 'top_k');
+
+        // Conditionally launch add field min_relevance.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('max_context', XMLDB_TYPE_INTEGER, '10', null, null, null, '2000', 'min_relevance');
+
+        // Conditionally launch add field max_context.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        $field = new xmldb_field('no_context_message', XMLDB_TYPE_TEXT, null, null, null, null, null, 'max_context');
+
+        // Conditionally launch add field no_context_message.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112009, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023112100) {
+
+        // Define field is_embedding to be added to local_cria_models.
+        $table = new xmldb_table('local_cria_models');
+        $field = new xmldb_field('is_embedding', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'value');
+
+        // Conditionally launch add field is_embedding.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112100, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023112104) {
+
+        // Define field max_tokens to be added to local_cria_models.
+        $table = new xmldb_table('local_cria_models');
+        $field = new xmldb_field('max_tokens', XMLDB_TYPE_INTEGER, '10', null, null, null, '4092', 'value');
+
+        // Conditionally launch add field max_tokens.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112104, 'local', 'cria');
+    }
+
 
     return true;
 }

@@ -1,10 +1,12 @@
 <?php
+$string['about'] = 'About';
 $string['actions'] = 'Actions';
 $string['add_bot'] = 'Create new bot';
 $string['add_content'] = 'Add content';
 $string['add_model'] = 'Add model';
 $string['add_provider'] = 'Add provider';
 $string['add_type'] = 'Add type';
+$string['advanced_settings'] = 'Advanced settings';
 $string['auto_test'] = 'Auto-Test';
 $string['assign_users'] = 'Assign users';
 $string['ask_a_question'] = 'Ask a question';
@@ -21,19 +23,19 @@ $string['bot_configuration_help'] = 'Easily create a bot by providing your own d
 $string['bot_configurations'] = 'Bot configurations';
 $string['bot_model'] = 'Model';
 $string['bot_models'] = 'Models';
+$string['bot_personality'] = 'Bot personality';
 $string['bot_type'] = 'Bot type';
 $string['bot_types'] = 'Bot types';
 $string['bot_type_factual'] = 'Factual';
 $string['bot_type_transcription'] = 'Transcription';
-$string['bot_type_help'] = 'Select the type of bot.<br><ul>
-<li><b>Factual:</b>Provides factual information to users based on documents linked to this bot and nothing else.</li>
-<li><b>Transcription:</b>Will create meeting notes based on a transcription that is uploaded.</li>
-</ul>';
-$string['bot_system_message'] = 'Bot system message';
-$string['bot_system_message_help'] = 'Enter the system message to be appended to the default system message when the bot is used';
+$string['bot_type_help'] = 'The bot type sets the bot\'s personality and the type of content it can process.';
+$string['bot_system_message'] = 'System message';
+$string['bot_system_message_help'] = 'Enter a prompt that describes what your bot does. This message is usually designed to be informative, contextually relevant, and contribute to a more natural and coherent dialogue between the user and the model.';
+$string['bot_content_training_framework'] = 'Content training framework';
 $string['bots'] = 'Bots';
 $string['cachedef_cria_system_messages'] = 'Caches all system messages for bots';
 $string['cancel'] = 'Cancel';
+$string['chatbot_framework'] = 'Chatbot framework';
 $string['chat_does_not_exist'] = 'The chat requested does not exist.';
 $string['chunk_limit'] = 'Number of words per chunk';
 $string['chunk_limit_help'] = 'OpenAI works on chunks of text. This setting defines the number of words per chunk.<br>
@@ -81,9 +83,16 @@ $string['logs'] = 'Logs';
 $string['logs_for'] = 'Logs for';
 $string['message'] = 'Message';
 $string['model'] = 'Model';
+$string['model_max_tokens'] = 'Model max tokens';
+$string['model_max_tokens_help'] = 'Maximum number of tokens this model can generate.' .
+    '<br> For GPT-3.5-turbo 4k: 4096.' .
+    '<br> For GPT-3.5-turbo 16k: 16384.' .
+    '<br> For GPT-4: 8192.' .
+    '<br> For GPT-4-32k: 32768.';
 $string['model_name'] = 'Model name';
 $string['name'] = 'Name';
 $string['new_role'] = 'New role';
+$string['no_context_message'] = 'No results message';
 $string['paste_text'] = 'Paste your text here';
 $string['permissions'] = 'Permissions';
 $string['plugin_path'] = 'Plugin path';
@@ -92,6 +101,7 @@ $string['privacy:metadata'] = 'This plugin stores no personal data.';
 $string['process'] = 'Process';
 $string['prompt'] = 'Prompt';
 $string['prompt_cost'] = 'Prompt cost';
+$string['prompt_settings'] = 'Prompt settings';
 $string['prompt_tokens'] = 'Prompt tokens';
 $string['provider'] = 'Provider';
 $string['provider_image'] = 'Provider image';
@@ -132,6 +142,26 @@ $string['welcome_message'] = 'Welcome message';
 $string['welcome_message_help'] = 'The welcome message to be displayed when the bot is used';
 $string['word_count'] = 'Word count';
 
+// GPT Settings
+$string['max_tokens'] = 'Max tokens';
+$string['max_tokens_help'] = 'The maximum number of tokens to generate. Maximum depends on the Chatbot Framework selected.' .
+    ' When selecting a Chatbot framework, the maximum number of tokens will be displayed.' .
+    ' You should avoid using the maximum number of tokens as this will increase the cost.' .
+    ' The answers may also be too long. If you find they are too long, reduce the maximun tokens.';
+$string['temperature'] = 'Temperature';
+$string['temperature_help'] = 'The higher the temperature, the crazier the text. Recommend experimenting with values between 0.1 and 1.2.';
+$string['top_p'] = 'Top P';
+$string['top_p_help'] = 'An alternative to "Top K" sampling, this will stop the completion when the cumulative probability of the tokens generated exceeds the value.';
+$string['top_k'] = 'Top K';
+$string['top_k_help'] = 'An alternative to sampling with temperature, called "nucleus sampling", where the model considers the results of the tokens with top_k probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.';
+$string['minimum_relevance'] = 'Minimum relevance';
+$string['minimum_relevance_help'] = 'The minimum relevance of the response. The higher the number, the more relevant the response will be.';
+$string['max_context'] = 'Max context';
+$string['max_context_help'] = '<b>DO NOT CHANGE THIS VALUE!!!</b><br>' .
+    'The maximum number of tokens the bot can handle without throwing an error.' .
+    ' This is based on the Chatbot framework and updated automatically when selecting a framework.' .
+    ' <p><b>Only change this value if you know exactly what you are doing!</b></p>';
+
 // Capabilites
 $string['cria:bot_permissions'] = 'Bot permissions: Grants user the ability to edit permissions for a bot';
 $string['cria:delete_bots'] = 'Delete bots: Grants permission to delete bots';
@@ -152,6 +182,7 @@ $string['cria:share_bots'] = 'Share bots: Grants permission to share bots';
 $string['cria:translate'] = 'Translate: Grants permission to translate text';
 $string['cria:groups'] = 'groups';
 $string['cria:view_providers'] = 'groups';
+$string['cria:view_advanced_bot_options'] = 'View advanced bot options';
 
 // Settings
 $string['criabot_url'] = 'CriaBot URL';
