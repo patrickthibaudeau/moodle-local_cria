@@ -6,6 +6,8 @@ import ModalFactory from 'core/modal_factory';
 export const init = () => {
     get_bot_type_message();
     get_model_max_tokens();
+    set_tone_parameters();
+    set_length_parameters();
 };
 
 /**
@@ -24,8 +26,16 @@ function get_bot_type_message() {
         }]);
 
         get_system_message[0].done(function (result) {
-            $('#id_bot_system_message').val('');
-            $('#id_bot_system_message').val(result.trim());
+            if ($('#id_bot_system_message').length) {
+                $('#id_bot_system_message').val('');
+                $('#id_bot_system_message').val(result.trim());
+            }
+
+            if ($('#bot_system_message').length) {
+                $('#bot_system_message').val('');
+                $('#bot_system_message').val(result.trim());
+            }
+
         }).fail(function () {
             alert('An error has occurred. The record was not deleted');
         });
@@ -38,21 +48,96 @@ function get_model_max_tokens() {
     $("#id_model_id").off();
     $("#id_model_id").on('change', function () {
         var id = $(this).val();
-        var get_max_tokens = ajax.call([{
-            methodname: 'cria_get_model_max_tokens',
-            args: {
-                id: id
-            }
-        }]);
 
-        get_max_tokens[0].done(function (result) {
-            $('#id_max_tokens').val('');
-            $('#id_max_context').val('');
-            $('#id_max_tokens').val(result);
-            $('#id_max_context').val(result);
-        }).fail(function () {
-            alert('An error has occurred. The record was not deleted');
-        });
+        if (id != '') {
+            var get_max_tokens = ajax.call([{
+                methodname: 'cria_get_model_max_tokens',
+                args: {
+                    id: id
+                }
+            }]);
 
+            get_max_tokens[0].done(function (result) {
+                if ($('[name="max_tokens"]').length) {
+                    $('[name="max_tokens"]').val('');
+                    $('[name="max_tokens"]').val(result);
+                }
+
+                if ($('#id_max_tokens').length) {
+                    $('#id_max_tokens').val('');
+                    $('#id_max_tokens').val(result);
+                }
+
+                if ($('#id_max_context').length) {
+                    $('#id_max_context').val('');
+                    $('#id_max_context').val(result);
+                }
+
+                if ($('[name="max_context"]').length) {
+                    $('[name="max_context"]').val('');
+                    $('[name="max_context"]').val(result);
+                }
+            }).fail(function () {
+                alert('An error has occurred. The record was not deleted');
+            });
+            $('#cria-tone-buttons').show();
+        } else {
+            $('#cria-tone-buttons').hide();
+        }
     });
 }
+
+/**
+ * Update the tone parameters
+ */
+function set_tone_parameters() {
+
+    $('.btn-gpt-tone').off();
+    $('.btn-gpt-tone').on('click', function () {
+        // remove class active for all buttons with class .btn-gpt-tone
+        $('.btn-gpt-tone').removeClass('active');
+        // Add class active to this button
+        $(this).addClass('active');
+        // Update id_temperature
+        $('[name="temperature"]').val($(this).data('temperature'));
+        // Update id_top_p
+        $('[name="top_p"]').val($(this).data('top_p'));
+        // pdate top_k
+        $('[name="top_k"]').val($(this).data('top_k'));
+    });
+}
+
+/**
+ * Set length paramters
+ */
+function set_length_parameters() {
+    let max_tokens = 0;
+    // Set button short
+    $('.btn-short').off();
+    $('.btn-short').on('click', function () {
+        max_tokens = $('[name="max_context"]').val();
+        $('[name="max_tokens"]').val(max_tokens / 8);
+        $('.btn-medium').removeClass('active');
+        $('.btn-long').removeClass('active');
+        $(this).addClass('active');
+    });
+    // Set button medium
+    $('.btn-medium').off();
+    $('.btn-medium').on('click', function () {
+        max_tokens = $('[name="max_context"]').val();
+        $('[name="max_tokens"]').val(max_tokens / 2);
+        $('.btn-short').removeClass('active');
+        $('.btn-long').removeClass('active');
+        $(this).addClass('active');
+    });
+    // Set button long
+    $('.btn-long').off();
+    $('.btn-long').on('click', function () {
+        max_tokens = $('[name="max_context"]').val();
+        $('[name="max_tokens"]').val(max_tokens);
+        $('.btn-short').removeClass('active');
+        $('.btn-medium').removeClass('active');
+        $(this).addClass('active');
+    });
+}
+

@@ -5,6 +5,7 @@ namespace local_cria;
 use local_cria\bot;
 use local_cria\bots;
 use local_cria\models;
+use local_cria\conversation_styles;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -35,11 +36,6 @@ class bot_form extends \moodleform
             PARAM_INT
         );
 
-//        $mform->addElement(
-//            'header',
-//            'home-nav-start',
-//            get_string('about', 'local_cria')
-//        );
         // Html element as a header for About fields
         $mform->addElement(
             'html',
@@ -53,6 +49,15 @@ class bot_form extends \moodleform
         );
         $mform->setType(
             'name', PARAM_TEXT
+        );
+
+        // Add rule required for name
+        $mform->addRule(
+            'name',
+            get_string('required'),
+            'required',
+            null,
+            'client'
         );
 
         // Description form element
@@ -82,6 +87,14 @@ class bot_form extends \moodleform
         $mform->setType(
             'bot_type',
             PARAM_INT
+        );
+        // Add rule required for bot type
+        $mform->addRule(
+            'bot_type',
+            get_string('required'),
+            'required',
+            null,
+            'client'
         );
         $mform->addHelpButton(
             'bot_type',
@@ -130,6 +143,14 @@ class bot_form extends \moodleform
             'model_id',
             PARAM_INT
         );
+        // Add rule required for model id
+        $mform->addRule(
+            'model_id',
+            get_string('required'),
+            'required',
+            null,
+            'client'
+        );
 
         // Bot type form element
         $mform->addElement(
@@ -141,6 +162,15 @@ class bot_form extends \moodleform
         $mform->setType(
             'embedding_id',
             PARAM_INT
+        );
+
+        // Add rule required for embedding id
+        $mform->addRule(
+            'embedding_id',
+            get_string('required'),
+            'required',
+            null,
+            'client'
         );
 
         if (has_capability('local/cria:view_advanced_bot_options', $context)) {
@@ -248,6 +278,38 @@ class bot_form extends \moodleform
             $mform->addElement(
                 'hidden',
                 'max_context'
+            );
+
+            $mform->addElement(
+                'html',
+                '<div id="cria-tone-buttons" style="display: none;">'
+            );
+            // Add tone buttons
+            $CONVO_STYLES = new conversation_styles();
+            $tone_buttons = $OUTPUT->render_from_template(
+                'local_cria/tone_buttons',
+                $CONVO_STYLES->get_tone_buttons()
+            );
+            // Add html form element
+            $mform->addElement(
+                'html',
+                $tone_buttons
+            );
+
+            // Add length buttons
+            $length_buttons = $OUTPUT->render_from_template(
+                'local_cria/length_buttons',
+                []
+            );
+            // Add html form element
+            $mform->addElement(
+                'html',
+                $length_buttons
+            );
+
+            $mform->addElement(
+                'html',
+                '</div>'
             );
         }
 

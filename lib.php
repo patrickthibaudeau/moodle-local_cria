@@ -78,6 +78,16 @@ function local_cria_navdrawer_items()
         );
     }
 
+    // Link to conversation styles
+    if (has_capability('local/cria:view_conversation_styles', $context)) {
+        $items[] = navdrawer::add(
+            get_string('conversation_styles', 'local_cria'),
+            null,
+            new moodle_url('/local/cria/conversation_styles.php'),
+            'bi-chat-left',
+        );
+    }
+
     if (has_capability('local/cria:view_models', $context)) {
         $items[] = navdrawer::add(
             get_string('bot_models', 'local_cria'),

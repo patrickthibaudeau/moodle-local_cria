@@ -19,6 +19,9 @@ namespace local_cria;
 class base
 {
 
+    // Set constant for buttons
+    const CONTEXT_TONE = 'TONE';
+    const CONTEXT_LENGTH = 'LENGTH';
     /**
      * Creates the Moodle page header
      * @param string $url Current page url
