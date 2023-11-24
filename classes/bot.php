@@ -143,6 +143,48 @@ class bot extends crud
 
     /**
      *
+     * @var int
+     */
+    private $max_tokens;
+
+    /**
+     *
+     * @var float
+     */
+    private $temperature;
+
+    /**
+     *
+     * @var float
+     */
+    private $top_p;
+
+    /**
+     *
+     * @var float
+     */
+    private $top_k;
+
+    /**
+     *
+     * @var float
+     */
+    private $minimum_relevance;
+
+    /**
+     *
+     * @var int
+     */
+    private $max_context;
+
+    /**
+     *
+     * @var string
+     */
+    private $no_context_message;
+
+    /**
+     *
      *
      */
     public function __construct($id = 0)
@@ -182,7 +224,13 @@ class bot extends crud
         $this->usermodified = $result->usermodified ?? 0;
         $this->timecreated = $result->timecreated ?? 0;
         $this->timemodified = $result->timemodified ?? 0;
-
+        $this->max_tokens = $result->max_tokens ?? 0;
+        $this->temperature = $result->temperature ?? 0;
+        $this->top_p = $result->top_p ?? 0;
+        $this->top_k = $result->top_k ?? 0;
+        $this->minimum_relevance = $result->minimum_relevance ?? 0;
+        $this->max_context = $result->max_context ?? 0;
+        $this->no_context_message = $result->no_context_message ?? '';
     }
 
     /**
@@ -260,7 +308,7 @@ class bot extends crud
     /**
      * @return string
      */
-    public function get_user_prompt():  string
+    public function get_user_prompt(): string
     {
         return $this->user_prompt;
     }
@@ -279,6 +327,85 @@ class bot extends crud
     public function get_plugin_path(): string
     {
         return $this->plugin_path;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_max_tokens(): int
+    {
+        return $this->max_tokens;
+    }
+
+    /**
+     * @return float
+     */
+    public function get_temperature(): float
+    {
+        return $this->temperature;
+    }
+
+    /**
+     * @return float
+     */
+    public function get_top_p(): float
+    {
+        return $this->top_p;
+    }
+
+    /**
+     * @return float
+     */
+    public function get_top_k(): float
+    {
+        return $this->top_k;
+    }
+
+    /**
+     * @return float
+     */
+    public function get_minimum_relevance(): float
+    {
+        return $this->minimum_relevance;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_max_context(): int
+    {
+        return $this->max_context;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_no_context_message(): string
+    {
+        return $this->no_context_message;
+    }
+
+    /**
+     *  Return paramaters for the bot
+     * @return array
+     */
+    public function get_bot_parameters(): array
+    {
+        $MODEL = new \local_cria\model($this->model_id);
+        $EMBEDDING_MODEL = new \local_cria\model($this->embedding_id);
+
+        return [
+            "max_tokens" => $this->get_max_tokens(),
+            "temperature" => $this->get_temperature(),
+            "top_p" => $this->get_top_p(),
+            "top_k" => $this->get_top_k(),
+            "min_relevance" => $this->get_minimum_relevance(),
+            "max_context" => $this->get_max_context(),
+            "no_context_message" => $this->get_no_context_message(),
+            "system_message" => $this->concatenate_system_messages(),
+            "llm_model_id" => $MODEL->get_criadex_model_id(),
+            "embedding_model_id" => $EMBEDDING_MODEL->get_criadex_model_id()
+        ];
     }
 
     /**

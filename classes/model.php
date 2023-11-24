@@ -39,6 +39,11 @@ class model extends crud
     private $value;
 
     /**
+     * var int
+     */
+    private $criadex_model_id;
+
+    /**
      *
      * @var string
      */
@@ -113,6 +118,7 @@ class model extends crud
         $this->provider_id = $result->provider_id ?? 0;
         $this->name = $result->name ?? '';
         $this->value = $result->value ?? '';
+        $this->criadex_model_id = $result->criadex_model_id ?? 0;
         $this->prompt_cost = $result->prompt_cost ?? '';
         $this->completion_cost = $result->completion_cost ?? '';
         $this->usermodified = $result->usermodified ?? 0;
@@ -166,6 +172,14 @@ class model extends crud
     public function get_value(): string
     {
         return $this->value;
+    }
+
+    /**
+     * @return criadex_model_id - bigint (18)
+     */
+    public function get_criadex_model_id(): int
+    {
+        return $this->criadex_model_id;
     }
 
     /**

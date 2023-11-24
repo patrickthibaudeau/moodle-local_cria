@@ -173,6 +173,43 @@ class bot_form extends \moodleform
             'client'
         );
 
+        // Display default param buttons
+        if ($formdata->model_id) {
+            $mform->addElement(
+                'html',
+                '<div id="cria-default-param-buttons">'
+            );
+        } else {
+            $mform->addElement(
+                'html',
+                '<div id="cria-default-param-buttons" style="display: none;">'
+            );
+        }
+        // Add tone buttons
+        $CONVO_STYLES = new conversation_styles();
+        $tone_buttons = $OUTPUT->render_from_template(
+            'local_cria/tone_buttons',
+            $CONVO_STYLES->get_tone_buttons()
+        );
+        // Add html form element
+        $mform->addElement(
+            'html',
+            $tone_buttons
+        );
+
+        // Add length buttons
+        $length_buttons = $OUTPUT->render_from_template(
+            'local_cria/length_buttons',
+            []
+        );
+        // Add html form element
+        $mform->addElement(
+            'html',
+            $length_buttons
+        );
+
+
+
         if (has_capability('local/cria:view_advanced_bot_options', $context)) {
             // Max tokens form element
             $mform->addElement(
@@ -279,40 +316,12 @@ class bot_form extends \moodleform
                 'hidden',
                 'max_context'
             );
-
-            $mform->addElement(
-                'html',
-                '<div id="cria-tone-buttons" style="display: none;">'
-            );
-            // Add tone buttons
-            $CONVO_STYLES = new conversation_styles();
-            $tone_buttons = $OUTPUT->render_from_template(
-                'local_cria/tone_buttons',
-                $CONVO_STYLES->get_tone_buttons()
-            );
-            // Add html form element
-            $mform->addElement(
-                'html',
-                $tone_buttons
-            );
-
-            // Add length buttons
-            $length_buttons = $OUTPUT->render_from_template(
-                'local_cria/length_buttons',
-                []
-            );
-            // Add html form element
-            $mform->addElement(
-                'html',
-                $length_buttons
-            );
-
-            $mform->addElement(
-                'html',
-                '</div>'
-            );
         }
 
+        $mform->addElement(
+            'html',
+            '</div>'
+        );
         $mform->setType(
             'max_tokens',
             PARAM_INT
