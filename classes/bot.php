@@ -82,6 +82,12 @@ class bot extends crud
 
     /**
      *
+     * @var string
+     */
+    private $bot_api_key;
+
+    /**
+     *
      * @var int
      */
     private $system_reserved;
@@ -163,6 +169,7 @@ class bot extends crud
         $this->system_reserved = $result->system_reserved ?? 0;
         $this->plugin_path = $result->plugin_path ?? '';
         $this->model_id = $result->model_id ?? 0;
+        $this->bot_api_key = $result->bot_api_key ?? '';
         $this->publish = $result->publish ?? 0;
         $this->has_user_prompt = $result->has_user_prompt ?? 0;
         $this->requires_content_prompt = $result->requires_content_prompt ?? 0;
@@ -216,6 +223,14 @@ class bot extends crud
     public function get_publish(): int
     {
         return $this->publish;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_bot_api_key(): string
+    {
+        return $this->bot_api_key;
     }
 
     /**

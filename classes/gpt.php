@@ -9,41 +9,81 @@ class gpt
 {
 
     /**
-     * Send the request to the API
-     * @param $bot_id
+     * @param $service_url
+     * @param $api_key
      * @param $data
+     * @param $call
      * @param $method
-     * @param $use_bot_server
+     * @param $file_path
+     * @param $file_name
      * @return mixed
      * @throws \dml_exception
      */
-    public static function _make_call($service_url, $api_key, $data, $call = '', $method = 'GET')
+    public static function _make_call(
+        $service_url,
+        $api_key,
+        $data,
+        $call = '',
+        $method = 'GET',
+        $file_path = false,
+        $file_name = false
+    )
     {
         $config = get_config('local_cria');
 
         $ch = curl_init();
-        curl_setopt_array($ch, array(
-                CURLOPT_CUSTOMREQUEST => $method,
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_POSTFIELDS => $data,
-                CURLOPT_TIMEOUT => 2000,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            )
-        );
-
-            $url = $service_url . $call;
-            curl_setopt($ch, CURLOPT_URL, $url);
+        // Set curl attributes for regular API calls
+        // If there is a file path, then it's a file upload
+        if ($file_path) {
+            curl_setopt_array($ch, array(
+                    CURLOPT_CUSTOMREQUEST => $method,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_POSTFIELDS => $data,
+                    CURLOPT_TIMEOUT => 2000,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                )
+            );
+            // Set headers
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                     'Content-Type: application/json',
                     'x-api-key: ' . $api_key
                 )
             );
+        } else {
+            // Params for file upload
+            curl_setopt_array($ch, array(
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_HTTPHEADER => array(
+                    'accept: application/json',
+                    'Content-Type: multipart/form-data'
+                ),
+                CURLOPT_POSTFIELDS => array(
+                    'files' => new \CURLFILE(
+                        $file_path,
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        $file_name
+                    ),
+                ),
+            ));
+        }
+
+        // Set URL
+        $url = $service_url . $call;
+        curl_setopt($ch, CURLOPT_URL, $url);
+
         $result = json_decode(curl_exec($ch));
         curl_close($ch);
 
         return $result;
     }
+
 
     /**
      * Build the message to send to the API

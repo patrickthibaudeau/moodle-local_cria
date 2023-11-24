@@ -644,5 +644,33 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023112300, 'local', 'cria');
     }
 
+    if ($oldversion < 2023112301) {
+
+        // Define field bot_api_key to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('bot_api_key', XMLDB_TYPE_CHAR, '100', null, null, null, null, 'embedding_id');
+
+        // Conditionally launch add field bot_api_key.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112301, 'local', 'cria');
+    }
+    if ($oldversion < 2023112400) {
+
+        // Define field document_name to be added to local_cria_question.
+        $table = new xmldb_table('local_cria_question');
+        $field = new xmldb_field('document_name', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'intentid');
+
+        // Conditionally launch add field document_name.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112400, 'local', 'cria');
+    }
     return true;
 }
