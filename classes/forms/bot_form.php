@@ -266,14 +266,14 @@ class bot_form extends \moodleform
             // Minimum relevance form element
             $mform->addElement(
                 'text',
-                'minimum_relevance',
-                get_string('minimum_relevance', 'local_cria'),
+                'min_relevance',
+                get_string('min_relevance', 'local_cria'),
                 ['style' => 'width: 100px;']
             );
             // Add help button
             $mform->addHelpButton(
-                'minimum_relevance',
-                'minimum_relevance',
+                'min_relevance',
+                'min_relevance',
                 'local_cria'
             );
             // Max context form element
@@ -310,7 +310,7 @@ class bot_form extends \moodleform
             );
             $mform->addElement(
                 'hidden',
-                'minimum_relevance'
+                'min_relevance'
             );
             $mform->addElement(
                 'hidden',
@@ -339,7 +339,7 @@ class bot_form extends \moodleform
             PARAM_FLOAT
         );
         $mform->setType(
-            'minimum_relevance',
+            'min_relevance',
             PARAM_INT
         );
         $mform->setType(

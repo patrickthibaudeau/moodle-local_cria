@@ -34,7 +34,7 @@ class gpt
         $ch = curl_init();
         // Set curl attributes for regular API calls
         // If there is a file path, then it's a file upload
-        if ($file_path) {
+        if ($file_path == false) {
             curl_setopt_array($ch, array(
                     CURLOPT_CUSTOMREQUEST => $method,
                     CURLOPT_RETURNTRANSFER => true,
@@ -62,7 +62,8 @@ class gpt
                 CURLOPT_CUSTOMREQUEST => 'POST',
                 CURLOPT_HTTPHEADER => array(
                     'accept: application/json',
-                    'Content-Type: multipart/form-data'
+                    'Content-Type: multipart/form-data',
+                    'x-api-key: ' . $api_key
                 ),
                 CURLOPT_POSTFIELDS => array(
                     'files' => new \CURLFILE(

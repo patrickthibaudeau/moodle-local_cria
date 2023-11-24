@@ -685,5 +685,31 @@ function xmldb_local_cria_upgrade($oldversion) {
         // Cria savepoint reached.
         upgrade_plugin_savepoint(true, 2023112401, 'local', 'cria');
     }
+
+    if ($oldversion < 2023112402) {
+
+        // Changing type of field top_k on table local_cria_bot to int.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('top_k', XMLDB_TYPE_INTEGER, '2', null, null, null, '10', 'top_p');
+
+        // Launch change of type for field top_k.
+        $dbman->change_field_type($table, $field);
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112402, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023112403) {
+
+        // Changing type of field top_p on table local_cria_bot to int.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('top_p', XMLDB_TYPE_INTEGER, '1', null, null, null, '2', 'temperature');
+
+        // Launch change of type for field top_p.
+        $dbman->change_field_type($table, $field);
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112403, 'local', 'cria');
+    }
     return true;
 }

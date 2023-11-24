@@ -74,7 +74,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [],
+            '',
             '/bots/'. $bot_name  . '/manage/delete',
             'DELETE'
         );
@@ -91,7 +91,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [],
+            '',
             '/bots/'. $bot_name  . '/manage/about',
             'GET'
         );
@@ -112,7 +112,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [],
+            '',
             '/bots/'. $bot_name  . '/documents/upload',
             'POST',
             $file_path,
@@ -134,7 +134,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [],
+            '',
             '/bots/'. $bot_name  . '/documents/update',
             'PATCH',
             $file_path,
@@ -160,7 +160,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            $data,
+            json_encode($data),
             '/bots/'. $bot_name  . '/documents/delete',
             'DELETE'
         );
@@ -178,7 +178,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [],
+            '',
             '/bots/'. $bot_name  . '/documents/list',
             'GET'
         );
@@ -201,7 +201,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            $data,
+            json_encode($data),
             '/bots/'. $bot_name  . '/questions/upload',
             'POST'
         );
@@ -224,7 +224,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            $data,
+            json_encode($data),
             '/bots/'. $bot_name  . '/questions/update',
             'PATCH'
         );
@@ -247,7 +247,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            $data,
+            json_encode($data),
             '/bots/'. $bot_name  . '/questions/delete',
             'PATCH'
         );
@@ -267,7 +267,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [],
+            '',
             '/bots/'. $bot_name  . '/chats/start',
             'POST'
         );
@@ -283,13 +283,14 @@ class criabot
     public static function chat_query($bot_name, $prompt) {
         // Get Config
         $config = get_config('local_cria');
+        $data = [
+            'prompt' => $prompt
+        ];
         // Create model
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [
-                ' prompt' => $prompt
-            ],
+            json_encode($data),
             '/bots/'. $bot_name  . '/chats/query',
             'POST'
         );
@@ -305,13 +306,14 @@ class criabot
     public static function chat_send($chat_id, $prompt) {
         // Get Config
         $config = get_config('local_cria');
+        $data = [
+            'prompt' => $prompt
+        ];
         // Create model
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [
-                ' prompt' => $prompt
-            ],
+            json_encode($data),
             '/bots/'. $chat_id  . '/chats/send',
             'POST'
         );
@@ -331,7 +333,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [],
+            '',
             '/bots/'. $chat_id  . '/chats/end',
             'POST'
         );
@@ -351,7 +353,7 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            [],
+            '',
             '/bots/'. $chat_id  . '/chats/history',
             'GET'
         );

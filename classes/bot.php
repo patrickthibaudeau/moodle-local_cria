@@ -8,8 +8,10 @@
 
 namespace local_cria;
 
+use core\notification;
 use local_cria\crud;
-use local_cria\cria;
+use local_cria\criabot;
+use local_cria\criabdex;
 
 class bot extends crud
 {
@@ -387,25 +389,25 @@ class bot extends crud
 
     /**
      *  Return paramaters for the bot
-     * @return array
+     * @return String
      */
-    public function get_bot_parameters(): array
+    public function get_bot_parameters_json(): string
     {
         $MODEL = new \local_cria\model($this->model_id);
         $EMBEDDING_MODEL = new \local_cria\model($this->embedding_id);
-
-        return [
-            "max_tokens" => $this->get_max_tokens(),
-            "temperature" => $this->get_temperature(),
-            "top_p" => $this->get_top_p(),
-            "top_k" => $this->get_top_k(),
-            "min_relevance" => $this->get_minimum_relevance(),
-            "max_context" => $this->get_max_context(),
-            "no_context_message" => $this->get_no_context_message(),
-            "system_message" => $this->concatenate_system_messages(),
-            "llm_model_id" => $MODEL->get_criadex_model_id(),
-            "embedding_model_id" => $EMBEDDING_MODEL->get_criadex_model_id()
-        ];
+        $params = '{' .
+            '"max_tokens": ' . $this->get_max_tokens() . ',' .
+            '"temperature": ' . $this->get_temperature() . ',' .
+            '"top_p": ' . $this->get_top_p() . ',' .
+            '"top_k": ' . $this->get_top_k() . ',' .
+            '"min_relevance": ' . $this->get_minimum_relevance() . ',' .
+            '"max_context": ' . $this->get_max_context() . ',' .
+            '"no_context_message": "' . str_replace('"', '\"',$this->get_no_context_message()) . '",' .
+            '"system_message": "' . str_replace('"', '\"',$this->get_bot_system_message()) . '",' .
+            '"llm_model_id": ' . $MODEL->get_criadex_model_id() . ',' .
+            '"embedding_model_id": ' . $EMBEDDING_MODEL->get_criadex_model_id() .
+            '}';
+        return $params;
     }
 
     /**
@@ -606,7 +608,7 @@ class bot extends crud
      */
     public function create_bot_on_bot_server()
     {
-        cria::create_bot($this->id);
+        criabot::bot_create($this->id, $this->get_bot_parameters());
     }
 
     /**
@@ -616,12 +618,19 @@ class bot extends crud
      */
     public function update_bot_on_bot_server()
     {
-        $bot_exists = cria::get_bot($this->id);
+        $bot_exists = criabot::bot_about($this->id);
 
         if ($bot_exists->status == 404) {
-            cria::create_bot($this->id);
+            $result = criabot::bot_create((string)$this->id, $this->get_bot_parameters_json());
         } else {
-            cria::update_bot($this->id);
+            $result = criabot::bot_update((string)$this->id, $this->get_bot_parameters_json());
+        }
+        if ($result->status == 200) {
+            return true;
+        } else {
+            \core\notification::error(
+                'STATUS: ' . $result->status . ' CODE: ' . $result->code . ' Message: ' .  $result->message
+            );
         }
     }
 

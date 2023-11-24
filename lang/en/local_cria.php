@@ -160,8 +160,8 @@ $string['top_p'] = 'Top P';
 $string['top_p_help'] = 'An alternative to "Top K" sampling, this will stop the completion when the cumulative probability of the tokens generated exceeds the value.';
 $string['top_k'] = 'Top K';
 $string['top_k_help'] = 'An alternative to sampling with temperature, called "nucleus sampling", where the model considers the results of the tokens with top_k probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.';
-$string['minimum_relevance'] = 'Minimum relevance';
-$string['minimum_relevance_help'] = 'The minimum relevance of the response. The higher the number, the more relevant the response will be.';
+$string['min_relevance'] = 'Minimum relevance';
+$string['min_relevance_help'] = 'The minimum relevance of the response. The higher the number, the more relevant the response will be.';
 $string['max_context'] = 'Max context';
 $string['max_context_help'] = '<b>DO NOT CHANGE THIS VALUE!!!</b><br>' .
     'The maximum number of tokens the bot can handle without throwing an error.' .

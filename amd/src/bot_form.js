@@ -63,27 +63,6 @@ function get_model_max_tokens() {
                     $('[name="max_tokens"]').val(result);
                 }
 
-                if ($('#id_max_tokens').length) {
-                    $('#id_max_tokens').val('');
-                    $('#id_max_tokens').val(result);
-                }
-
-                if ($('#id_max_context').length) {
-                    $('#id_max_context').val('');
-                    $('#id_max_context').val(result);
-                    // If .btn-short is active adjsut max_tokens
-                    if ($('.btn-short').hasClass('active')) {
-                        $('#id_max_tokens').val(result / 8);
-                    }
-                    // If .btn-medium is active adjsut max_tokens
-                    if ($('.btn-medium').hasClass('active')) {
-                        $('#id_max_tokens').val(result / 2);
-                    }
-                    // If .btn-long is active adjsut max_tokens
-                    if ($('.btn-long').hasClass('active')) {
-                        $('#id_max_tokens').val(result);
-                    }
-                }
 
                 if ($('[name="max_context"]').length) {
                     $('[name="max_context"]').val('');
@@ -131,6 +110,8 @@ function set_tone_parameters() {
         $('[name="top_p"]').val($(this).data('top_p'));
         // pdate top_k
         $('[name="top_k"]').val($(this).data('top_k'));
+        // pdate min_relevance
+        $('[name="min_relevance"]').val($(this).data('min_relevance'));
     });
 }
 

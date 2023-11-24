@@ -12,6 +12,8 @@ use local_cria\Gpt3TokenizerConfig;
 use local_cria\bot_role;
 use local_cria\criadex;
 use local_cria\conversation_styles;
+use local_cria\bot;
+use local_cria\criabot;
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
@@ -44,16 +46,12 @@ $prompt = 'What is 2 + 2?';
 //print_object($response);
 //print_object($usage);
 
-$stuff = [
-    'temperature' => '0.1',
-    'top_p' => '0.1',
-    'top_k' => '0.1'
-];
+$BOT = new bot(53);
+$params = $BOT->get_bot_parameters_json();
 
-echo '<textarea>' . json_encode($stuff) . '</textarea>';
 
-$CONVOSTYLES = new conversation_styles();
-$CONVOSTYLES->get_tone_buttons();
+print_object(criabot::bot_create($BOT->get_id(), $BOT->get_bot_parameters_json()));
+
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************
