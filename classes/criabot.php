@@ -6,55 +6,57 @@ use local_cria\gpt;
 
 class criabot
 {
+    /****** Bot Management ******/
     /**
+     * @param $bot_name
      * @param $data
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function create_bot($data) {
+    public static function create($bot_name, $data) {
         // Get Config
         $config = get_config('local_cria');
         // Create model
         return gpt::_make_call(
-            $config->criadex_url,
+            $config->criabot_url,
             $config->criadex_api_key,
             $data,
-            '/azure/models/create',
+            '/bots/'. $bot_name  . '/manage/create',
             'POST'
         );
     }
 
     /**
-     * @param $model_id
+     * @param $bot_name
      * @param $data
      * @return void
      */
-    public static function update_model($model_id, $data) {
+    public static function update($bot_name, $data) {
         // Get config
         $config = get_config('local_cria');
         // Update model
         return gpt::_make_call(
-            $config->criadex_url,
+            $config->criabot_url,
             $config->criadex_api_key,
             $data,
-            '/azure/models/'. $model_id  . '/update',
+            '/bots/'. $bot_name  . '/manage/params',
             'PATCH'
         );
     }
 
     /**
-     * @param $model_id
+     * @param $bot_name
      * @return void
      */
-    public static function delete_model($model_id) {
+    public static function delete($bot_name) {
         // Get config
         $config = get_config('local_cria');
         // Update model
         return gpt::_make_call(
-            $config->criadex_url,
+            $config->criabot_url,
             $config->criadex_api_key,
             [],
-            '/azure/models/'. $model_id  . '/delete',
+            '/bots/'. $bot_name  . '/manage/delete',
             'DELETE'
         );
     }
@@ -63,55 +65,18 @@ class criabot
      * @param $model_id
      * @return void
      */
-    public static function about_model($model_id) {
+    public static function about($bot_name) {
         // Get config
         $config = get_config('local_cria');
         // Update model
         return gpt::_make_call(
-            $config->criadex_url,
+            $config->criabot_url,
             $config->criadex_api_key,
-            [], '/azure/models/'. $model_id  . '/about',
+            [], '/bots/'. $bot_name  . '/manage/about',
             'GET'
         );
     }
 
-    /**
-     * @param $model_id
-     * @return void
-     */
-    public static function query(
-        $model_id,
-        $system_message,
-        $prompt,
-        $max_tokens = 500,
-        $temperature = 1,
-        $top_p = 1
-    ) {
-        // Get config
-        $config = get_config('local_cria');
-        // Build data object
-        $data = [
-            'max_tokens' => $max_tokens,
-            'temperature' => $temperature,
-            'top_p' => $top_p,
-            'history' => [
-                [
-                    'role' => 'system',
-                    'content' => $system_message
-                ],
-                [
-                    'role' => 'user',
-                    'content' => $prompt
-                ]
-            ]
-        ];
-        // Update model
-        return gpt::_make_call(
-            $config->criadex_url,
-            $config->criadex_api_key,
-            json_encode($data),
-            '/azure/models/'. $model_id  . '/query',
-            'POST'
-        );
-    }
+    /******** Document Content ********/
+
 }

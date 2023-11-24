@@ -629,6 +629,20 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023112200, 'local', 'cria');
     }
 
+    if ($oldversion < 2023112300) {
+
+        // Define field class to be added to local_cria_convo_styles.
+        $table = new xmldb_table('local_cria_convo_styles');
+        $field = new xmldb_field('class', XMLDB_TYPE_CHAR, '50', null, null, null, null, 'value');
+
+        // Conditionally launch add field class.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112300, 'local', 'cria');
+    }
 
     return true;
 }

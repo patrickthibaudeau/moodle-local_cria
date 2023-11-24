@@ -31,9 +31,9 @@ function get_bot_type_message() {
                 $('#id_bot_system_message').val(result.trim());
             }
 
-            if ($('#bot_system_message').length) {
-                $('#bot_system_message').val('');
-                $('#bot_system_message').val(result.trim());
+            if ($('[name="bot_system_message"]').length) {
+                $('[name="bot_system_message"]').val('');
+                $('[name="bot_system_message"]').val(result.trim());
             }
 
         }).fail(function () {
@@ -71,12 +71,39 @@ function get_model_max_tokens() {
                 if ($('#id_max_context').length) {
                     $('#id_max_context').val('');
                     $('#id_max_context').val(result);
+                    // If .btn-short is active adjsut max_tokens
+                    if ($('.btn-short').hasClass('active')) {
+                        $('#id_max_tokens').val(result / 8);
+                    }
+                    // If .btn-medium is active adjsut max_tokens
+                    if ($('.btn-medium').hasClass('active')) {
+                        $('#id_max_tokens').val(result / 2);
+                    }
+                    // If .btn-long is active adjsut max_tokens
+                    if ($('.btn-long').hasClass('active')) {
+                        $('#id_max_tokens').val(result);
+                    }
                 }
 
                 if ($('[name="max_context"]').length) {
                     $('[name="max_context"]').val('');
                     $('[name="max_context"]').val(result);
+                    // if .btn-short is active adjsut max_tokens
+                    if ($('.btn-short').hasClass('active')) {
+                        $('[name="max_tokens"]').val(result / 8);
+                    }
+                    // if .btn-medium is active adjsut max_tokens
+                    if ($('.btn-medium').hasClass('active')) {
+                        $('[name="max_tokens"]').val(result / 2);
+                    }
+
+                    // if .btn-long is active adjsut max_tokens
+                    if ($('.btn-long').hasClass('active')) {
+                        $('[name="max_tokens"]').val(result);
+                    }
                 }
+
+
             }).fail(function () {
                 alert('An error has occurred. The record was not deleted');
             });
