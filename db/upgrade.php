@@ -538,7 +538,7 @@ function xmldb_local_cria_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        $field = new xmldb_field('top_k', XMLDB_TYPE_INTEGER, '3', null, null, null, '10', 'top_p');
+        $field = new xmldb_field('top_k', XMLDB_TYPE_INTEGER, '3', null, null, null, '1', 'top_p');
 
         // Conditionally launch add field top_k.
         if (!$dbman->field_exists($table, $field)) {
