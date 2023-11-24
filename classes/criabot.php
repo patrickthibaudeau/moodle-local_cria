@@ -7,7 +7,6 @@ use local_cria\bot;
 
 class criabot
 {
-
     /****** Bot Management ******/
     /**
      * @param $bot_name String
@@ -253,7 +252,6 @@ class criabot
             'PATCH'
         );
     }
-
 
     /******** Bot Chats ********/
     /**
