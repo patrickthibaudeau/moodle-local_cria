@@ -101,9 +101,9 @@ class criabot
     /******** Document Content ********/
     /**
      * Upload a document associated to the bot
-     * @param $bot_name
-     * @param $file_path
-     * @param $file_name
+     * @param $bot_name String
+     * @param $file_path String
+     * @param $file_name String
      * @return void
      */
     public static function document_create($bot_name, $file_path, $file_name) {
@@ -123,9 +123,9 @@ class criabot
 
     /**
      * Update a document associated to the bot
-     * @param $bot_name
-     * @param $file_path
-     * @param $file_name
+     * @param $bot_name String
+     * @param $file_path String
+     * @param $file_name String
      * @return void
      */
     public static function document_update($bot_name, $file_path, $file_name) {
@@ -145,8 +145,8 @@ class criabot
 
     /**
      * Delete a document associated to the bot
-     * @param $bot_name
-     * @param $file_name
+     * @param $bot_name String
+     * @param $file_name String
      * @return void
      */
     public static function document_delete($bot_name, $file_name) {
@@ -169,9 +169,7 @@ class criabot
 
     /**
      * List all documents associated to the bot
-     * @param $bot_name
-     * @param $file_path
-     * @param $file_name
+     * @param $bot_name String
      * @return void
      */
     public static function document_list($bot_name) {
