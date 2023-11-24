@@ -10,12 +10,21 @@ class criabot
 
     /****** Bot Management ******/
     /**
-     * @param $bot_name
-     * @param $data
+     * @param $bot_name String
+     * @param $data Array ["max_tokens": 16,
+     *  "temperature" => 0.1,
+     *  "top_p" => 1,
+     *  "top_k" => 10,
+     *  "min_relevance" => 0.9,
+     *  "max_context" => 2000,
+     *  "no_context_message" => "Sorry, I'm not sure about that.",
+     *  "system_message" => "string",
+     *  "llm_model_id" => 3,
+     *  "embedding_model_id" => 4]
      * @return mixed
-     * @throws \local_cria\dml_exception
+     * @throws \dml_exception
      */
-    public static function create_bot($bot_name, $data) {
+    public static function bot_create($bot_name, $data) {
         // Get Config
         $config = get_config('local_cria');
         // Create model
@@ -29,11 +38,20 @@ class criabot
     }
 
     /**
-     * @param $bot_name
-     * @param $data
+     * @param $bot_name String
+     * @param $data Array ["max_tokens": 16,
+     *  "temperature" => 0.1,
+     *  "top_p" => 1,
+     *  "top_k" => 10,
+     *  "min_relevance" => 0.9,
+     *  "max_context" => 2000,
+     *  "no_context_message" => "Sorry, I'm not sure about that.",
+     *  "system_message" => "string",
+     *  "llm_model_id" => 3,
+     *  "embedding_model_id" => 4]
      * @return void
      */
-    public static function update_bot($bot_name, $data) {
+    public static function bot_update($bot_name, $data) {
         // Get config
         $config = get_config('local_cria');
         // Update model
@@ -47,10 +65,10 @@ class criabot
     }
 
     /**
-     * @param $bot_name
+     * @param $bot_name String
      * @return void
      */
-    public static function delete_bot($bot_name) {
+    public static function bot_delete($bot_name) {
         // Get config
         $config = get_config('local_cria');
         // Update model
@@ -64,10 +82,10 @@ class criabot
     }
 
     /**
-     * @param $bot_name
+     * @param $bot_name String
      * @return void
      */
-    public static function about_bot($bot_name) {
+    public static function bot_about($bot_name) {
         // Get config
         $config = get_config('local_cria');
         // Update model
@@ -88,7 +106,7 @@ class criabot
      * @param $file_name
      * @return void
      */
-    public static function create_document($bot_name, $file_path, $file_name) {
+    public static function document_create($bot_name, $file_path, $file_name) {
         // Get config
         $config = get_config('local_cria');
         // create document
@@ -110,7 +128,7 @@ class criabot
      * @param $file_name
      * @return void
      */
-    public static function update_document($bot_name, $file_path, $file_name) {
+    public static function document_update($bot_name, $file_path, $file_name) {
         // Get config
         $config = get_config('local_cria');
         // Update document
@@ -131,7 +149,7 @@ class criabot
      * @param $file_name
      * @return void
      */
-    public static function delete_document($bot_name, $file_name) {
+    public static function document_delete($bot_name, $file_name) {
         // Get config
         $config = get_config('local_cria');
         // Prepare date
@@ -156,7 +174,7 @@ class criabot
      * @param $file_name
      * @return void
      */
-    public static function list_documents($bot_name) {
+    public static function document_list($bot_name) {
         // Get config
         $config = get_config('local_cria');
         // List documents
@@ -177,7 +195,7 @@ class criabot
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function create_question($bot_id, $question_id, $data) {
+    public static function question_create($bot_id, $question_id, $data) {
         // Get Config
         $config = get_config('local_cria');
 
@@ -200,7 +218,7 @@ class criabot
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function update_question($bot_id, $question_id, $data) {
+    public static function question_update($bot_id, $question_id, $data) {
         // Get Config
         $config = get_config('local_cria');
 
@@ -223,7 +241,7 @@ class criabot
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function delete_question($bot_id, $question_id, $data) {
+    public static function question_delete($bot_id, $question_id, $data) {
         // Get Config
         $config = get_config('local_cria');
 
