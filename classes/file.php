@@ -10,7 +10,7 @@ namespace local_cria;
 use local_cria\crud;
 use local_cria\bot;
 use local_cria\files;
-use local_cria\cria;
+use local_cria\criabot;
 
 class file extends crud {
 
@@ -117,7 +117,7 @@ class file extends crud {
 	/**
 	 * @return bot_id - bigint (18)
 	 */
-	public function get_cria_id(): int
+	public function get_bot_id(): int
     {
 		return $this->bot_id;
 	}
@@ -219,15 +219,25 @@ class file extends crud {
 	}
 
     /**
-     * Upload files to indexing server
      * @param $bot_id
-     * @return void
+     * @param $file_path
+     * @param $file_name
+     * @param $update
+     * @return true
      */
-    public function upload_files_to_indexing_server($bot_id, $file_path, $file_name)
+    public function upload_files_to_indexing_server($bot_id, $file_path, $file_name, $update = false)
     {
+        global $DB;
 
-        // upload new file
-        return cria::add_file($bot_id, $file_path, $file_name);
+        if ($update) {
+            // update file
+            criabot::document_update($bot_id, $file_path, $file_name);
+        } else {
+            // upload new file
+            criabot::document_create($bot_id, $file_path, $file_name);
+        }
+
+        return true;
     }
 
     /**

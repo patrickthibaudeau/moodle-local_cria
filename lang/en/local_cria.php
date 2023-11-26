@@ -139,6 +139,7 @@ $string['tone'] = 'Tone';
 $string['total_tokens'] = 'Total tokens';
 $string['total_usage_cost'] = 'Total usage cost';
 $string['total_words'] = 'Number of words in combined content:';
+$string['update'] = 'Update';
 $string['timecreated'] = 'Time created';
 $string['use_bot_server'] = 'Requires uploading documents?';
 $string['use_bot_server_help'] = 'If you this type rqeuires uploading documents, select Yes.';

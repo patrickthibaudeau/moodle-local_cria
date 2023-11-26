@@ -158,10 +158,10 @@ class criabot
 
         // delete document
         return gpt::_make_call(
-            $config->criabot_url,
+            $config->criabot_url ,
             $config->criadex_api_key,
-            json_encode($data),
-            '/bots/'. $bot_name  . '/documents/delete',
+            '',
+            '/bots/'. $bot_name  . '/documents/delete/?document_name=' . $file_name,
             'DELETE'
         );
     }

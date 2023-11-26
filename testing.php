@@ -50,7 +50,7 @@ $BOT = new bot(53);
 $params = $BOT->get_bot_parameters_json();
 
 
-print_object(criabot::bot_create($BOT->get_id(), $BOT->get_bot_parameters_json()));
+print_object(criabot::document_create('53', '/var/www/moodledata/temp/cria/53/cody_-_admissions_final_1.docx','cody_-_admissions_final_1.docx'));
 
 //**********************
 //*** DISPLAY FOOTER ***

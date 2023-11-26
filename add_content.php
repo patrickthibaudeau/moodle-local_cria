@@ -53,11 +53,16 @@ $context = CONTEXT_SYSTEM::instance();
 
 require_login(1, false);
 // Get bot id
-$bot_id = required_param('id', PARAM_INT);
+$bot_id = required_param('bot_id', PARAM_INT);
+$id = optional_param('id', 0, PARAM_INT);
 
-$formdata = new stdClass();
+if ($id != 0) {
+    $formdata = $DB->get_record('local_cria_files', array('id' => $id));
+} else {
+    $formdata = new stdClass();
 // Set bot id in formdata
-$formdata->bot_id = $bot_id;
+    $formdata->bot_id = $bot_id;
+}
 
 // Create form
 $mform = new \local_cria\add_content_form(null, array('formdata' => $formdata));
@@ -65,9 +70,16 @@ if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
     redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $formdata->bot_id);
 } else if ($data = $mform->get_data()) {
-    $FILES = new file($data->bot_id);
+    $FILE = new file();
+    // Set update to false
+    $update = false;
     // Get file name and content
-    $filename = strtolower(str_replace(' ', '_',$mform->get_new_filename('importedFile')));
+    if ($data->name == false) {
+        $filename = strtolower(str_replace(' ', '_', $mform->get_new_filename('importedFile')));
+    } else {
+        $filename = $data->name;
+    }
+
     $fileContent = $mform->get_file_content('importedFile');
     $path = $CFG->dataroot . '/temp/cria';
 
@@ -97,12 +109,21 @@ if ($mform->is_cancelled()) {
         'timemodified' => time(),
         'timecreated' => time(),
     ];
-    // Insert the content into the database
-    $file_id = $DB->insert_record('local_cria_files', $content_data);
-
-    // Upload files to indexing server
-    $FILES->upload_files_to_indexing_server($data->bot_id, $file_path, $filename);
-    // Redirect to the content page
+    // Check to see if the file already exists
+    if ($file = $DB->get_record('local_cria_files', ['bot_id' => $data->bot_id, 'name' => $filename])){
+        // Update the content into the database
+        $content_data['id'] = $data->id;
+        $DB->update_record('local_cria_files', $content_data);
+        $update = true;
+    } else {
+        // Insert the content into the database
+        $file_id = $DB->insert_record('local_cria_files', $content_data);
+    }
+    // Upload/update files to indexing server
+    $upload = $FILE->upload_files_to_indexing_server($data->bot_id, $file_path, $filename, $update);
+    // Delete the file from the server
+    unlink($file_path);
+    // Redirect to content page
     redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $data->bot_id,);
 } else {
     // Show form
@@ -117,6 +138,8 @@ base::page(
     $context,
     'standard'
 );
+
+$PAGE->requires->js_call_amd('local_cria/add_content_form', 'init');
 
 echo $OUTPUT->header();
 //**********************

@@ -27,8 +27,12 @@ function delete_content() {
                     }
                 }]);
 
-                delete_content[0].done(function () {
-                    location.reload();
+                delete_content[0].done(function ($result) {
+                    if ($result == 200) {
+                        location.reload();
+                    } else {
+                        alert($result);
+                    }
                 }).fail(function () {
                     alert('An error has occurred. The record was not deleted');
                 });

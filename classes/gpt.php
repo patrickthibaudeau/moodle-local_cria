@@ -52,27 +52,26 @@ class gpt
             );
         } else {
             // Params for file upload
-            curl_setopt_array($ch, array(
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_HTTPHEADER => array(
-                    'accept: application/json',
-                    'Content-Type: multipart/form-data',
-                    'x-api-key: ' . $api_key
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_POST, 1);
+
+// Set headers
+            $headers = [
+                'Accept: application/json',
+                'x-api-key: ' . $api_key,
+                'Content-Type: multipart/form-data',
+            ];
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+// Set POST data (multipart/form-data)
+            $post_data = [
+                'file' => new \CURLFile(
+                    $file_path,
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    $file_name
                 ),
-                CURLOPT_POSTFIELDS => array(
-                    'files' => new \CURLFILE(
-                        $file_path,
-                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                        $file_name
-                    ),
-                ),
-            ));
+            ];
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         }
 
         // Set URL

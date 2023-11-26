@@ -14,7 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 use local_cria\file;
-use local_cria\cria;
+use local_cria\criabot;
 
 /**
  * External Web Service Template
@@ -68,10 +68,20 @@ class local_cria_external_content extends external_api {
 
         $FILE = new file($id);
         // Delete file from indexing server
-        cria::delete_file($FILE->get_bot_id(), $FILE->get_indexing_server_file_name());
-        $DB->delete_records('local_cria_files', array('id' => $id));
+        $result = criabot::document_delete($FILE->get_bot_id(), $FILE->get_name());
+        if ($result->status == 200) {
+            // Delete file from database
+            $DB->delete_records('local_cria_files', array('id' => $id));
+            return $result->status;
+        } else {
+            $error = 'Status: ' . $result->status .
+                ' Code: ' . $result->code .
+                ' Message: ' . $result->message;
+            return  $error;
+        }
 
-        return true;
+
+
     }
 
     /**
@@ -79,7 +89,7 @@ class local_cria_external_content extends external_api {
      * @return external_description
      */
     public static function delete_returns() {
-        return new external_value(PARAM_INT, 'Boolean');
+        return new external_value(PARAM_TEXT, 'return code');
     }
 
 }

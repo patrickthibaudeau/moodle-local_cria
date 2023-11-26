@@ -13,7 +13,7 @@ class add_content_form extends \moodleform
 
     protected function definition()
     {
-        global $DB;
+        global $DB, $OUTPUT;
 
         $formdata = $this->_customdata['formdata'];
         // Create form object
@@ -34,6 +34,15 @@ class add_content_form extends \moodleform
         $mform->setType(
             'bot_id',
             PARAM_INT
+        );
+
+        $mform->addElement(
+            'hidden',
+            'name'
+        );
+        $mform->setType(
+            'name',
+            PARAM_TEXT
         );
 
         //Header: General
@@ -59,10 +68,20 @@ class add_content_form extends \moodleform
             'required'
         );
 
+        // Add HTML Element to output template content_form_progress_bars
+        $mform->addElement(
+            'html',
+            $OUTPUT->render_from_template(
+                'local_cria/content_form_progress_bars',
+                []
+            )
+        );
 
         $this->add_action_buttons();
         $this->set_data($formdata);
     }
+
+
 
     // Perform some extra moodle validation
     public function validation($data, $files)
