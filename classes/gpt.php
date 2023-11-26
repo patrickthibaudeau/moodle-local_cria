@@ -98,7 +98,7 @@ class gpt
         // Create object that will return the data
         $data = new \stdClass();
         $BOT = new bot($bot_id);
-        $system_message = $BOT->concatenate_system_messages();
+        $system_message = $BOT->get_bot_system_message();
         // Get crai paramaeters
         $params = json_decode($BOT->get_bot_parameters_json());
 
@@ -123,27 +123,12 @@ class gpt
                     $context = substr($chunk_text[$i - 1], -$context_window_size);
                     $chunk = $context . $chunk;
                 }
-                $messages = [
-                    'messages' => [
-                        [
-                            'role' => 'system',
-                            'content' => $system_message
-                        ],
-                        [
-                            'role' => 'user',
-                            'content' => $chunk
-                        ],
-                        [
-                            'role' => 'user',
-                            'content' => $prompt
-                        ]
-                    ]
-                ];
+                $full_prompt = $chunk . "\n" . $prompt;
                 // Use Criadex to make the call
                 $result = criadex::query(
                     $params->llm_model_id,
                     $params->system_message,
-                    $prompt,
+                    $full_prompt,
                     $params->max_tokens,
                     $params->temperature,
                     $params->top_p

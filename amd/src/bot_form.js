@@ -75,10 +75,9 @@ function get_model_max_tokens() {
                     if ($('.btn-medium').hasClass('active')) {
                         $('[name="max_tokens"]').val(result / 2);
                     }
-
                     // if .btn-long is active adjsut max_tokens
                     if ($('.btn-long').hasClass('active')) {
-                        $('[name="max_tokens"]').val(result);
+                        $('[name="max_tokens"]').val(result - 2000);
                     }
                 }
 
@@ -142,7 +141,8 @@ function set_length_parameters() {
     $('.btn-long').off();
     $('.btn-long').on('click', function () {
         max_tokens = $('[name="max_context"]').val();
-        $('[name="max_tokens"]').val(max_tokens);
+        // reduce by 200 tokens to make sure all content can be used.
+        $('[name="max_tokens"]').val(max_tokens - 2000);
         $('.btn-short').removeClass('active');
         $('.btn-medium').removeClass('active');
         $(this).addClass('active');
