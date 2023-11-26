@@ -4,6 +4,7 @@ namespace local_cria;
 
 use local_cria\bot;
 use local_cria\logs;
+use local_cria\criadex;
 
 class gpt
 {
@@ -98,6 +99,8 @@ class gpt
         $data = new \stdClass();
         $BOT = new bot($bot_id);
         $system_message = $BOT->concatenate_system_messages();
+        // Get crai paramaeters
+        $params = json_decode($BOT->get_bot_parameters_json());
 
         $user_content = $content;
         // Remove all lines and replace with space. AKA lower token count
@@ -136,13 +139,21 @@ class gpt
                         ]
                     ]
                 ];
-                $result = self::_make_call($bot_id, json_encode($messages), '', 'POST', false);
+                // Use Criadex to make the call
+                $result = criadex::query(
+                    $params->llm_model_id,
+                    $params->system_message,
+                    $prompt,
+                    $params->max_tokens,
+                    $params->temperature,
+                    $params->top_p
+                    );
                 // Add the number of tokens used for the prompt to the total tokens
-                $prompt_tokens = $prompt_tokens + $result->usage->prompt_tokens;
-                $completion_tokens = $completion_tokens + $result->usage->completion_tokens;
-                $total_tokens = $total_tokens + $result->usage->total_tokens;
+                $prompt_tokens = $prompt_tokens + $result->response->raw->usage->prompt_tokens;
+                $completion_tokens = $completion_tokens + $result->response->raw->usage->completion_tokens;
+                $total_tokens = $total_tokens + $result->response->raw->usage->total_tokens;
                 // Capture the response
-                $summary[] = $result->choices[0]->message->content;
+                $summary[] = $result->response->message->content;
             }
             if (count($summary) > 1) {
                 $content_prompt = '';
@@ -153,25 +164,20 @@ class gpt
                     }
                 }
                 $content_prompt .= $sentences;
-                "Question: Please answer with a boolean only to the following question. In the sentences provided above, do all the sentences mean the same thing?\n";
-                $messages = [
-                    'messages' => [
-                        [
-                            'role' => 'system',
-                            'content' => 'You compare text. You only answer with a single boolean. You return the boolean that appears more often.'
-                        ],
-                        [
-                            'role' => 'user',
-                            'content' => $content_prompt
-                        ]
-                    ]
-                ];
-
-                $comparison_result = self::_make_call($bot_id, json_encode($messages));
+                $content_prompt .= "Question: Please answer with a boolean only to the following question. In the sentences provided above, do all the sentences mean the same thing?\n";
+                // Compare results
+                $comparison_result = criadex::query(
+                    $params->llm_model_id,
+                    'You compare text. You only answer with a single boolean. You return the boolean that appears more often.',
+                    $content_prompt,
+                    $params->max_tokens,
+                    $params->temperature,
+                    $params->top_p
+                );
                 // Add the number of tokens used for the comparison to the total tokens
-                $prompt_tokens = $prompt_tokens + $comparison_result->usage->prompt_tokens;
-                $completion_tokens = $completion_tokens + $comparison_result->usage->completion_tokens;
-                $total_tokens = $total_tokens + $comparison_result->usage->total_tokens;
+                $prompt_tokens = $prompt_tokens + $comparison_result->response->raw->usage->prompt_tokens;
+                $completion_tokens = $completion_tokens + $comparison_result->response->raw->usage->completion_tokens;
+                $total_tokens = $total_tokens + $comparison_result->response->raw->usage->total_tokens;
 
                 $answer = $comparison_result->choices[0]->message->content;
                 if ($answer == 'True') {
@@ -196,12 +202,19 @@ class gpt
                     ]
                 ]
             ];
-            $result = self::_make_call($bot_id, json_encode($messages), '', 'POST', false);
-            $summaries = $result->choices[0]->message->content;
+            $result = criadex::query(
+                $params->llm_model_id,
+                $params->system_message,
+                $prompt,
+                $params->max_tokens,
+                $params->temperature,
+                $params->top_p
+            );
+            $summaries = $result->response->message->content;
             // Add the number of tokens used for the prompt to the total tokens
-            $prompt_tokens = $result->usage->prompt_tokens;
-            $completion_tokens = $result->usage->completion_tokens;
-            $total_tokens = $result->usage->total_tokens;
+            $prompt_tokens = $result->response->raw->usage->prompt_tokens;
+            $completion_tokens = $result->response->raw->usage->completion_tokens;
+            $total_tokens = $result->response->raw->usage->total_tokens;
         }
 
         // Get the cost of the call

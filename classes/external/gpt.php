@@ -24,7 +24,8 @@ require_once($CFG->libdir . "/externallib.php");
 require_once("$CFG->dirroot/config.php");
 
 use local_cria\gpt;
-use local_cria\cria;
+use local_cria\criabot;
+use local_cria\criadex;
 use local_cria\logs;
 
 class local_cria_external_gpt extends external_api {
@@ -73,26 +74,37 @@ class local_cria_external_gpt extends external_api {
         self::validate_context($context);
 
         if ($chat_id != 0) {
-            $result = cria::send_chat_request($bot_id, $chat_id, $prompt);
+            $result = criabot::chat_send($chat_id, $prompt);
             // Clean up content
-            $content = nl2br(htmlspecialchars($result->reply->reply));
-            $content = gpt::make_email($content);
-            $content = gpt::make_link($content);
+//            $content = nl2br(htmlspecialchars($result->reply->reply));
+//            $content = gpt::make_email($content);
+//            $content = gpt::make_link($content);
 
             $message = new \stdClass();
-            $message->message = $content;
-            $message->prompt_tokens = $result->reply->usage_total->prompt_tokens;
-            $message->completion_tokens = $result->reply->usage_total->completion_tokens;
-            $message->total_tokens = $result->reply->usage_total->total_tokens;
-            $message->cost = gpt::_get_cost($bot_id, $message->prompt_tokens, $message->completion_tokens);
+            $message->message = $result->reply->content->content;
+            // Get token usage
+            $token_usage = $result->reply->token_usage;
+            // loop through token usage and add the prompt tokens and completion tokens
+            $prompt_tokens = 0;
+            $completion_tokens = 0;
+            $total_tokens = 0;
+            foreach ($token_usage as $token) {
+                $prompt_tokens = $prompt_tokens + $token->prompt_tokens;
+                $completion_tokens = $completion_tokens + $token->completion_tokens;
+                $total_tokens = $total_tokens + $token->total_tokens;
+            }
+            $message->prompt_tokens = $prompt_tokens;
+            $message->completion_tokens = $completion_tokens;
+            $message->total_tokens = $total_tokens;
+            $message->cost = gpt::_get_cost($bot_id, $prompt_tokens, $completion_tokens);
             // Insert logs
             logs::insert(
                 $bot_id,
                 $prompt,
                 $content,
-                $message->prompt_tokens,
-                $message->completion_tokens,
-                $message->total_tokens,
+                $prompt_tokens,
+                $completion_tokens,
+                $total_tokens,
                 $message->cost,
                 $result->reply->context);
         } else {

@@ -20,7 +20,7 @@ use local_cria\bot;
 use local_cria\files;
 use local_cria\Gpt3TokenizerConfig;
 use local_cria\Gpt3Tokenizer;
-use local_cria\cria;
+use local_cria\criabot;
 
 class test_bot implements \renderable, \templatable
 {
@@ -51,7 +51,7 @@ class test_bot implements \renderable, \templatable
 
         $chat_id = 0;
         if ($BOT->use_bot_server()) {
-            $session = cria::start_chat($this->bot_id);
+            $session = criabot::chat_start($this->bot_id);
             $chat_id = $session->chat_id;
         }
 

@@ -12,6 +12,12 @@ function get_response() {
 
     $("#submit-question").off();
     $("#submit-question").on('click', function () {
+        // rest statistics
+        $('#cria-prompt-tokens').html(0);
+        $('#cria-completion-tokens').html(0);
+        $('#cria-total-tokens').html(0);
+        $('#cria-cost').html('$0.00');
+
         var bot_id = $(this).data('bot_id');
         var prompt = '[INSTRUCTIONS]' +
             $('#default-user-prompt').val() +

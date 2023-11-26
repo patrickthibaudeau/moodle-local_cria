@@ -35,7 +35,7 @@ $context = context_system::instance();
 echo $OUTPUT->header();
 
 $system_message = 'You are a pmath wiz.';
-$prompt = 'What is 2 + 2?';
+$prompt = 'Write a recipe for a big mac.';
 
 //$results  = criadex::query(3,$system_message,$prompt);
 //
@@ -46,12 +46,15 @@ $prompt = 'What is 2 + 2?';
 //print_object($response);
 //print_object($usage);
 
-$BOT = new bot(53);
-$params = $BOT->get_bot_parameters_json();
+$BOT = new bot(18);
 
+$params = json_decode($BOT->get_bot_parameters_json());
 
-print_object(criabot::document_create('53', '/var/www/moodledata/temp/cria/53/cody_-_admissions_final_1.docx','cody_-_admissions_final_1.docx'));
+$result = criabot::chat_send(
+    '9f1fd155-33d2-4fed-ba40-16c5755ba71e',
+    'How do I apply for OSAP?');
 
+print_object($result);
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

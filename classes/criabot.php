@@ -309,12 +309,13 @@ class criabot
         $data = [
             'prompt' => $prompt
         ];
+        $query_string = http_build_query($data);
         // Create model
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            json_encode($data),
-            '/bots/'. $chat_id  . '/chats/send',
+            '',
+            '/bots/'. $chat_id  . '/chats/send/?' . $query_string,
             'POST'
         );
     }

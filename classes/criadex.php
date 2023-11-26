@@ -77,15 +77,21 @@ class criadex
 
     /**
      * @param $model_id
-     * @return void
+     * @param $system_message
+     * @param $prompt
+     * @param $max_tokens
+     * @param $temperature
+     * @param $top_p
+     * @return mixed
+     * @throws \dml_exception
      */
     public static function query(
         $model_id,
         $system_message,
         $prompt,
-        $max_tokens = 500,
-        $temperature = 1,
-        $top_p = 1
+        $max_tokens = 512,
+        $temperature = 0.1,
+        $top_p = 0.1
     ) {
         // Get config
         $config = get_config('local_cria');
