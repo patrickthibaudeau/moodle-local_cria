@@ -711,5 +711,70 @@ function xmldb_local_cria_upgrade($oldversion) {
         // Cria savepoint reached.
         upgrade_plugin_savepoint(true, 2023112403, 'local', 'cria');
     }
+
+    if ($oldversion < 2023112601) {
+
+        // Define table local_cria_intents to be dropped.
+        $table = new xmldb_table('local_cria_intents');
+
+        // Conditionally launch drop table for local_cria_intents.
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112601, 'local', 'cria');
+    }
+    if ($oldversion < 2023112602) {
+
+        // Define table local_cria_intents to be created.
+        $table = new xmldb_table('local_cria_intents');
+
+        // Adding fields to table local_cria_intents.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('bot_id', XMLDB_TYPE_INTEGER, '10', null, null, null, '0');
+        $table->add_field('name', XMLDB_TYPE_CHAR, '50', null, null, null, null);
+        $table->add_field('description', XMLDB_TYPE_TEXT, null, null, null, null, null);
+        $table->add_field('published', XMLDB_TYPE_INTEGER, '1', null, null, null, '0');
+        $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+        // Adding keys to table local_cria_intents.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('usermodified', XMLDB_KEY_FOREIGN, ['usermodified'], 'user', ['id']);
+
+        // Conditionally launch create table for local_cria_intents.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112602, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023112604) {
+
+        // Define field answer to be added to local_cria_question.
+        $table = new xmldb_table('local_cria_question');
+        $field = new xmldb_field('answer', XMLDB_TYPE_TEXT, null, null, null, null, null, 'value');
+
+        // Conditionally launch add field answer.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define table local_cria_answer to be dropped.
+        $table = new xmldb_table('local_cria_answer');
+
+        // Conditionally launch drop table for local_cria_answer.
+        if ($dbman->table_exists($table)) {
+            $dbman->drop_table($table);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112604, 'local', 'cria');
+    }
+
     return true;
 }

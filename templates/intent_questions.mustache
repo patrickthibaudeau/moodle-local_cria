@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <h3 class="card-header">
+                <div class="col">
+                    <h3 class="float-left">{{#str}}documents, local_cria{{/str}}</h3>
+                </div>
+                <div class="col">
+                    <a href="edit_question.php?intentid={{intent_id}}" class="btn btn-outline-primary float-right">
+                    {{#str}}add_question, local_cria{{/str}}
+                    </a>
+
+                    <a href="content.php?id={{bot_id}}&tab=intents" class="btn btn-outline-primary float-right mr-1">
+                        {{#str}}intents, local_cria{{/str}}
+                    </a>
+                </div>
+            </h3>
+            <div class="card-body">
+                <table id="cira-questions-table" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{#str}}question, local_cria{{/str}}</th>
+                        <th>{{#str}}actions, local_cria{{/str}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#questions}}
+                        <tr>
+                            <td>{{value}}</td>
+                            <td>
+                                <a href="edit_question.php?id={{id}}&intentid={{intentid}}" class="btn btn-outline-primary">
+                                {{#str}}update, local_cria{{/str}}
+                                </a>
+                                <button class="btn btn-outline-danger delete-question" data-id="{{id}}">
+                                    {{#str}}delete, local_cria{{/str}}
+                                </button>
+                            </td>
+                        </tr>
+                    {{/questions}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

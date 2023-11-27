@@ -1,0 +1,39 @@
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <div class="col">
+                <b>{{#str}}examples, local_cria{{/str}}</b>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="cira-question-examples-table" class="table table-striped">
+                <tbody>
+                {{#examples}}
+                    <tr>
+                        <td>
+                            <div class="example-question" style="cursor: pointer;"
+                                 data-id="{{id}}">{{value}}</div>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-danger delete-question" data-id="{{id}}">
+                                {{#str}}delete, local_cria{{/str}}
+                            </button>
+                        </td>
+                    </tr>
+                {{/examples}}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <div class="col">
+                <div class="input-group mb-2 mr-sm-2">
+                    <input type="text" class="form-control" id="cria-question-example"
+                    placeholder="Enter an example of this question here">
+                    <div class="input-group-append">
+                        <div class="input-group-text"><i class="bi bi-plus-square"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

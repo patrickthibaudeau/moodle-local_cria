@@ -12,6 +12,8 @@ use core\notification;
 use local_cria\crud;
 use local_cria\criabot;
 use local_cria\criabdex;
+use local_cria\intents;
+use local_cria\intent;
 
 class bot extends crud
 {
@@ -608,7 +610,7 @@ class bot extends crud
      */
     public function create_bot_on_bot_server()
     {
-        criabot::bot_create($this->id, $this->get_bot_parameters());
+        criabot::bot_create((string)$this->id, $this->get_bot_parameters_json());
     }
 
     /**
@@ -619,13 +621,24 @@ class bot extends crud
     public function update_bot_on_bot_server()
     {
         $bot_exists = criabot::bot_about($this->id);
-
+        $update = false;
         if ($bot_exists->status == 404) {
             $result = criabot::bot_create((string)$this->id, $this->get_bot_parameters_json());
         } else {
             $result = criabot::bot_update((string)$this->id, $this->get_bot_parameters_json());
+            $update = true;
         }
         if ($result->status == 200) {
+            // If an update was performed, update all intents for this bot.
+            if ($update) {
+                $INTENTS = new intents($this->id);
+                foreach ($INTENTS->get_records() as $intent) {
+                    $INTENT = new intent($intent->id);
+                    if ($INTENT->get_published()) {
+                        $INTENT->update_intent_on_bot_server();
+                    }
+                }
+            }
             return true;
         } else {
             \core\notification::error(

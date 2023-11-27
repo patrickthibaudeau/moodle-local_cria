@@ -159,4 +159,14 @@ class renderer extends \plugin_renderer_base {
         $data = $message->export_for_template($this);
         return $this->render_from_template('local_cria/assign_users', $data);
     }
+
+    /**
+     * @param \templatable $role
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_intent_questions(\templatable $intent) {
+        $data = $intent->export_for_template($this);
+        return $this->render_from_template('local_cria/intent_questions', $data);
+    }
 }

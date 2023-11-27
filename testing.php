@@ -34,8 +34,9 @@ $context = context_system::instance();
 //**********************
 echo $OUTPUT->header();
 
-$system_message = 'You are a pmath wiz.';
-$prompt = 'Write a recipe for a big mac.';
+$system_message = 'You are a bot that writes example questions based on a question provided';
+$prompt = '[question]How do I apply for university?[/question]';
+$prompt .= '[instructions]Write 5 rephrased examples questions based on the content in [question]. return each question in the follwoing JSON format. [{"question": your answer},{"question": your answer}][/instructions]';
 
 //$results  = criadex::query(3,$system_message,$prompt);
 //
@@ -46,15 +47,16 @@ $prompt = 'Write a recipe for a big mac.';
 //print_object($response);
 //print_object($usage);
 
-$BOT = new bot(18);
+$BOT = new bot(53);
 
 $params = json_decode($BOT->get_bot_parameters_json());
 
-$result = criabot::chat_send(
-    '9f1fd155-33d2-4fed-ba40-16c5755ba71e',
-    'How do I apply for OSAP?');
+$result = criadex::query($params->llm_model_id,$system_message,$prompt, 1024);
 
-print_object($result);
+//print_object($result);
+
+$json = $result->response->message->content;
+print_object(json_decode($json ));
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

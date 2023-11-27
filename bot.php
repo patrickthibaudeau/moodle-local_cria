@@ -25,6 +25,7 @@ if ($id) {
 
 } else {
     $formdata = new stdClass();
+    $formdata->model_id = false;
     $formdata->requires_user_prompt = 1;
     $formdata->requires_content_prompt = 1;
     $formdata->temperature = 0.1;

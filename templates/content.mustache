@@ -1,39 +1,122 @@
-<div class="row mt-2">
+<div class="row">
     <div class="col">
-        <div class="card">
-            <h3 class="card-header">
-                <a href="add_content.php?bot_id={{bot_id}}" class="btn btn-outline-primary float-right">
-                {{#str}}add_content, local_cria{{/str}}
-                </a>
-                <a href="bot_config.php" class="btn btn-outline-primary float-right mr-1">
-                    {{#str}}bots, local_cria{{/str}}
-                </a>
+        <ul class="nav nav-tabs" id="cria-content-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button
+                        class="nav-link active"
+                        id="documents-tab"
+                        data-toggle="tab"
+                        data-target="#documents"
+                        type="button"
+                        role="tab"
+                        aria-controls="documents"
+                        aria-selected="true">
+                {{#str}}documents, local_cria{{/str}}
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button
+                        class="nav-link"
+                        id="intents-tab"
+                        data-toggle="tab"
+                        data-target="#intents"
+                        type="button"
+                        role="tab"
+                        aria-controls="intents"
+                        aria-selected="false">
+                {{#str}}intents, local_cria{{/str}}
+                </button>
+            </li>
+        </ul>
+        <div class="tab-content" id="cria-content-tab-content">
+            <div class="tab-pane fade show active" id="documents" role="tabpanel" aria-labelledby="documents-tab">
+                <div class="card">
+                    <h3 class="card-header">
+                        <div class="col">
+                            <h3 class="float-left">{{#str}}documents, local_cria{{/str}}</h3>
+                        </div>
+                        <div class="col">
+                            <a href="add_content.php?bot_id={{bot_id}}" class="btn btn-outline-primary float-right">
+                            {{#str}}add_document, local_cria{{/str}}
+                            </a>
 
-            </h3>
-            <div class="card-body">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>{{#str}}name, local_cria{{/str}}</th>
-                            <th>{{#str}}actions, local_cria{{/str}}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{#files}}
-                        <tr>
-                            <td>{{name}}</td>
-                            <td>
-                                <a href="add_content.php?id={{id}}&bot_id={{bot_id}}" class="btn btn-outline-primary">
-                                    {{#str}}update, local_cria{{/str}}
-                                </a>
-                                <button class="btn btn-outline-danger delete-content" data-id="{{id}}">
-                                    {{#str}}delete, local_cria{{/str}}
-                                </button>
-                            </td>
-                        </tr>
-                        {{/files}}
-                    </tbody>
-                    </table>
+                            <a href="bot_config.php" class="btn btn-outline-primary float-right mr-1">
+                                {{#str}}bots, local_cria{{/str}}
+                            </a>
+                        </div>
+                    </h3>
+                    <div class="card-body">
+                        <table id="cira-documents-table" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>{{#str}}name, local_cria{{/str}}</th>
+                                <th>{{#str}}actions, local_cria{{/str}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#files}}
+                                <tr>
+                                    <td>{{name}}</td>
+                                    <td>
+                                        <a href="add_content.php?id={{id}}&bot_id={{bot_id}}" class="btn btn-outline-primary">
+                                        {{#str}}update, local_cria{{/str}}
+                                        </a>
+                                        <button class="btn btn-outline-danger delete-content" data-id="{{id}}">
+                                            {{#str}}delete, local_cria{{/str}}
+                                        </button>
+                                    </td>
+                                </tr>
+                            {{/files}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="intents" role="tabpanel" aria-labelledby="intents-tab">
+                <div class="card">
+                    <h3 class="card-header">
+                        <div class="col">
+                            <h3 class="float-left">{{#str}}intents, local_cria{{/str}}</h3>
+                        </div>
+                        <div class="col">
+                            <a href="edit_intent.php?bot_id={{bot_id}}" class="btn btn-outline-primary float-right">
+                            {{#str}}add_intent, local_cria{{/str}}
+                            </a>
+
+                            <a href="bot_config.php" class="btn btn-outline-primary float-right mr-1">
+                                {{#str}}bots, local_cria{{/str}}
+                            </a>
+                        </div>
+                    </h3>
+                    <div class="card-body">
+                        <table id="cira-intentss-table" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>{{#str}}name, local_cria{{/str}}</th>
+                                <th>{{#str}}actions, local_cria{{/str}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {{#intents}}
+                                <tr>
+                                    <td>{{name}}</td>
+                                    <td>
+                                        <a href="edit_intent.php?id={{id}}&bot_id={{bot_id}}" class="btn btn-outline-primary">
+                                        {{#str}}update, local_cria{{/str}}
+                                        </a>
+                                        <a href="intent_questions.php?intent_id={{id}}&bot_id={{bot_id}}" class="btn btn-outline-primary">
+                                        {{#str}}questions, local_cria{{/str}}
+                                        </a>
+                                        <button class="btn btn-outline-danger delete-intent" data-id="{{id}}">
+                                            {{#str}}delete, local_cria{{/str}}
+                                        </button>
+                                    </td>
+                                </tr>
+                            {{/intents}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

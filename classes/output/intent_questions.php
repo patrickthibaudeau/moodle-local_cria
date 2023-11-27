@@ -16,18 +16,18 @@
 namespace local_cria\output;
 
 use local_cria\files;
-use local_cria\intents;
+use local_cria\intent;
 
-class content implements \renderable, \templatable
+class intent_questions implements \renderable, \templatable
 {
     /**
      * @var int
      */
-    private $bot_id;
+    private $intent_id;
 
-    public function __construct($bot_id)
+    public function __construct($intent_id)
     {
-        $this->bot_id = $bot_id;
+        $this->intent_id = $intent_id;
     }
 
     /**
@@ -42,20 +42,16 @@ class content implements \renderable, \templatable
     {
         global $USER, $CFG, $DB;
 
-        $FILES = new files($this->bot_id);
-        $INTENTS = new intents($this->bot_id);
-        $intents = array_values($INTENTS->get_records());
+        $INTENT = new intent($this->intent_id);
 
-        $files = $FILES->get_records();
-        $files = array_values($files);
-        $word_count = str_word_count($FILES->concatenate_content());
         $data = [
-            'bot_id' => $this->bot_id,
-            'bot_name' => $FILES->get_bot_name(),
-            'files' => $files,
-            'intents' => $intents,
-            'word_count' => $word_count,
+            'intent_id' => $this->intent_id,
+            'bot_id' => $INTENT->get_bot_id(),
+            'intent_name' => $INTENT->get_name(),
+            'questions' => $INTENT->get_questions(),
         ];
+
+        print_object($data);
         return $data;
     }
 
