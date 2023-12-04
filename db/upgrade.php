@@ -776,5 +776,91 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023112604, 'local', 'cria');
     }
 
+    if ($oldversion < 2023112700) {
+
+        // Define field published to be added to local_cria_question.
+        $table = new xmldb_table('local_cria_question');
+        $field = new xmldb_field('published', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'answer');
+
+        // Conditionally launch add field published.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112700, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023112701) {
+
+        // Define field indexed to be added to local_cria_question_example.
+        $table = new xmldb_table('local_cria_question_example');
+        $field = new xmldb_field('indexed', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'value');
+
+        // Conditionally launch add field indexed.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023112701, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023120400) {
+
+        // Define field default to be added to local_cria_intents.
+        $table = new xmldb_table('local_cria_intents');
+        $field = new xmldb_field('is_default', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'bot_id');
+
+        // Conditionally launch add field default.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+         // Define field child_bots to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('child_bots', XMLDB_TYPE_TEXT, null, null, null, null, null, 'theme_color');
+
+        // Conditionally launch add field child_bots.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023120400, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023120401) {
+
+        // Define field fine_tunning to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('fine_tuning', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'child_bots');
+
+        // Conditionally launch add field fine_tunning.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023120401, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023120403) {
+
+        // Define field bot_api_key to be added to local_cria_intents.
+        $table = new xmldb_table('local_cria_intents');
+        $field = new xmldb_field('bot_api_key', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'is_default');
+
+        // Conditionally launch add field bot_api_key.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023120403, 'local', 'cria');
+    }
+
+
+
     return true;
 }

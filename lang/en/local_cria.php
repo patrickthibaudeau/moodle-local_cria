@@ -78,6 +78,10 @@ $string['existing_bot_models'] = 'Existing models';
 $string['existing_bot_types'] = 'Existing bot types';
 $string['cria_suite'] = 'Cria Suite';
 $string['file'] = 'File';
+$string['fine_tuning'] = 'Fine-tuning';
+$string['fine_tuning_help'] = 'Fine-tuning will provide you with extra parameters to fine-tune your model. It will also' .
+    ' allow you to separate your content into categories making your bot more precise and accurate.' .
+    ' This is an advanced feature and should only be used if you know what you are doing.';
 $string['gpt_cost'] = 'GPT cost?';
 $string['gpt_cost_help'] = 'Cost of GPT based per 1000 tokens';
 $string['groups'] = 'Groups';

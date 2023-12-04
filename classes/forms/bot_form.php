@@ -173,6 +173,23 @@ class bot_form extends \moodleform
             'client'
         );
 
+        // Add fine_tuning element
+        $mform->addElement(
+            'selectyesno',
+            'fine_tuning',
+            get_string('fine_tuning', 'local_cria')
+        );
+        $mform->setType(
+            'fine_tuning',
+            PARAM_INT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'fine_tuning',
+            'fine_tuning',
+            'local_cria'
+        );
+
         // Display default param buttons
         if ($formdata->model_id) {
             $mform->addElement(
@@ -209,114 +226,160 @@ class bot_form extends \moodleform
         );
 
 
+//        if (has_capability('local/cria:view_advanced_bot_options', $context)) {
+        // Max tokens form element
+        $mform->addElement(
+            'text',
+            'max_tokens',
+            get_string('max_tokens', 'local_cria'),
+            ['style' => 'width: 100px;']
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'max_tokens',
+            'max_tokens',
+            'local_cria'
+        );
+        // Hide element unless fine_tuning is set to 1
+        $mform->hideIf(
+            'max_tokens',
+            'fine_tuning',
+            'eq',
+            0
+        );
 
-        if (has_capability('local/cria:view_advanced_bot_options', $context)) {
-            // Max tokens form element
-            $mform->addElement(
-                'text',
-                'max_tokens',
-                get_string('max_tokens', 'local_cria'),
-                ['style' => 'width: 100px;']
-            );
-            // Add help button
-            $mform->addHelpButton(
-                'max_tokens',
-                'max_tokens',
-                'local_cria'
-            );
-            // temperature form element
-            $mform->addElement(
-                'text',
-                'temperature',
-                get_string('temperature', 'local_cria'),
-                ['style' => 'width: 100px;']
-            );
-            // Add help button
-            $mform->addHelpButton(
-                'temperature',
-                'temperature',
-                'local_cria'
-            );
-            // top_p form element
-            $mform->addElement(
-                'text',
-                'top_p',
-                get_string('top_p', 'local_cria'),
-                ['style' => 'width: 100px;']
-            );
-            // Add help button
-            $mform->addHelpButton(
-                'top_p',
-                'top_p',
-                'local_cria'
-            );
-            // top_k form element
-            $mform->addElement(
-                'text',
-                'top_k',
-                get_string('top_k', 'local_cria'),
-                ['style' => 'width: 100px;']
-            );
-            // Add help button
-            $mform->addHelpButton(
-                'top_k',
-                'top_k',
-                'local_cria'
-            );
-            // Minimum relevance form element
-            $mform->addElement(
-                'text',
-                'min_relevance',
-                get_string('min_relevance', 'local_cria'),
-                ['style' => 'width: 100px;']
-            );
-            // Add help button
-            $mform->addHelpButton(
-                'min_relevance',
-                'min_relevance',
-                'local_cria'
-            );
-            // Max context form element
-            $mform->addElement(
-                'text',
-                'max_context',
-                get_string('max_context', 'local_cria'),
-                ['style' => 'width: 100px;']
-            );
-            // Add help button
-            $mform->addHelpButton(
-                'max_context',
-                'max_context',
-                'local_cria'
-            );
+        // temperature form element
+        $mform->addElement(
+            'text',
+            'temperature',
+            get_string('temperature', 'local_cria'),
+            ['style' => 'width: 100px;']
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'temperature',
+            'temperature',
+            'local_cria'
+        );
+        // Hide element unless fine_tuning is set to 1
+        $mform->hideIf(
+            'temperature',
+            'fine_tuning',
+            'eq',
+            0
+        );
 
-        } else {
-            // Set all elements to hidden
-            $mform->addElement(
-                'hidden',
-                'max_tokens'
-            );
-            $mform->addElement(
-                'hidden',
-                'temperature'
-            );
-            $mform->addElement(
-                'hidden',
-                'top_p'
-            );
-            $mform->addElement(
-                'hidden',
-                'top_k'
-            );
-            $mform->addElement(
-                'hidden',
-                'min_relevance'
-            );
-            $mform->addElement(
-                'hidden',
-                'max_context'
-            );
-        }
+        // top_p form element
+        $mform->addElement(
+            'text',
+            'top_p',
+            get_string('top_p', 'local_cria'),
+            ['style' => 'width: 100px;']
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'top_p',
+            'top_p',
+            'local_cria'
+        );
+        // Hide element unless fine_tuning is set to 1
+        $mform->hideIf(
+            'top_p',
+            'fine_tuning',
+            'eq',
+            0
+        );
+
+        // top_k form element
+        $mform->addElement(
+            'text',
+            'top_k',
+            get_string('top_k', 'local_cria'),
+            ['style' => 'width: 100px;']
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'top_k',
+            'top_k',
+            'local_cria'
+        );
+        // Hide element unless fine_tuning is set to 1
+        $mform->hideIf(
+            'top_k',
+            'fine_tuning',
+            'eq',
+            0
+        );
+
+        // Minimum relevance form element
+        $mform->addElement(
+            'text',
+            'min_relevance',
+            get_string('min_relevance', 'local_cria'),
+            ['style' => 'width: 100px;']
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'min_relevance',
+            'min_relevance',
+            'local_cria'
+        );
+        // Hide element unless fine_tuning is set to 1
+        $mform->hideIf(
+            'min_relevance',
+            'fine_tuning',
+            'eq',
+            0
+        );
+
+        // Max context form element
+        $mform->addElement(
+            'text',
+            'max_context',
+            get_string('max_context', 'local_cria'),
+            ['style' => 'width: 100px;']
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'max_context',
+            'max_context',
+            'local_cria'
+        );
+        // Hide element unless fine_tuning is set to 1
+        $mform->hideIf(
+            'max_context',
+            'fine_tuning',
+            'eq',
+            0
+        );
+
+//        } else {
+//            // Set all elements to hidden
+//            $mform->addElement(
+//                'hidden',
+//                'max_tokens'
+//            );
+//            $mform->addElement(
+//                'hidden',
+//                'temperature'
+//            );
+//            $mform->addElement(
+//                'hidden',
+//                'top_p'
+//            );
+//            $mform->addElement(
+//                'hidden',
+//                'top_k'
+//            );
+//            $mform->addElement(
+//                'hidden',
+//                'min_relevance'
+//            );
+//            $mform->addElement(
+//                'hidden',
+//                'max_context'
+//            );
+//        }
 
         $mform->addElement(
             'html',

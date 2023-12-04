@@ -50,7 +50,7 @@ if ($mform->is_cancelled()) {
         // Create new bot object so that new parmaeters can be used.
         $UPDATED_BOT = new bot($data->id);
         if ($UPDATED_BOT->use_bot_server()) {
-            $UPDATED_BOT->update_bot_on_bot_server();
+            $UPDATED_BOT->update_bot_on_bot_server($UPDATED_BOT->get_default_intent_id());
         }
 
     } else {
@@ -59,11 +59,6 @@ if ($mform->is_cancelled()) {
         $id = $BOT->insert_record($data);
         // Unset existing bot object
         unset($bot);
-        // Create new bot object so that new parmaeters can be used.
-        $NEW_BOT = new bot($id);
-        if ($NEW_BOT->use_bot_server()) {
-            $NEW_BOT->create_bot_on_bot_server();
-        }
     }
 
 

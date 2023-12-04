@@ -11,10 +11,14 @@
                 {{#examples}}
                     <tr>
                         <td>
-                            <div class="example-question" style="cursor: pointer;"
+                            <div class="example-question" style="cursor: pointer;" contenteditable="true"
                                  data-id="{{id}}">{{value}}</div>
                         </td>
                         <td>
+                            {{^indexed}}
+                            <span class="badge badge-pill badge-warning">Unpublished</span>
+                            {{/indexed}}
+
                             <button class="btn btn-outline-danger delete-question" data-id="{{id}}">
                                 {{#str}}delete, local_cria{{/str}}
                             </button>

@@ -189,6 +189,17 @@ class bot extends crud
 
     /**
      *
+     * @var string
+     */
+    private $child_bots;
+
+    /**
+     * @var int
+     */
+    private $fine_tuning;
+
+    /**
+     *
      *
      */
     public function __construct($id = 0)
@@ -235,6 +246,8 @@ class bot extends crud
         $this->minimum_relevance = $result->minimum_relevance ?? 0;
         $this->max_context = $result->max_context ?? 0;
         $this->no_context_message = $result->no_context_message ?? '';
+        $this->child_bots = $result->child_bots ?? '';
+        $this->fine_tuning = $result->fine_tuning ?? 0;
     }
 
     /**
@@ -390,7 +403,33 @@ class bot extends crud
     }
 
     /**
+     * @return string
+     */
+    public function get_child_bots(): string
+    {
+        return $this->child_bots;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_fine_tuning(): int
+    {
+        return $this->fine_tuning;
+    }
+
+    /**
+     * Return child_bots as an array
+     * @return array
+     */
+    public function get_child_bots_array(): array
+    {
+        return json_decode($this->child_bots);
+    }
+
+    /**
      *  Return paramaters for the bot
+     * These parameters are used to create the bot on the bot server
      * @return String
      */
     public function get_bot_parameters_json(): string
@@ -410,6 +449,43 @@ class bot extends crud
             '"embedding_model_id": ' . $EMBEDDING_MODEL->get_criadex_model_id() .
             '}';
         return $params;
+    }
+
+    /**
+     * Insert record into selected table
+     * @param object $data
+     * @global \stdClass $USER
+     * @global \moodle_database $DB
+     */
+    public function insert_record($data): int
+    {
+        global $DB, $USER;
+
+        if (!isset($data->timecreated)) {
+            $data->timecreated = time();
+        }
+
+        if (!isset($data->imemodified)) {
+            $data->timemodified = time();
+        }
+
+        //Set user
+        $data->usermodified = $USER->id;
+
+        $id = $DB->insert_record($this->table, $data);
+
+        // Create intents for this bot
+        $INTENT = new intent();
+        $params = new \stdClass();
+        $params->bot_id = $id;
+        $params->is_default = 1;
+        $params->name = 'General';
+        $params->description = 'General intent for bot.';
+        $params->published = 1;
+        // Insert record. Bot will be created automaitcally on bot server.
+        $intent_id = $INTENT->insert_record($params);
+
+        return $id;
     }
 
     /**
@@ -604,13 +680,25 @@ class bot extends crud
     }
 
     /**
+     * Get default intent id for this bot
+     * @return int
+     */
+    public function get_default_intent_id(): int
+    {
+        global $DB;
+        $intent = $DB->get_record('local_cria_intents', ['bot_id' => $this->id, 'is_default' => 1], 'id');
+        return $intent->id ?? 0;
+    }
+
+    /**
+     * @param $intent_id int
      * @return void
-     * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function create_bot_on_bot_server()
+    public function create_bot_on_bot_server($intent_id)
     {
-        criabot::bot_create((string)$this->id, $this->get_bot_parameters_json());
+        // Bot names are fomratted as bot_id-intent_id
+        criabot::bot_create($this->id . '-' . $intent_id, $this->get_bot_parameters_json());
     }
 
     /**
@@ -618,14 +706,22 @@ class bot extends crud
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function update_bot_on_bot_server()
+    public function update_bot_on_bot_server($intent_id)
     {
-        $bot_exists = criabot::bot_about($this->id);
+        $bot_exists = criabot::bot_about($this->id . '-' . $intent_id);
         $update = false;
         if ($bot_exists->status == 404) {
-            $result = criabot::bot_create((string)$this->id, $this->get_bot_parameters_json());
+            //Create intent
+            $INTENT = new intent();
+            $data = new \stdClass();
+            $data->bot_id = $this->id;
+            $data->is_default = 1;
+            $data->name = 'General';
+            $data->description = 'General intent for bot.';
+            $data->published = 1;
+            $intent_id = $INTENT->insert_record($data);
         } else {
-            $result = criabot::bot_update((string)$this->id, $this->get_bot_parameters_json());
+            $result = criabot::bot_update($this->id . '-' . $intent_id, $this->get_bot_parameters_json());
             $update = true;
         }
         if ($result->status == 200) {
@@ -634,7 +730,7 @@ class bot extends crud
                 $INTENTS = new intents($this->id);
                 foreach ($INTENTS->get_records() as $intent) {
                     $INTENT = new intent($intent->id);
-                    if ($INTENT->get_published()) {
+                    if ($INTENT->get_published() && $INTENT->get_default() == 0) {
                         $INTENT->update_intent_on_bot_server();
                     }
                 }

@@ -51,7 +51,7 @@ class test_bot implements \renderable, \templatable
 
         $chat_id = 0;
         if ($BOT->use_bot_server()) {
-            $session = criabot::chat_start($this->bot_id);
+            $session = criabot::chat_start($this->bot_id . '-' . $BOT->get_default_intent_id());
             $chat_id = $session->chat_id;
         }
 

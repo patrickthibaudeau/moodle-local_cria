@@ -47,7 +47,7 @@ class bot_app implements \renderable, \templatable
 
         $chat_id = 0;
         if ($BOT->use_bot_server()) {
-            $session = cria::start_chat($this->bot_id);
+            $session = cria::start_chat($this->bot_id . '-' . $BOT->get_default_intent_id());
             $chat_id = $session->chat_id;
         }
 
