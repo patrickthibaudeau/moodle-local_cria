@@ -22,6 +22,7 @@ class base
     // Set constant for buttons
     const CONTEXT_TONE = 'TONE';
     const CONTEXT_LENGTH = 'LENGTH';
+
     /**
      * Creates the Moodle page header
      * @param string $url Current page url
@@ -295,5 +296,75 @@ class base
 
         $out = str_replace('%%', '%', $out);
         return $out;
+    }
+
+    /**
+     * Returns the list of faculties
+     * @return array
+     */
+    public static function get_faculties()
+    {
+        global $CFG;
+        $config = get_config('local_cria');
+        $faculty_settings = explode("\n", $config->faculties);
+        $faculties = [];
+        $faculties[''] = get_string('all', 'local_cria');
+        foreach ($faculty_settings as $faculty) {
+            $faculty = explode('|', $faculty);
+            $faculties[$faculty[0]] = $faculty[1];
+        }
+        return $faculties;
+    }
+
+    /**
+     * Returns the list of programs
+     * @return array
+     */
+    public static function get_programs()
+    {
+        global $CFG;
+        $config = get_config('local_cria');
+        $program_settings = explode("\n", $config->programs);
+        $programs = [];
+        $programs[''] = get_string('all', 'local_cria');
+        foreach ($program_settings as $program) {
+            $program = explode('|', $program);
+            $programs[$program[0]] = $program[1];
+        }
+        return $programs;
+    }
+
+    /**
+     * Returns the list of languages
+     * @return array
+     */
+    public static function get_languages()
+    {
+        global $CFG;
+        $config = get_config('local_cria');
+        $language_settings = explode("\n", $config->languages);
+        $languages = [];
+        $languages[''] = get_string('all', 'local_cria');
+        foreach ($language_settings as $language) {
+            $language = explode('|', $language);
+            $languages[$language[0]] = $language[1];
+        }
+        return $languages;
+    }
+
+    /**
+     * Check to see if port is open
+     * @param $host
+     * @param $port
+     * @return bool
+     */
+    public static function is_port_open($host, $port) {
+        $fp = fsockopen($host, $port, $errno, $errstr, 1);
+        if ($fp) {
+            fclose($fp);
+            return true; // Port is open
+        } else {
+            return false; // Port is closed
+        }
     }
 }

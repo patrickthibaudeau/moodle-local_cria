@@ -241,7 +241,7 @@ function xmldb_local_cria_upgrade($oldversion) {
 
         // Adding fields to table local_cria_question.
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-        $table->add_field('intentid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0');
+        $table->add_field('intent_id', XMLDB_TYPE_INTEGER, '10', null, null, null, '0');
         $table->add_field('value', XMLDB_TYPE_TEXT, null, null, null, null, null);
         $table->add_field('lang', XMLDB_TYPE_CHAR, '10', null, null, null, 'en');
         $table->add_field('faculty', XMLDB_TYPE_CHAR, '50', null, null, null, null);
@@ -662,7 +662,7 @@ function xmldb_local_cria_upgrade($oldversion) {
 
         // Define field document_name to be added to local_cria_question.
         $table = new xmldb_table('local_cria_question');
-        $field = new xmldb_field('document_name', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'intentid');
+        $field = new xmldb_field('document_name', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'intent_id');
 
         // Conditionally launch add field document_name.
         if (!$dbman->field_exists($table, $field)) {
@@ -860,6 +860,64 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023120403, 'local', 'cria');
     }
 
+    if ($oldversion < 2023120404) {
+
+        // Define field lang to be added to local_cria_intents.
+        $table = new xmldb_table('local_cria_intents');
+        $field = new xmldb_field('lang', XMLDB_TYPE_CHAR, '5', null, null, null, 'en', 'published');
+
+        // Conditionally launch add field lang.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field faculty to be added to local_cria_intents.
+        $table = new xmldb_table('local_cria_intents');
+        $field = new xmldb_field('faculty', XMLDB_TYPE_CHAR, '10', null, null, null, null, 'lang');
+
+        // Conditionally launch add field faculty.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field program to be added to local_cria_intents.
+        $table = new xmldb_table('local_cria_intents');
+        $field = new xmldb_field('program', XMLDB_TYPE_CHAR, '50', null, null, null, null, 'faculty');
+
+        // Conditionally launch add field program.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023120404, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023120405) {
+
+        // Rename field bot_id on table local_cria_files to NEWNAMEGOESHERE.
+        $table = new xmldb_table('local_cria_files');
+        $field = new xmldb_field('bot_id', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'id');
+
+        // Launch rename field bot_id.
+        $dbman->rename_field($table, $field, 'intent_id');
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023120405, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023120406) {
+
+        // Rename field intent_id on table local_cria_question to NEWNAMEGOESHERE.
+        $table = new xmldb_table('local_cria_question');
+        $field = new xmldb_field('intentid', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'id');
+
+        // Launch rename field intent_id.
+        $dbman->rename_field($table, $field, 'intent_id');
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023120406, 'local', 'cria');
+    }
 
 
     return true;

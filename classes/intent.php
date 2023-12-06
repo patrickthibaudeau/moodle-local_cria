@@ -54,6 +54,22 @@ class intent extends crud
 
     /**
      *
+     * @var string
+     */
+    private $lang;
+
+    /**
+     * @var string
+     */
+    private $faculty;
+
+    /**
+     * @var string
+     */
+    private $program;
+
+    /**
+     *
      * @var int
      */
     private $usermodified;
@@ -104,6 +120,9 @@ class intent extends crud
         $this->bot_id = $result->bot_id ?? 0;
         $this->is_default = $result->is_default ?? 0;
         $this->published = $result->published ?? 0;
+        $this->lang = $result->lang ?? '';
+        $this->faculty = $result->faculty ?? '';
+        $this->program = $result->program ?? '';
         $this->usermodified = $result->usermodified ?? 0;
         $this->timecreated = $result->timecreated ?? 0;
         $this->timemodified = $result->timemodified ?? 0;
@@ -197,6 +216,15 @@ class intent extends crud
     }
 
     /**
+     * Get bot name
+     * @return string
+     */
+    public function get_bot_name(): string
+    {
+        return $this->bot_id . '-' . $this->id;
+    }
+
+    /**
      * @return int default
      */
     public function get_is_default(): int
@@ -212,6 +240,29 @@ class intent extends crud
         return $this->published;
     }
 
+    /**
+     * @return string lang
+     */
+    public function get_lang(): string
+    {
+        return $this->lang;
+    }
+
+    /**
+     * @return string faculty
+     */
+    public function get_faculty(): string
+    {
+        return $this->faculty;
+    }
+
+    /**
+     * @return string program
+     */
+    public function get_program(): string
+    {
+        return $this->program;
+    }
 
     /**
      *  Intent always uses bot parameters.
@@ -232,7 +283,7 @@ class intent extends crud
     public function get_questions(): mixed
     {
         global $DB;
-        if ($questions = $DB->get_records('local_cria_question', ['intentid' => $this->id], 'id')) {
+        if ($questions = $DB->get_records('local_cria_question', ['intent_id' => $this->id], 'id')) {
             return array_values($questions);
         }
         return false;

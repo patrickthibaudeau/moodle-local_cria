@@ -1,5 +1,5 @@
 <?php
-$plugin->version = 2023120403;
+$plugin->version = 2023120407;
 // Moodle version required
 $plugin->requires = 2022112800; //Moodle 4.1
 $plugin->maturity = MATURITY_RC;

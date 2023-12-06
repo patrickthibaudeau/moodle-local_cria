@@ -10,8 +10,11 @@ $string['add_provider'] = 'Add provider';
 $string['add_question'] = 'Add question';
 $string['add_type'] = 'Add type';
 $string['advanced_settings'] = 'Advanced settings';
+$string['all'] = 'All';
 $string['answer'] = 'Answer';
+$string['audience'] = 'Audience';
 $string['auto_test'] = 'Auto-Test';
+$string['automated_tasks'] = 'Automated tasks';
 $string['assign_users'] = 'Assign users';
 $string['ask_a_question'] = 'Ask a question';
 $string['azure_api_version'] = 'Azure OpenAI api version';
@@ -77,6 +80,12 @@ $string['existing_bots'] = 'Existing bots';
 $string['existing_bot_models'] = 'Existing models';
 $string['existing_bot_types'] = 'Existing bot types';
 $string['cria_suite'] = 'Cria Suite';
+$string['faculties'] = 'Faculties';
+$string['faculties_help'] = 'One line per faculty. Each line must be in the following format:<br>' .
+    '<b>Faculty acronymn</b> pipe (|) <b>Faculty name</b> <br><br>' .
+    'Example:<br>' .
+    'ED|Faculty of Education';
+$string['faculty'] = 'Faculty';
 $string['file'] = 'File';
 $string['fine_tuning'] = 'Fine-tuning';
 $string['fine_tuning_help'] = 'Fine-tuning will provide you with extra parameters to fine-tune your model. It will also' .
@@ -94,6 +103,11 @@ $string['ip'] = 'IP';
 $string['is_embedding'] = 'This is an embedding model';
 $string['intent'] = 'Intent';
 $string['intents'] = 'Intents';
+$string['languages'] = 'Languages';
+$string['languages_help'] = 'One line per language. Each line must be in the following format:<br>' .
+    '<b>Language code</b> pipe (|) <b>Language name</b> <br><br>' .
+    'Example:<br>' .
+    'en|English';
 $string['llm_models'] = 'LLM models';
 $string['logs'] = 'Logs';
 $string['logs_for'] = 'Logs for';
@@ -109,6 +123,7 @@ $string['model_max_tokens_help'] = 'Maximum number of tokens this model can gene
     '<br> For GPT-4-32k: 32768.';
 $string['model_name'] = 'Model name';
 $string['name'] = 'Name';
+$string['new_category'] = 'New category';
 $string['new_role'] = 'New role';
 $string['no_context_message'] = 'No results message';
 $string['paste_text'] = 'Paste your text here';
@@ -117,6 +132,12 @@ $string['plugin_path'] = 'Plugin path';
 $string['pluginname'] = 'Cria';
 $string['privacy:metadata'] = 'This plugin stores no personal data.';
 $string['process'] = 'Process';
+$string['program'] = 'Program';
+$string['programs'] = 'Programs';
+$string['programs_help'] = 'One line per program. Each line must be in the following format:<br>' .
+    '<b>Program acronymn</b> pipe (|) <b>Program name</b> <br><br>' .
+    'Example:<br>' .
+    'BEd|Bachelor of Education';
 $string['prompt'] = 'Prompt';
 $string['prompt_cost'] = 'Prompt cost';
 $string['prompt_settings'] = 'Prompt settings';
@@ -216,9 +237,9 @@ $string['criabot_url_help'] = 'Enter the URL for the CriaBot instance you are co
 $string['criadex_url'] = 'CriaDex URL';
 $string['criadex_url_help'] = 'Enter the URL for the CriaDex instance you are connecting too.';
 $string['criadex_api_key'] = 'CriaDex API key';
-$string['criadex_api_key_help'] = 'Enter the API key for the CriaDex instance you are connecting too. Note: MUST BE A MASTER KEY';
-
-
+$string['criadex_api_key_help'] = 'Enter the API key for the CriaDex instance you are connecting too. ' .
+    'Note: MUST BE A MASTER KEY<br> ' .
+    '<a href="/local/cria/test-cria.php" class="btn btn-outline-primary btn-sm" target="_blank">Test Criaconnection</a>';
 // MinutesMaster
 $string['convert'] = 'Convert';
 $string['date'] = 'Date';

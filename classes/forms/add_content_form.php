@@ -27,6 +27,17 @@ class add_content_form extends \moodleform
             'id',
             PARAM_INT
         );
+        // Intent id
+        $mform->addElement(
+            'hidden',
+            'intent_id'
+        );
+        $mform->setType(
+            'intent_id',
+            PARAM_INT
+        );
+
+        //bot_id
         $mform->addElement(
             'hidden',
             'bot_id'

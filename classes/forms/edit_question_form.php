@@ -36,10 +36,10 @@ class edit_question_form extends \moodleform
         // Add itentid element to form
         $mform->addElement(
             'hidden',
-            'intentid'
+            'intent_id'
         );
         $mform->setType(
-            'intentid',
+            'intent_id',
             PARAM_INT
         );
 
@@ -95,6 +95,51 @@ class edit_question_form extends \moodleform
             'required',
             null,
             'client'
+        );
+
+        $mform->addElement(
+            'html',
+        '<h3>' . get_string('audience', 'local_cria') . '</h3>'
+        );
+        // Lang form element
+        $mform->addElement(
+            'select',
+            'lang',
+            get_string('language', 'local_cria'),
+            base::get_languages()
+        );
+        $mform->setType(
+            'lang',
+            PARAM_TEXT
+        );
+
+        // Faculty form element
+        $mform->addElement(
+            'select',
+            'faculty',
+            get_string('faculty', 'local_cria'),
+            base::get_faculties()
+        );
+        $mform->setType(
+            'faculty',
+            PARAM_TEXT
+        );
+
+        // Programs form element
+        $mform->addElement(
+            'select',
+            'program',
+            get_string('program', 'local_cria'),
+            base::get_programs()
+        );
+        $mform->setType(
+            'program',
+            PARAM_TEXT
+        );
+
+        $mform->addElement(
+            'html',
+            '<h3>' . get_string('automated_tasks', 'local_cria') . '</h3>'
         );
 
         // Ask if user wnats to create automatic example questions

@@ -69,9 +69,9 @@ class local_cria_external_content extends external_api {
         $FILE = new file($id);
         // Delete file from indexing server
         $result = criabot::document_delete($FILE->get_bot_id(), $FILE->get_name());
+        // Delete file from database
+        $DB->delete_records('local_cria_files', array('id' => $id));
         if ($result->status == 200) {
-            // Delete file from database
-            $DB->delete_records('local_cria_files', array('id' => $id));
             return $result->status;
         } else {
             $error = 'Status: ' . $result->status .
@@ -79,9 +79,6 @@ class local_cria_external_content extends external_api {
                 ' Message: ' . $result->message;
             return  $error;
         }
-
-
-
     }
 
     /**

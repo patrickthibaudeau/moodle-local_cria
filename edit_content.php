@@ -16,7 +16,7 @@ $context = CONTEXT_SYSTEM::instance();
 
 require_login(1, false);
 // Get content id
-$id= required_param('id', PARAM_INT);
+$id= required_param('intent_id', PARAM_INT);
 
 $FILES = new file($id);
 

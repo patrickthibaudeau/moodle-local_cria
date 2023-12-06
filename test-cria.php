@@ -35,20 +35,33 @@ $context = context_system::instance();
 //**********************
 echo $OUTPUT->header();
 
-$system_message = 'You are a bot that writes example questions based on a question provided';
-$prompt = '[question]How do I apply for university?[/question]';
-$prompt .= '[instructions]Write 5 rephrased examples questions based on the content in [question]. return each question in the follwoing JSON format. [{"question": your answer},{"question": your answer}][/instructions]';
+$config = get_config('local_cria');
+// Get Cria url settings
+$criadex_url_setting = $config->criadex_url;
+$criabot_url_setting = $config->criabot_url;
+// Convert into array
+$criadex_params = explode(':', $criadex_url_setting);
+$criabot_params = explode(':', $criabot_url_setting);
+// Create URL from array
+$criadex_url = $criadex_params[0] . ':' . $criadex_params[1];
+$criadex_port = $criadex_params[2];
+$criabot_url = $criabot_params[0] . ':' . $criabot_params[1];
+$criabot_port = $criabot_params[2];
 
-//$results  = criadex::query(3,$system_message,$prompt);
-//
-//$response = $results->response->message->content;
-//$usage = $results->response->raw->usage;
-//
-//print_object($results);
-//print_object($response);
-//print_object($usage);
 
-print_object(base::get_faculties());
+if (base::is_port_open($criadex_url, $criadex_port)) {
+    \core\notification::success('Criadex server is running on ' . $criadex_url . ':' . $criadex_port);
+} else {
+    \core\notification::error('Criadex server is not running on ' . $criadex_url . ':' . $criadex_port);
+}
+
+
+if (base::is_port_open($criabot_url, $criabot_port)) {
+    \core\notification::success('Cria bot server is running on ' . $criabot_url . ':' . $criabot_port);
+} else {
+    \core\notification::error('Cria bot server is not running on ' . $criabot_url . ':' . $criabot_port);
+};
+
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

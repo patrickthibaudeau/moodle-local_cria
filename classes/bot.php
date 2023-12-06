@@ -730,7 +730,7 @@ class bot extends crud
                 $INTENTS = new intents($this->id);
                 foreach ($INTENTS->get_records() as $intent) {
                     $INTENT = new intent($intent->id);
-                    if ($INTENT->get_published() && $INTENT->get_default() == 0) {
+                    if ($INTENT->get_published() && $INTENT->get_is_default() == 0) {
                         $INTENT->update_intent_on_bot_server();
                     }
                 }

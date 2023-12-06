@@ -15,6 +15,7 @@
 
 namespace local_cria\output;
 
+use local_cria\bot;
 use local_cria\files;
 use local_cria\intents;
 
@@ -25,10 +26,17 @@ class content implements \renderable, \templatable
      */
     private $bot_id;
 
-    public function __construct($bot_id)
+    /**
+     * @var int
+     */
+    private $active_intent_id;
+
+    public function __construct($bot_id, $activer_intent_id = 0)
     {
         $this->bot_id = $bot_id;
+        $this->active_intent_id = $activer_intent_id;
     }
+
 
     /**
      *
@@ -41,21 +49,19 @@ class content implements \renderable, \templatable
     public function export_for_template(\renderer_base $output)
     {
         global $USER, $CFG, $DB;
-
-        $FILES = new files($this->bot_id);
+        $BOT = new bot($this->bot_id);
+        if ($this->active_intent_id == 0) {
+            $this->active_intent_id = $BOT->get_default_intent_id();
+        }
         $INTENTS = new intents($this->bot_id);
-        $intents = array_values($INTENTS->get_records());
+        $intents = array_values($INTENTS->get_records_with_related_data($this->active_intent_id));
 
-        $files = $FILES->get_records();
-        $files = array_values($files);
-        $word_count = str_word_count($FILES->concatenate_content());
         $data = [
             'bot_id' => $this->bot_id,
-            'bot_name' => $FILES->get_bot_name(),
-            'files' => $files,
             'intents' => $intents,
-            'word_count' => $word_count,
+            'use_fine_tuning' => $BOT->get_fine_tuning(),
         ];
+
         return $data;
     }
 

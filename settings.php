@@ -58,6 +58,7 @@ if ($hassiteconfig) {
         '', PARAM_TEXT, 255
     ));
 
+
     //Embedding Server
     $settings->add( new admin_setting_configtext(
         'local_cria/embedding_server_url',
@@ -89,6 +90,32 @@ if ($hassiteconfig) {
         get_string('secondopinion_id_help', 'local_cria'),
         '', PARAM_INT, 10
     ));
+
+    // Supported languages
+    $settings->add( new admin_setting_configtextarea(
+        'local_cria/languages',
+        get_string('languages', 'local_cria'),
+        get_string('languages_help', 'local_cria'),
+        '', PARAM_TEXT, 255
+    ));
+
+    // Faculties
+    $settings->add( new admin_setting_configtextarea(
+        'local_cria/faculties',
+        get_string('faculties', 'local_cria'),
+        get_string('faculties_help', 'local_cria'),
+        '', PARAM_TEXT, 255
+    ));
+
+    // Programs
+    $settings->add( new admin_setting_configtextarea(
+        'local_cria/programs',
+        get_string('programs', 'local_cria'),
+        get_string('programs_help', 'local_cria'),
+        '', PARAM_TEXT, 255
+    ));
+
+
     $ADMIN->add('localplugins', $settings);
 
     // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf

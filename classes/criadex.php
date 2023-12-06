@@ -120,4 +120,51 @@ class criadex
             'POST'
         );
     }
+
+    // Index management
+
+    /**
+     * @param $index_name
+     * @param $model_id
+     * @param $embedding_model_id
+     * @param $type DOCUMENT or QUESTION
+     * @return mixed
+     * @throws \dml_exception
+     */
+    public static function index_create($index_name, $model_id, $embedding_model_id, $type = 'DOCUMENT') {
+        // Get config
+        $config = get_config('local_cria');
+        $data = '{
+            "type": "' . $type . '",' .
+            '"llm_model_id": ' . $model_id . ',' .
+            '"embedding_model_id": ' . $embedding_model_id . '}';
+        // Update model
+        print_object(json_decode($data));
+        return gpt::_make_call(
+            $config->criadex_url,
+            $config->criadex_api_key,
+            $data,
+            '/criadex/' . $index_name . '/create',
+            'POST'
+        );
+    }
+
+    /**
+     * @param $index_name
+     * @return mixed
+     * @throws \dml_exception
+     */
+    public static function index_about($index_name)
+    {
+        // Get config
+        $config = get_config('local_cria');
+        // Update model
+        return gpt::_make_call(
+            $config->criadex_url,
+            $config->criadex_api_key,
+            [],
+            '/criadex/' . $index_name . '/about',
+            'GET'
+        );
+    }
 }

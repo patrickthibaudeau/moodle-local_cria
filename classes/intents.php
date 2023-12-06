@@ -17,6 +17,11 @@ class intents {
 	private $results;
 
     /**
+     * @var int
+     */
+    private $bot_id;
+
+    /**
      * @var
      */
     private $table;
@@ -31,7 +36,7 @@ class intents {
 	    global $DB, $USER;
 
         $this->table = 'local_cria_intents';
-
+        $this->bot_id = $bot_id;
         $sql = "
         Select
             *,
@@ -52,6 +57,39 @@ class intents {
 	public function get_records(): array {
 	    return $this->results;
 	}
+
+    /**
+     * Get all intents with related documents and questions
+     */
+    public function get_records_with_related_data($active_intent_id): array {
+        global $DB;
+
+        $sql = "
+        Select
+            *
+        From
+            {local_cria_intents} as ci
+        Where 
+            ci.bot_id = ?
+        Order By
+             ci.name";
+        $results = $DB->get_records_sql($sql,[$this->bot_id]);
+
+
+        foreach($results as $r) {
+            if ($r->id == $active_intent_id) {
+                $r->active = true;
+            } else {
+                $r->active = false;
+            }
+            $r->documents = array_values($DB->get_records('local_cria_files', ['intent_id' => $r->id]));
+            $r->questions = array_values($DB->get_records('local_cria_question', ['intent_id' => $r->id]));
+
+        }
+
+        return array_values($results);
+    }
+
 
 	/**
 	  * Array to be used for selects

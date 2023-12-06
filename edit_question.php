@@ -13,7 +13,7 @@ global $CFG, $OUTPUT, $USER, $PAGE, $DB, $SITE;
 $context = CONTEXT_SYSTEM::instance();
 
 require_login(1, false);
-$intent_id = required_param('intentid',  PARAM_INT);
+$intent_id = required_param('intent_id',  PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
 
 $INTENT = new intent($intent_id);
@@ -28,7 +28,7 @@ if ($id != 0) {
 } else {
     $formdata = new stdClass();
     $formdata->id = 0;
-    $formdata->intentid = $INTENT->get_id();
+    $formdata->intent_id = $INTENT->get_id();
     $formdata->bot_id = $INTENT->get_bot_id();
     $formdata->examples = false;
     $formdata->create_example_questions = true;
@@ -39,7 +39,7 @@ if ($id != 0) {
 $mform = new \local_cria\edit_question_form(null, array('formdata' => $formdata));
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
-    redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $formdata->bot_id . '&tab=intents');
+    redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $formdata->bot_id);
 } else if ($data = $mform->get_data()) {
     $data->usermodified = $USER->id;
     $data->timemodified = time();
@@ -52,12 +52,12 @@ if ($mform->is_cancelled()) {
         $DB->update_record('local_cria_question', $data);
     }
     if ($data->create_example_questions == true) {
-        $INTENT = new intent($data->intentid);
+        $INTENT = new intent($data->intent_id);
         $INTENT->create_example_questions($data->id);
     }
 
     // Redirect to content page
-    redirect($CFG->wwwroot . '/local/cria/edit_question.php?id=' . $data->id . '&intentid=' . $data->intentid);
+    redirect($CFG->wwwroot . '/local/cria/edit_question.php?id=' . $data->id . '&intent_id=' . $data->intent_id);
 } else {
     // Show form
     $mform->set_data($mform);
