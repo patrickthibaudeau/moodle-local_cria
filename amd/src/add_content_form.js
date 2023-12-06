@@ -17,10 +17,10 @@ function process_content() {
         setTimeout(function () {
             $('#starting-process').hide();
             $('#almost-done').show();
-        }, 2000);
+        }, 4000);
         setTimeout(function () {
             $('#almost-done').hide();
             $('#process-complete').show();
-        }, 5000);
+        }, 20000);
     });
 }

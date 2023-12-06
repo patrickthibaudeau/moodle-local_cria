@@ -11,7 +11,8 @@ class criadex
      * @return mixed
      * @throws dml_exception
      */
-    public static function create_model($data) {
+    public static function create_model($data)
+    {
         // Get Config
         $config = get_config('local_cria');
         // Create model
@@ -29,7 +30,8 @@ class criadex
      * @param $data
      * @return void
      */
-    public static function update_model($model_id, $data) {
+    public static function update_model($model_id, $data)
+    {
         // Get config
         $config = get_config('local_cria');
         // Update model
@@ -37,7 +39,7 @@ class criadex
             $config->criadex_url,
             $config->criadex_api_key,
             $data,
-            '/azure/models/'. $model_id  . '/update',
+            '/azure/models/' . $model_id . '/update',
             'PATCH'
         );
     }
@@ -46,7 +48,8 @@ class criadex
      * @param $model_id
      * @return void
      */
-    public static function delete_model($model_id) {
+    public static function delete_model($model_id)
+    {
         // Get config
         $config = get_config('local_cria');
         // Update model
@@ -54,7 +57,7 @@ class criadex
             $config->criadex_url,
             $config->criadex_api_key,
             [],
-            '/azure/models/'. $model_id  . '/delete',
+            '/azure/models/' . $model_id . '/delete',
             'DELETE'
         );
     }
@@ -63,14 +66,15 @@ class criadex
      * @param $model_id
      * @return void
      */
-    public static function about_model($model_id) {
+    public static function about_model($model_id)
+    {
         // Get config
         $config = get_config('local_cria');
         // Update model
         return gpt::_make_call(
             $config->criadex_url,
             $config->criadex_api_key,
-            [], '/azure/models/'. $model_id  . '/about',
+            [], '/azure/models/' . $model_id . '/about',
             'GET'
         );
     }
@@ -92,7 +96,8 @@ class criadex
         $max_tokens = 512,
         $temperature = 0.1,
         $top_p = 0.1
-    ) {
+    )
+    {
         // Get config
         $config = get_config('local_cria');
         // Build data object
@@ -116,7 +121,7 @@ class criadex
             $config->criadex_url,
             $config->criadex_api_key,
             json_encode($data),
-            '/azure/models/'. $model_id  . '/query',
+            '/azure/models/' . $model_id . '/query',
             'POST'
         );
     }
@@ -131,7 +136,8 @@ class criadex
      * @return mixed
      * @throws \dml_exception
      */
-    public static function index_create($index_name, $model_id, $embedding_model_id, $type = 'DOCUMENT') {
+    public static function index_create($index_name, $model_id, $embedding_model_id, $type = 'DOCUMENT')
+    {
         // Get config
         $config = get_config('local_cria');
         $data = '{
@@ -164,6 +170,90 @@ class criadex
             $config->criadex_api_key,
             [],
             '/criadex/' . $index_name . '/about',
+            'GET'
+        );
+    }
+
+    /**
+     * @param $index_name string
+     * @param $api_key string
+     * @return mixed
+     * @throws \dml_exception
+     */
+    public static function index_authorization_create($index_name, $api_key)
+    {
+        // Get config
+        $config = get_config('local_cria');
+
+        // Update model
+        return gpt::_make_call(
+            $config->criadex_url,
+            $config->criadex_api_key,
+            '',
+            '/index_auth/' . $index_name . '/create?api_key=' . $api_key,
+            'POST'
+        );
+    }
+
+    /**
+     * @param $index_name string
+     * @param $api_key string
+     * @return mixed
+     * @throws \dml_exception
+     */
+    public static function index_authorization_check($index_name, $api_key)
+    {
+        // Get config
+        $config = get_config('local_cria');
+
+        // Update model
+        return gpt::_make_call(
+            $config->criadex_url,
+            $config->criadex_api_key,
+            '',
+            '/index_auth/' . $index_name . '/check?api_key=' . $api_key,
+            'GET'
+        );
+    }
+
+    /**
+     * @param $index_name string
+     * @param $api_key string
+     * @return mixed
+     * @throws \dml_exception
+     */
+    public static function index_authorization_delete($index_name, $api_key)
+    {
+        // Get config
+        $config = get_config('local_cria');
+
+        // Update model
+        return gpt::_make_call(
+            $config->criadex_url,
+            $config->criadex_api_key,
+            '',
+            '/index_auth/' . $index_name . '/delete?api_key=' . $api_key,
+            'DELETE'
+        );
+    }
+
+    /**
+     * @param $index_name string
+     * @param $api_key string
+     * @return mixed
+     * @throws \dml_exception
+     */
+    public static function index_authorization_list($api_key)
+    {
+        // Get config
+        $config = get_config('local_cria');
+
+        // Update model
+        return gpt::_make_call(
+            $config->criadex_url,
+            $config->criadex_api_key,
+            '',
+            '/index_auth/' . $api_key . '/list',
             'GET'
         );
     }

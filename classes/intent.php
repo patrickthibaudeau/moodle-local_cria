@@ -48,6 +48,12 @@ class intent extends crud
 
     /**
      *
+     * @var string
+     */
+    private $bot_api_key;
+
+    /**
+     *
      * @var int
      */
     private $published;
@@ -119,6 +125,7 @@ class intent extends crud
         $this->description = $result->description ?? '';
         $this->bot_id = $result->bot_id ?? 0;
         $this->is_default = $result->is_default ?? 0;
+        $this->bot_api_key = $result->bot_api_key ?? '';
         $this->published = $result->published ?? 0;
         $this->lang = $result->lang ?? '';
         $this->faculty = $result->faculty ?? '';
@@ -213,6 +220,14 @@ class intent extends crud
     public function get_bot_id(): int
     {
         return $this->bot_id;
+    }
+
+    /**
+     * @return String bot_api_key
+     */
+    public function get_bot_api_key(): string
+    {
+        return $this->bot_api_key;
     }
 
     /**

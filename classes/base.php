@@ -367,4 +367,80 @@ class base
             return false; // Port is closed
         }
     }
+
+    /**
+     * Create indexes if missing
+     * @param $bot_name string
+     * @return void
+     * @throws \dml_exception
+     */
+    public static function create_cria_indexes($bot_name) {
+        // Check to see that the document index exists in Criadex
+        $document_index = criadex::index_about($bot_name . '-document-index');
+        $question_index = criadex::index_about($bot_name . '-question-index');
+        $cache_index = criadex::index_about($bot_name . '-cache-index');
+        // Split bot_name to get bot_id and intent_id
+        $bot_intent_ids = explode('-', $bot_name);
+        $BOT = new bot($bot_intent_ids[0]);
+        // Get bot parameters
+        $bot_parameters = json_decode($BOT->get_bot_parameters_json());
+        // Create intent object
+        $INTENT = new intent($bot_intent_ids[1]);
+        $api_key = $INTENT->get_bot_api_key();
+        // If document index does not exist, create it
+        if ($document_index->status == 404) {
+            // Create index
+            $index = criadex::index_create(
+                $bot_name . '-document-index',
+                $bot_parameters->llm_model_id,
+                $bot_parameters->embedding_model_id,
+                'DOCUMENT'
+            );
+
+            // Check to see if Index authorization exists
+            $api_key_exists = criadex::index_authorization_check($bot_name . '-document-index', );
+            // If index authorization does not exist, create it
+            if ($api_key_exists != 200) {
+                criadex::index_authorization_create($bot_name . '-document-index', $api_key);
+            }
+        }
+
+        // If question index does not exist, create it
+        if ($question_index->status == 404) {
+            // Create index
+            $index = criadex::index_create(
+                $bot_name . '-question-index',
+                $bot_parameters->llm_model_id,
+                $bot_parameters->embedding_model_id,
+                'QUESTION'
+            );
+
+            // Check to see if Index authorization exists
+            $api_key_exists = criadex::index_authorization_check($bot_name . '-question-index', );
+            // If index authorization does not exist, create it
+            if ($api_key_exists != 200) {
+                criadex::index_authorization_create($bot_name . '-question-index', $api_key);
+            }
+        }
+
+        // if cache index does not exist, create it
+        if ($cache_index->status == 404) {
+            // Create index
+            $index = criadex::index_create(
+                $bot_name . '-cache-index',
+                $bot_parameters->llm_model_id,
+                $bot_parameters->embedding_model_id,
+                'CACHE'
+            );
+
+            // Check to see if Index authorization exists
+            $api_key_exists = criadex::index_authorization_check($bot_name . '-cache-index', );
+            // If index authorization does not exist, create it
+            if ($api_key_exists != 200) {
+                criadex::index_authorization_create($bot_name . '-cache-index', $api_key);
+            }
+        }
+
+        return true;
+    }
 }

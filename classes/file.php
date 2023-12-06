@@ -12,6 +12,7 @@ use local_cria\crud;
 use local_cria\bot;
 use local_cria\files;
 use local_cria\criabot;
+use local_cria\intent;
 
 class file extends crud
 {
@@ -230,54 +231,8 @@ class file extends crud
      */
     public function upload_files_to_indexing_server($bot_name, $file_path, $file_name, $update = false)
     {
-        // Check to see that the document index exists in Criadex
-        $document_index = criadex::index_about($bot_name . '-document-index');
-        $question_index = criadex::index_about($bot_name . '-question-index');
-        $cache_index = criadex::index_about($bot_name . '-cache-index');
-        // If document index does not exist, create it
-        if ($document_index->status == 404) {
-            // Get bot parameters by splitting $bot_name
-            $bot_intent_ids = explode('-', $bot_name);
-            $BOT = new bot($bot_intent_ids[0]);
-            $bot_parameters = json_decode($BOT->get_bot_parameters_json());
-            // Create index
-            $index = criadex::index_create(
-                $bot_name . '-document-index',
-                $bot_parameters->llm_model_id,
-                $bot_parameters->embedding_model_id,
-                'DOCUMENT'
-            );
-        }
-
-        // If question index does not exist, create it
-        if ($question_index->status == 404) {
-            // Get bot parameters by splitting $bot_name
-            $bot_intent_ids = explode('-', $bot_name);
-            $BOT = new bot($bot_intent_ids[0]);
-            $bot_parameters = json_decode($BOT->get_bot_parameters_json());
-            // Create index
-            $index = criadex::index_create(
-                $bot_name . '-question-index',
-                $bot_parameters->llm_model_id,
-                $bot_parameters->embedding_model_id,
-                'QUESTION'
-            );
-        }
-
-        // if cache index does not exist, create it
-        if ($cache_index->status == 404) {
-            // Get bot parameters by splitting $bot_name
-            $bot_intent_ids = explode('-', $bot_name);
-            $BOT = new bot($bot_intent_ids[0]);
-            $bot_parameters = json_decode($BOT->get_bot_parameters_json());
-            // Create index
-            $index = criadex::index_create(
-                $bot_name . '-cache-index',
-                $bot_parameters->llm_model_id,
-                $bot_parameters->embedding_model_id,
-                'CACHE'
-            );
-        }
+        // Create indexes if they don't exist
+        base::create_cria_indexes($bot_name);
 
         if ($update) {
             // update file
