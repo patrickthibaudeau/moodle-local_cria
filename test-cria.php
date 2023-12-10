@@ -51,7 +51,7 @@ $params = '{' .
     '"no_context_message": "Nothing found",' .
     '"system_message": "you are a bot for testing",' .
     '"llm_model_id": 3,' .
-    '"embedding_model_id": 4' .
+    '"embedding_model_id": 2' .
     '}';
 
 $create_bot = criabot::bot_create('cria-test-from-settings', $params);
