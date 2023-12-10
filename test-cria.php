@@ -37,31 +37,31 @@ echo $OUTPUT->header();
 
 $config = get_config('local_cria');
 // Get Cria url settings
-$criadex_url_setting = $config->criadex_url;
-$criabot_url_setting = $config->criabot_url;
-// Convert into array
-$criadex_params = explode(':', $criadex_url_setting);
-$criabot_params = explode(':', $criabot_url_setting);
-// Create URL from array
-$criadex_url = $criadex_params[0] . ':' . $criadex_params[1];
-$criadex_port = $criadex_params[2];
-$criabot_url = $criabot_params[0] . ':' . $criabot_params[1];
-$criabot_port = $criabot_params[2];
+$criadex_url= $config->criadex_url;
+$criabot_url= $config->criabot_url;
 
+// Set bot parameters
+$params = '{' .
+    '"max_tokens": 5,' .
+    '"temperature": 0.5,' .
+    '"top_p": 0.5,' .
+    '"top_k": 1,' .
+    '"min_relevance": 0.1,' .
+    '"max_context": 0,' .
+    '"no_context_message": "Nothing found",' .
+    '"system_message": "you are a bot for testing",' .
+    '"llm_model_id": 3,' .
+    '"embedding_model_id": 4' .
+    '}';
 
-if (base::is_port_open($criadex_url, $criadex_port)) {
-    \core\notification::success('Criadex server is running on ' . $criadex_url . ':' . $criadex_port);
+$create_bot = criabot::bot_create('cria-test-from-settings', $params);
+
+if ($create_bot->status == 200) {
+    \core\notification::success('Congradulations, Cria backend servers are working!');
+    criabot::bot_delete('cria-test-from-settings');
 } else {
-    \core\notification::error('Criadex server is not running on ' . $criadex_url . ':' . $criadex_port);
+    \core\notification::error('Cria backend servers are not working! ' . $create_bot->message);
 }
-
-
-if (base::is_port_open($criabot_url, $criabot_port)) {
-    \core\notification::success('Cria bot server is running on ' . $criabot_url . ':' . $criabot_port);
-} else {
-    \core\notification::error('Cria bot server is not running on ' . $criabot_url . ':' . $criabot_port);
-};
-
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

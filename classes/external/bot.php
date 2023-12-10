@@ -110,6 +110,13 @@ class local_cria_external_bot extends external_api
                 'publish' => new external_value(PARAM_INT, 'Publish', false, 0),
                 'welcome_message' => new external_value(PARAM_TEXT, 'Welcome message for embedded bot', false, ''),
                 'theme_color' => new external_value(PARAM_TEXT, 'Hex code for embedded bot color. Default Red', false, '#e31837'),
+                'max_tokens' => new external_value(PARAM_INT, 'Max tokens', false, 1024),
+                'temperature' => new external_value(PARAM_FLOAT, 'Temperature', false, 0.1),
+                'top_p' => new external_value(PARAM_FLOAT, 'Top p', false, 0.1),
+                'top_k' => new external_value(PARAM_INT, 'Top k', false, 1),
+                'min_relevance' => new external_value(PARAM_FLOAT, 'Min relevance', false, 0.9),
+                'max_context' => new external_value(PARAM_INT, 'Max context', false, 0),
+                'no_context_message' => new external_value(PARAM_TEXT, 'No context message', false, 'Nothing found')
             )
         );
     }
@@ -143,7 +150,14 @@ class local_cria_external_bot extends external_api
         $user_prompt = '',
         $publish = 0,
         $welcome_message = '',
-        $theme_color = '#e31837'
+        $theme_color = '#e31837',
+        $max_tokens = 1024,
+        $temperature = 0.1,
+        $top_p = 0.1,
+        $top_k = 1,
+        $min_relevance = 0.9,
+        $max_context = 0,
+        $no_context_message = 'Nothing found',
     )
     {
         global $CFG, $USER, $DB, $PAGE;
@@ -161,7 +175,14 @@ class local_cria_external_bot extends external_api
                 'user_prompt' => $user_prompt,
                 'publish' => $publish,
                 'welcome_message' => $welcome_message,
-                'theme_color' => $theme_color
+                'theme_color' => $theme_color,
+                'max_tokens' => $max_tokens,
+                'temperature' => $temperature,
+                'top_p' => $top_p,
+                'top_k' => $top_k,
+                'min_relevance' => $min_relevance,
+                'max_context' => $max_context,
+                'no_context_message' => $no_context_message
             )
         );
 

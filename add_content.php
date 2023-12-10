@@ -101,14 +101,47 @@ if ($mform->is_cancelled()) {
     $file_path = $path . '/' . $filename;
     // save the file
     file_put_contents($file_path, $fileContent);
+    // Save file to moodle file system
+    $fs = get_file_storage();
+    $file_info =[
+        'contextid' => $context->id,
+        'component' => 'local_cria',
+        'filearea' => 'content',
+        'itemid' => $data->intent_id,
+        'filepath' => '/',
+        'filename' => $filename
+    ];
+    $fs->create_file_from_pathname($file_info, $file_path);
+    // Get newly created file
+    $file = $fs->get_file(
+        $context->id,
+        'local_cria',
+        'content',
+        $data->intent_id,
+        '/',
+        $filename
+    );
+
+    if ($file->get_mimetype() == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+        // Convert file to docx
+        $converter = new \core_files\converter();
+        $conversion = $converter->start_conversion($file, 'docx');
+        print_object($conversion);
+    }
+
+    // Copy to temp area
+    $file->copy_content_to($file_path);
+// Delete file created in Moodle file area.
+    $file->delete();
+
     // Convert the content of the file to text
-    $content = rd_text_extraction::convert_to_text($file_path);
+//    $content = rd_text_extraction::convert_to_text($file_path);
     // Remove all lines and replace with space. AKA lower token count
 //    $content = preg_replace('/\s+/', ' ', trim($content));
     // Create content data array
     $content_data = [
         'intent_id' => $data->intent_id,
-        'content' => $content,
+        'content' => '',
         'name' => $filename,
         'usermodified' => $USER->id,
         'timemodified' => time(),
@@ -133,6 +166,7 @@ if ($mform->is_cancelled()) {
     if ($upload->status != 200) {
         \core\notification::error('Error uploading file to indexing server: ' . $upload->message);
     }
+
     // Redirect to content page
     redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $data->bot_id . '&intent_id=' . $data->intent_id);
 } else {

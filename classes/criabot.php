@@ -10,7 +10,7 @@ class criabot
     /****** Bot Management ******/
     /**
      * @param $bot_name String
-     * @param $data Array ["max_tokens": 16,
+     * @param $data JSON String {"max_tokens": 16,
      *  "temperature" => 0.1,
      *  "top_p" => 1,
      *  "top_k" => 10,
@@ -19,7 +19,7 @@ class criabot
      *  "no_context_message" => "Sorry, I'm not sure about that.",
      *  "system_message" => "string",
      *  "llm_model_id" => 3,
-     *  "embedding_model_id" => 4]
+     *  "embedding_model_id" => 4}
      * @return mixed
      * @throws \dml_exception
      */

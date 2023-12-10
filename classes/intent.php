@@ -166,6 +166,21 @@ class intent extends crud
         return $this->id;
     }
 
+    /**
+     * Does the default intetn exist for this bot?
+     * @param $bot_id
+     * @return bool
+     * @throws \dml_exception
+     */
+    public function default_intent_exists($bot_id) {
+        global $DB;
+        $result = $DB->get_record('local_cria_intents', ['bot_id' => $bot_id, 'is_default' => 1]);
+        if ($result) {
+            return true;
+        }
+        return false;
+    }
+
     public function create_example_questions($question_id)
     {
         global $DB, $USER;
