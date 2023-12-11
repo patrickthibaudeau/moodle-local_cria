@@ -2,6 +2,7 @@
     .btn-edit-intent {
         cursor: pointer;
     }
+
     .btn-edit-intent:hover {
         color: #0d6efd;
     }
@@ -11,6 +12,12 @@
         <input type="hidden" id="bot-id" value="{{bot_id}}">
         <a href="bot_config.php" class="btn btn-outline-primary float-right mr-1">
             {{#str}}bots, local_cria{{/str}}
+        </a>
+        <a href="{{config.wwwroot}}/local/cria/logs.php?id={{bot_id}}" class="btn btn-outline-primary float-right mr-1">
+        {{#str}}logs, local_cria{{/str}}
+        </a>
+        <a href="{{config.wwwroot}}/local/cria/test_bot.php?id={{bot_id}}" class="btn btn-outline-primary float-right mr-1">
+            {{#str}}test_bot, local_cria{{/str}}
         </a>
         {{#use_fine_tuning}}
             <a href="edit_intent.php?bot_id={{bot_id}}" class="btn btn-outline-primary float-right mr-1">
@@ -41,7 +48,8 @@
         </ul>
         <div class="tab-content" id="cria-content-tab">
             {{#intents}}
-                <div class="tab-pane fade {{#active}}show active{{/active}}" id="content{{id}}" role="tabpanel" aria-labelledby="content{{id}}-tab">
+                <div class="tab-pane fade {{#active}}show active{{/active}}" id="content{{id}}" role="tabpanel"
+                     aria-labelledby="content{{id}}-tab">
                     <div class="row mt-3">
                         <div class="col-md-6 col-sm-12">
                             <!-- Documents -->
@@ -118,6 +126,41 @@
                                                     class="btn btn-outline-primary">
                                                     {{#str}}update, local_cria{{/str}}
                                                     </a>
+                                                    <!-- languge buttons -->
+                                                    {{#can_translate}}
+                                                        <div class="btn-group" role="group">
+                                                            <button
+                                                                    type="button"
+                                                                    class="btn btn-outline-primary dropdown-toggle"
+                                                                    data-toggle="dropdown"
+                                                                    aria-expanded="false"
+                                                                    title="{{#str}}translate, local_cria{{/str}}"
+                                                            >
+                                                                <i class="bi bi-translate"></i>
+                                                            </button>
+                                                            <div class="dropdown-menu">
+                                                                {{#available_languages}}
+                                                                    <a class="dropdown-item translate-question"
+                                                                       href="{{config.wwwroot}}/local/cria/translate_question.php?question_id={{id}}
+                                                                    &lang={{code}}"
+                                                                    >
+                                                                    {{name}}
+                                                                    </a>
+                                                                {{/available_languages}}
+                                                            </div>
+
+                                                        </div>
+                                                    {{/can_translate}}
+                                                    {{#show_linked}}
+                                                        <button
+                                                                type="button"
+                                                                class="btn btn-outline-primary"
+                                                                title="{{link_text}}"
+
+                                                        >
+                                                            <i class="bi bi-link-45deg"></i>
+                                                        </button>
+                                                    {{/show_linked}}
                                                     <button class="btn btn-outline-danger delete-question"
                                                             data-id="{{id}}">
                                                         {{#str}}delete, local_cria{{/str}}

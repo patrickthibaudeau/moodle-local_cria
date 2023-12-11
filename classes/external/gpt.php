@@ -75,7 +75,6 @@ class local_cria_external_gpt extends external_api {
 
         if ($chat_id != 0) {
             $result = criabot::chat_send($chat_id, $prompt);
-            print_object($result);
             // Clean up content
             $content = nl2br(htmlspecialchars($result->reply->content->content));
             $content = gpt::make_email($content);

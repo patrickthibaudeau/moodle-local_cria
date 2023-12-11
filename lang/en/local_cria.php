@@ -180,6 +180,7 @@ $string['total_usage_cost'] = 'Total usage cost';
 $string['total_words'] = 'Number of words in combined content:';
 $string['update'] = 'Update';
 $string['timecreated'] = 'Time created';
+$string['translate'] = 'Translate';
 $string['use_bot_server'] = 'Requires uploading documents?';
 $string['use_bot_server_help'] = 'If you this type rqeuires uploading documents, select Yes.';
 $string['user_prompt'] = 'User prompt';

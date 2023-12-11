@@ -126,7 +126,6 @@ if ($mform->is_cancelled()) {
         // Convert file to docx
         $converter = new \core_files\converter();
         $conversion = $converter->start_conversion($file, 'docx');
-        print_object($conversion);
     }
 
     // Copy to temp area

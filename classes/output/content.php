@@ -61,7 +61,6 @@ class content implements \renderable, \templatable
             'intents' => $intents,
             'use_fine_tuning' => $BOT->get_fine_tuning(),
         ];
-
         return $data;
     }
 

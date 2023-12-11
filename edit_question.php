@@ -15,6 +15,7 @@ $context = CONTEXT_SYSTEM::instance();
 require_login(1, false);
 $intent_id = required_param('intent_id',  PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
+$parent_id = optional_param('parent_id', 0, PARAM_INT);
 
 $INTENT = new intent($intent_id);
 
@@ -30,8 +31,12 @@ if ($id != 0) {
     $formdata->id = 0;
     $formdata->intent_id = $INTENT->get_id();
     $formdata->bot_id = $INTENT->get_bot_id();
+    $formdata->lang = $INTENT->get_lang();
+    $formdata->faculty = $INTENT->get_faculty();
+    $formdata->program = $INTENT->get_program();
     $formdata->examples = false;
     $formdata->create_example_questions = true;
+    $formdata->parent_id = $parent_id;
 }
 
 
@@ -47,6 +52,9 @@ if ($mform->is_cancelled()) {
         // Insert record
         $data->timecreated = time();
         $data->id = $DB->insert_record('local_cria_question', $data);
+        // Update record adding the question id to the parent_id
+        $data->parent_id = $data->id;
+        $DB->update_record('local_cria_question', $data);
     } else {
         // Update record
         $DB->update_record('local_cria_question', $data);

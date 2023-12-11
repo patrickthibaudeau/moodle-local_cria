@@ -8,6 +8,7 @@ export const init = () => {
     edit_intent();
 };
 
+
 /**
  * Delete a content
  */
@@ -33,7 +34,7 @@ function delete_content() {
                     if ($result == 200) {
                         location.reload();
                     } else {
-                        alert($result +  ' The file could not be found on the criadex server. However, the database link to the file has been deleted.');
+                        alert($result + ' The file could not be found on the criadex server. However, the database link to the file has been deleted.');
                         location.reload();
                     }
                 }).fail(function () {

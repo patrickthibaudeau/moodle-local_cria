@@ -919,6 +919,21 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023120406, 'local', 'cria');
     }
 
+    if ($oldversion < 2023121000) {
+
+        // Define field parent_id to be added to local_cria_question.
+        $table = new xmldb_table('local_cria_question');
+        $field = new xmldb_field('parent_id', XMLDB_TYPE_INTEGER, '10', null, null, null, '0', 'intent_id');
+
+        // Conditionally launch add field parent_id.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023121000, 'local', 'cria');
+    }
+
 
     return true;
 }

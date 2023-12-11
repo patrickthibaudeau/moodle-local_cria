@@ -42,6 +42,15 @@ class edit_question_form extends \moodleform
             'intent_id',
             PARAM_INT
         );
+        // Add parent_id element
+        $mform->addElement(
+            'hidden',
+            'parent_id'
+        );
+        $mform->setType(
+            'parent_id',
+            PARAM_INT
+        );
 
 //        //Header: General
 //        $mform->addElement(
