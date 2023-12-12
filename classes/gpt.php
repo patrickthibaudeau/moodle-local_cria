@@ -295,6 +295,10 @@ class gpt
      */
     public static function get_response($bot_id, $prompt, $content = '', $use_bot_server = false): object
     {
+        $BOT = new bot($bot_id);
+        if ($BOT->get_user_prompt()) {
+            $prompt = $BOT->get_user_prompt();
+        }
         // Build the message
         $data = self::_build_message($bot_id, $prompt, $content);
         $message = $data->message;
