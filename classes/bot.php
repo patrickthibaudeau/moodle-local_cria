@@ -354,6 +354,12 @@ class bot extends crud
         return $this->max_tokens;
     }
 
+    public function get_model_max_tokens(): int
+    {
+        $MODEL = new \local_cria\model($this->model_id);
+        return $MODEL->get_max_tokens();
+    }
+
     /**
      * @return float
      */

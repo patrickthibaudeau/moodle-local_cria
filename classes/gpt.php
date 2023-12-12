@@ -10,13 +10,13 @@ class gpt
 {
 
     /**
-     * @param $service_url
-     * @param $api_key
-     * @param $data
-     * @param $call
-     * @param $method
-     * @param $file_path
-     * @param $file_name
+     * @param $service_url string
+     * @param $api_key string
+     * @param $data string JSON formatted string
+     * @param $call string
+     * @param $method string
+     * @param $file_path string
+     * @param $file_name string
      * @return mixed
      * @throws \dml_exception
      */
@@ -108,7 +108,7 @@ class gpt
 //        if there is user content, split into chunks
         if ($user_content) {
             // Get number of words in content and split it into chunks if it's too long
-            $chunk_text = self::_split_into_chunks($user_content);
+            $chunk_text = self::_split_into_chunks($bot_id, $user_content);
             // Determine the context window size (overlap)
             $context_window_size = 50;
             $prompt_tokens = 0;
@@ -220,29 +220,22 @@ class gpt
      * @param $long_text
      * @return array
      */
-    protected static function _split_into_chunks($long_text)
+    protected static function _split_into_chunks($bot_id, $long_text)
     {
-        // plugin config
-        $config = get_config('local_cria');
-
-        // Define the chunk size (maximum words per chunk)
-        $chunk_size = $config->max_chunks;
-
-        // Determine the context window size (overlap)
-        $context_window_size = 50;
-
-        // Initialize an array to store the chunked text
-        $chunks = [];
+        $BOT = new bot($bot_id);
+        $max_tokens = $BOT->get_max_tokens();
+        $max_context = $BOT->get_max_context();
+        $max_width = 4000; // Equivalent of 1000 tokens
 
         // Get the length of the long text
-        $text_length = str_word_count($long_text);
+        $text_word_count = strlen($long_text);
+        $words_per_chunk = (int)((($max_tokens + $max_context) /1000) * $max_width);
 
-        // Determine the context window size (overlap)
-        $context_window_size = 50;
 
-        // Split the long text into smaller chunks with overlap
-        $chunks = array_chunk(str_split($long_text, $chunk_size - $context_window_size), 1);
-        $chunks = array_map('implode', $chunks);
+        $long_text = str_replace("\n", ' ', $long_text);
+        // split the long text into chunks based on the number of words_per_chunk, but do not cut a word apart
+
+        $chunks = explode("\n", wordwrap($long_text, $words_per_chunk, "\n"));
 
         return $chunks;
     }

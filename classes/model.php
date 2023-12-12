@@ -65,6 +65,12 @@ class model extends crud
      *
      * @var int
      */
+    private $max_tokens;
+
+    /**
+     *
+     * @var int
+     */
     private $timecreated;
 
     /**
@@ -118,6 +124,7 @@ class model extends crud
         $this->provider_id = $result->provider_id ?? 0;
         $this->name = $result->name ?? '';
         $this->value = $result->value ?? '';
+        $this->max_tokens = $result->max_tokens ?? 0;
         $this->criadex_model_id = $result->criadex_model_id ?? 0;
         $this->prompt_cost = $result->prompt_cost ?? '';
         $this->completion_cost = $result->completion_cost ?? '';
@@ -172,6 +179,14 @@ class model extends crud
     public function get_value(): string
     {
         return $this->value;
+    }
+
+    /**
+     * @return max_tokens - bigint (18)
+     */
+    public function get_max_tokens(): int
+    {
+        return $this->max_tokens;
     }
 
     /**

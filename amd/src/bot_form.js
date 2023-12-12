@@ -58,29 +58,25 @@ function get_model_max_tokens() {
             }]);
 
             get_max_tokens[0].done(function (result) {
+                // Add to bot_max_tokens
+                $('[name="bot_max_tokens"]').val(result);
                 if ($('[name="max_tokens"]').length) {
                     $('[name="max_tokens"]').val('');
                     $('[name="max_tokens"]').val(result);
                 }
 
-
-                if ($('[name="max_context"]').length) {
-                    $('[name="max_context"]').val('');
-                    $('[name="max_context"]').val(result);
-                    // if .btn-short is active adjsut max_tokens
-                    if ($('.btn-short').hasClass('active')) {
-                        $('[name="max_tokens"]').val(result / 8);
-                    }
-                    // if .btn-medium is active adjsut max_tokens
-                    if ($('.btn-medium').hasClass('active')) {
-                        $('[name="max_tokens"]').val(result / 2);
-                    }
-                    // if .btn-long is active adjsut max_tokens
-                    if ($('.btn-long').hasClass('active')) {
-                        $('[name="max_tokens"]').val(result - 2000);
-                    }
+                // if .btn-short is active adjsut max_tokens
+                if ($('.btn-short').hasClass('active')) {
+                    $('[name="max_tokens"]').val(result / 8);
                 }
-
+                // if .btn-medium is active adjsut max_tokens
+                if ($('.btn-medium').hasClass('active')) {
+                    $('[name="max_tokens"]').val(result / 2);
+                }
+                // if .btn-long is active adjsut max_tokens
+                if ($('.btn-long').hasClass('active')) {
+                    $('[name="max_tokens"]').val(result - 2000);
+                }
 
             }).fail(function () {
                 alert('An error has occurred. The record was not deleted');
@@ -122,7 +118,7 @@ function set_length_parameters() {
     // Set button short
     $('.btn-short').off();
     $('.btn-short').on('click', function () {
-        max_tokens = $('[name="max_context"]').val();
+        max_tokens = $('[name="bot_max_tokens"]').val();
         $('[name="max_tokens"]').val(max_tokens / 8);
         $('.btn-medium').removeClass('active');
         $('.btn-long').removeClass('active');
@@ -131,7 +127,7 @@ function set_length_parameters() {
     // Set button medium
     $('.btn-medium').off();
     $('.btn-medium').on('click', function () {
-        max_tokens = $('[name="max_context"]').val();
+        max_tokens = $('[name="bot_max_tokens"]').val();
         $('[name="max_tokens"]').val(max_tokens / 2);
         $('.btn-short').removeClass('active');
         $('.btn-long').removeClass('active');
@@ -140,7 +136,7 @@ function set_length_parameters() {
     // Set button long
     $('.btn-long').off();
     $('.btn-long').on('click', function () {
-        max_tokens = $('[name="max_context"]').val();
+        max_tokens = $('[name="bot_max_tokens"]').val();
         // reduce by 200 tokens to make sure all content can be used.
         $('[name="max_tokens"]').val(max_tokens - 2000);
         $('.btn-short').removeClass('active');

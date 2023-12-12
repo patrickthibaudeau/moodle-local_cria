@@ -47,8 +47,9 @@ $prompt .= '[instructions]Write 5 rephrased examples questions based on the cont
 //print_object($results);
 //print_object($response);
 //print_object($usage);
+$content = file_get_contents('/var/www/moodledata/temp/meeting.txt');
 
-print_object(base::get_faculties());
+
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

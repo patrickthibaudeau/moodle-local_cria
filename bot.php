@@ -22,6 +22,7 @@ if ($id) {
     $formdata = $BOT->get_record();
     $formdata->description_editor['text'] = $formdata->description;
     $formdata->welcome_message_editor['text'] = $formdata->welcome_message;
+    $formdata->bot_max_tokens = $BOT->get_model_max_tokens();
 
 } else {
     $formdata = new stdClass();
@@ -33,6 +34,7 @@ if ($id) {
     $formdata->top_k = 0.1;
     $formdata->minimum_relevance = 0.3;
     $formdata->theme_color = '#e31837';
+    $formdata->max_context = 50;
 }
 
 $mform = new \local_cria\bot_form(null, array('formdata' => $formdata));

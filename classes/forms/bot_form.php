@@ -36,6 +36,16 @@ class bot_form extends \moodleform
             PARAM_INT
         );
 
+        // bot max tokens element
+        $mform->addElement(
+            'hidden',
+            'bot_max_tokens'
+        );
+        $mform->setType(
+            'bot_max_tokens',
+            PARAM_INT
+        );
+
         // Html element as a header for About fields
         $mform->addElement(
             'html',
