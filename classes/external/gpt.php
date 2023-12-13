@@ -27,6 +27,7 @@ use local_cria\gpt;
 use local_cria\criabot;
 use local_cria\criadex;
 use local_cria\logs;
+use local_cria\bot;
 
 class local_cria_external_gpt extends external_api {
     //**************************** SEARCH USERS **********************
@@ -72,6 +73,11 @@ class local_cria_external_gpt extends external_api {
         //OPTIONAL but in most web service it should present
         $context = \context_system::instance();
         self::validate_context($context);
+        $BOT = new bot($bot_id);
+        if ($BOT->use_bot_server() && $chat_id == false) {
+            $session = criabot::chat_start($bot_id . '-' . $BOT->get_default_intent_id());
+            $chat_id = $session->chat_id;
+        }
 
         if ($chat_id != 0) {
             $result = criabot::chat_send($chat_id, $prompt);
