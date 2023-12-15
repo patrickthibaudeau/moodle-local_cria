@@ -122,7 +122,7 @@ if ($mform->is_cancelled()) {
         $filename
     );
 
-    if ($file->get_mimetype() == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    if ($file->get_mimetype() != 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
         // Convert file to docx
         $converter = new \core_files\converter();
         $conversion = $converter->start_conversion($file, 'docx');

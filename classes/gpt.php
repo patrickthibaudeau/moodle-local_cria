@@ -53,6 +53,7 @@ class gpt
             );
         } else {
             // Params for file upload
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_POST, 1);
 
