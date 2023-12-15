@@ -313,6 +313,17 @@ class gpt
 
         $data->message = $message;
 
+        // Enter log into database
+        logs::insert(
+            $bot_id,
+            $prompt,
+            $data->message,
+            $data->prompt_tokens,
+            $data->completion_tokens,
+            $data->total_tokens,
+            $data->cost,
+            '');
+
         return $data;
     }
 
