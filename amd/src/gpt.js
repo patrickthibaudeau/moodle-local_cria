@@ -13,6 +13,7 @@ function get_response() {
     $("#submit-question").off();
     $("#submit-question").on('click', function () {
         // rest statistics
+        $('#cria-conversation').html('');
         $('#cria-prompt-tokens').html(0);
         $('#cria-completion-tokens').html(0);
         $('#cria-total-tokens').html(0);
@@ -41,15 +42,13 @@ function get_response() {
         }]);
 
         gpt_response[0].done(function (result) {
-            // console.log(result);
-            let data = JSON.parse(result);
-            $("#submit-question").show();
+             $("#submit-question").show();
             $("#starting-process").hide();
-            $('#cria-conversation').append().html(`<p> ${data.message}</p>`);
-            $('#cria-prompt-tokens').html(data.prompt_tokens);
-            $('#cria-completion-tokens').html(data.completion_tokens);
-            $('#cria-total-tokens').html(data.total_tokens);
-            $('#cria-cost').html('$' + data.cost.toPrecision(6));
+            $('#cria-conversation').append().html(`${result.message}`);
+            $('#cria-prompt-tokens').html(result.prompt_tokens);
+            $('#cria-completion-tokens').html(result.completion_tokens);
+            $('#cria-total-tokens').html(result.total_tokens);
+            $('#cria-cost').html('$' + result.cost.toPrecision(6));
         }).fail(function () {
             alert('An error has occurred.');
         });

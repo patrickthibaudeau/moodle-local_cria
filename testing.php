@@ -1,6 +1,7 @@
 <?php
 require_once('../../config.php');
 require_once('lib.php');
+require_once("$CFG->dirroot/local/cria/classes/external/gpt.php");
 require_once("$CFG->dirroot/local/cria/classes/gpttokenizer/Gpt3TokenizerConfig.php");
 require_once("$CFG->dirroot/local/cria/classes/gpttokenizer/Gpt3Tokenizer.php");
 require_once("$CFG->dirroot/local/cria/classes/gpttokenizer/Merges.php");
@@ -35,19 +36,10 @@ $context = context_system::instance();
 //**********************
 echo $OUTPUT->header();
 
-$system_message = 'You are a bot that writes example questions based on a question provided';
-$prompt = '[question]How do I apply for university?[/question]';
-$prompt .= '[instructions]Write 5 rephrased examples questions based on the content in [question]. return each question in the follwoing JSON format. [{"question": your answer},{"question": your answer}][/instructions]';
+$bot_id = 18;
+$prompt = 'Write a Network Usage policy for York University.';
+print_object(local_cria_external_gpt::response($bot_id, false, $prompt, false));
 
-//$results  = criadex::query(3,$system_message,$prompt);
-//
-//$response = $results->response->message->content;
-//$usage = $results->response->raw->usage;
-//
-//print_object($results);
-//print_object($response);
-//print_object($usage);
-$content = file_get_contents('/var/www/moodledata/temp/meeting.txt');
 
 
 //**********************

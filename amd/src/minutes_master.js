@@ -46,13 +46,12 @@ function process_notes() {
         }]);
 
         gpt_response[0].done(function (result) {
-            let data = JSON.parse(result);
             let form_data = {
                 'project_name': project_name,
                 'date': date,
                 'time': time,
                 'location': location,
-                'minutes': data.message
+                'minutes': result.message
             };
             $('#starting-process').hide();
             $('#almost-done').show();
@@ -66,7 +65,7 @@ function process_notes() {
                         + path_data.path + "&file=" + path_data.file_name;
                     setTimeout(function () {
                         $('#cria-cost').show();
-                        $('#cria-cost').html('$' + data.cost.toPrecision(6));
+                        $('#cria-cost').html('$' + result.cost.toPrecision(6));
                         $('#process-complete').hide();
                         $('#process-notes').show();
                     }, 1500);

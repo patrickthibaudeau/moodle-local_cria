@@ -52,8 +52,11 @@ class local_cria_external_gpt extends external_api {
     }
 
     /**
-     * @param $id
-     * @return true
+     * @param $bot_id
+     * @param $chat_id
+     * @param $prompt
+     * @param $content
+     * @return string
      * @throws dml_exception
      * @throws invalid_parameter_exception
      * @throws restricted_context_exception
@@ -77,6 +80,10 @@ class local_cria_external_gpt extends external_api {
         if ($BOT->use_bot_server() && $chat_id == false) {
             $session = criabot::chat_start($bot_id . '-' . $BOT->get_default_intent_id());
             $chat_id = $session->chat_id;
+        }
+        // Always get user prompt if there is one.
+        if ($BOT->get_user_prompt()) {
+            $prompt = $BOT->get_user_prompt() . ' ' . $prompt;
         }
 
         if ($chat_id != 0) {
@@ -117,15 +124,36 @@ class local_cria_external_gpt extends external_api {
             $message = gpt::get_response($bot_id, $prompt, $content, false);
         }
 
-        return json_encode($message);
+        if ($prompt == false) {
+            $message->status = 422;
+            $details = new \stdClass();
+            $details->msg = 'Prompt is required';
+            $details->type = 'error';
+            $message->detail = $details;
+        }
+
+        $data = [
+            (array)$message
+        ];
+
+        return (array)$message;
     }
 
+
+
     /**
-     * Returns description of method result value
+     * Returns users result value
      * @return external_description
      */
     public static function response_returns() {
-        return new external_value(PARAM_RAW, 'Message returned by gpt');
+//        return new external_multiple_structure(self::response_details());
+        $fields = array(
+            'prompt_tokens' => new external_value(PARAM_INT, 'Number of prompt tokens', false),
+            'completion_tokens' => new external_value(PARAM_INT, 'Number of completion tokens used', true),
+            'total_tokens' => new external_value(PARAM_INT, 'Total tokens used', true),
+            'cost' => new external_value(PARAM_FLOAT, 'Cost of GTP call', true),
+            'message' => new external_value(PARAM_RAW, 'ID Number', true)
+        );
+        return new external_single_structure($fields);
     }
-
 }

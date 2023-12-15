@@ -48,16 +48,14 @@ function process_notes() {
             }]);
 
             gpt_response[0].done(function (result) {
-                let data = JSON.parse(result);
-
                 $('#starting-process').hide();
                 $('#almost-done').show();
                 // JQuery Ajax call to process.php
                 setTimeout(function () {
                     $('#almost-done').hide();
                     $('#process-notes').show();
-                    $('#cria-cost').html('$' + data.cost.toPrecision(6));
-                    $('#cria-translation-container').html(data.message);
+                    $('#cria-cost').html('$' + result.cost.toPrecision(6));
+                    $('#cria-translation-container').html(result.message);
                     $('#cria-cost').show();
                 }, 2000);
 
