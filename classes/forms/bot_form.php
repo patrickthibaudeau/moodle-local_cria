@@ -46,6 +46,26 @@ class bot_form extends \moodleform
             PARAM_INT
         );
 
+        // add tone hidden element
+        $mform->addElement(
+            'hidden',
+            'tone'
+        );
+        $mform->setType(
+            'tone',
+            PARAM_TEXT
+        );
+
+        // add length hidden element
+        $mform->addElement(
+            'hidden',
+            'response_length'
+        );
+        $mform->setType(
+            'response_length',
+            PARAM_TEXT
+        );
+
         // Html element as a header for About fields
         $mform->addElement(
             'html',

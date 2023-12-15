@@ -31,6 +31,7 @@ class conversation_styles {
             }
             $buttons[] = [
                 'id' => $r->id,
+                'element_id' => 'tone-' . strtolower($r->name),
                 'name' => $r->name,
                 'gpt_data' => $gpt_data_string,
                 'class' => $r->class

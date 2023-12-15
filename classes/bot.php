@@ -194,6 +194,17 @@ class bot extends crud
     private $child_bots;
 
     /**
+     *
+     * @var string
+     */
+    private $tone;
+
+    /**
+     * @var string
+     */
+    private $response_length;
+
+    /**
      * @var int
      */
     private $fine_tuning;
@@ -248,6 +259,8 @@ class bot extends crud
         $this->no_context_message = $result->no_context_message ?? '';
         $this->child_bots = $result->child_bots ?? '';
         $this->fine_tuning = $result->fine_tuning ?? 0;
+        $this->tone = $result->tone ?? '';
+        $this->response_length = $result->response_length ?? '';
     }
 
     /**
@@ -407,6 +420,23 @@ class bot extends crud
     {
         return $this->no_context_message;
     }
+
+    /**
+     * @return string
+     */
+    public function get_tone(): string
+    {
+        return $this->tone;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_response_length(): string
+    {
+        return $this->response_length;
+    }
+
 
     /**
      * @return string

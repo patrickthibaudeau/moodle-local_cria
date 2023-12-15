@@ -934,6 +934,28 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023121000, 'local', 'cria');
     }
 
+    if ($oldversion < 2023121500) {
 
+        // Define field tone to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('tone', XMLDB_TYPE_CHAR, '20', null, null, null, 'precise', 'no_context_message');
+
+        // Conditionally launch add field tone.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field response_length to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('response_length', XMLDB_TYPE_CHAR, '10', null, null, null, 'short', 'tone');
+
+        // Conditionally launch add field response_length.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023121500, 'local', 'cria');
+    }
     return true;
 }

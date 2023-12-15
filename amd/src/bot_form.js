@@ -4,6 +4,8 @@ import ajax from 'core/ajax';
 import ModalFactory from 'core/modal_factory';
 
 export const init = () => {
+    set_tone_button();
+    set_length_button();
     get_bot_type_message();
     get_model_max_tokens();
     set_tone_parameters();
@@ -89,16 +91,55 @@ function get_model_max_tokens() {
 }
 
 /**
+ * Set the tone button when page loads
+ */
+function set_tone_button() {
+    let tone = $('[name="tone"]').val();
+    switch (tone) {
+        case 'creative':
+            $('#tone-creative').addClass('active');
+            break;
+        case 'balanced':
+            $('#tone-balanced').addClass('active');
+            break;
+        case 'precise':
+            $('#tone-precise').addClass('active');
+            break;
+    }
+
+}
+
+/**
+ * Set the length button when page loads
+ */
+function set_length_button() {
+    let length = $('[name="response_length"]').val();
+    switch (length) {
+        case 'short':
+            $('.btn-short').addClass('active');
+            break;
+        case 'medium':
+            $('.btn-medium').addClass('active');
+            break;
+        case 'long':
+            $('.btn-long').addClass('active');
+            break;
+    }
+}
+
+/**
  * Update the tone parameters
  */
 function set_tone_parameters() {
-
     $('.btn-gpt-tone').off();
     $('.btn-gpt-tone').on('click', function () {
         // remove class active for all buttons with class .btn-gpt-tone
         $('.btn-gpt-tone').removeClass('active');
         // Add class active to this button
         $(this).addClass('active');
+        // Get element id
+        let id = $(this).attr('id');
+        $('[name="tone"]').val(id.replace('tone-', ''));
         // Update id_temperature
         $('[name="temperature"]').val($(this).data('temperature'));
         // Update id_top_p
@@ -123,6 +164,7 @@ function set_length_parameters() {
         $('.btn-medium').removeClass('active');
         $('.btn-long').removeClass('active');
         $(this).addClass('active');
+        $('[name="response_length"]').val('short');
     });
     // Set button medium
     $('.btn-medium').off();
@@ -132,6 +174,7 @@ function set_length_parameters() {
         $('.btn-short').removeClass('active');
         $('.btn-long').removeClass('active');
         $(this).addClass('active');
+        $('[name="response_length"]').val('medium');
     });
     // Set button long
     $('.btn-long').off();
@@ -142,6 +185,7 @@ function set_length_parameters() {
         $('.btn-short').removeClass('active');
         $('.btn-medium').removeClass('active');
         $(this).addClass('active');
+        $('[name="response_length"]').val('long');
     });
 }
 
