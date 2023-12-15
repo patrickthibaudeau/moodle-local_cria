@@ -28,7 +28,7 @@ class file extends crud
      *
      * @var int
      */
-    private $bot_id;
+    private $intent_id;
 
     /**
      *
@@ -101,7 +101,7 @@ class file extends crud
             parent::set_id($this->id);
         }
 
-        $this->bot_id = $result->bot_id ?? 0;
+        $this->intent_id = $result->intent_id ?? 0;
         $this->name = $result->name ?? '';
         $this->content = $result->content ?? '';
         $this->usermodified = $result->usermodified ?? 0;
@@ -121,9 +121,18 @@ class file extends crud
     /**
      * @return bot_id - bigint (18)
      */
-    public function get_bot_id(): int
+    public function get_intent_id(): int
     {
-        return $this->bot_id;
+        return $this->intent_id;
+    }
+
+    /**
+     * Get bot name based on intent id
+     */
+    public function get_bot_name(): string
+    {
+        $INTENT = new intent($this->get_intent_id());
+        return $INTENT->get_bot_name();
     }
 
     /**
