@@ -6,6 +6,8 @@ export const init = () => {
     delete_content();
     delete_question();
     edit_intent();
+    select_deselect_questions();
+    publish_questions();
 };
 
 
@@ -85,9 +87,49 @@ function delete_question() {
                         alert($result);
                     }
                 }).fail(function () {
-                    alert('An error occured, the question coudl not be deleted.');
+                    alert('An error occured, the question could not be deleted.');
                 });
             });
 
+    });
+}
+
+function select_deselect_questions() {
+    $('#select-all-questions').off();
+    $('#select-all-questions').click(function () {
+        $('input:checkbox.question-select').prop('checked', true);
+    });
+
+    $('#deselect-all-questions').click(function () {
+        $('input:checkbox.question-select').prop('checked', false);
+    });
+}
+
+function publish_questions() {
+    $('.publish-questions').off();
+    $('.publish-questions').click(function () {
+        $(this).text('Publishing question(s)...');
+        $('input:checkbox.question-select:checked').each(function () {
+            console.log($(this).data('id'));
+            var publish_questions = ajax.call([{
+                methodname: 'cria_question_publish',
+                args: {
+                    id: $(this).data('id')
+                }
+            }]);
+            publish_questions[0].done(function ($result) {
+                if ($result == true) {
+
+                } else {
+                    alert($result);
+                }
+            }).fail(function (e) {
+                console.log(e);
+                alert('An error occured, the question could not be published.');
+            });
+            location.reload();
+        });
+
+        $(this).text('Publish questions');
     });
 }

@@ -146,6 +146,7 @@ $string['provider'] = 'Provider';
 $string['provider_image'] = 'Provider image';
 $string['providers'] = 'Providers';
 $string['publish'] = 'Publish';
+$string['publish_questions'] = 'Publish questions';
 $string['question'] = 'Question';
 $string['questions'] = 'Questions';
 $string['question_for'] = 'Questions for';

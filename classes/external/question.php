@@ -148,4 +148,60 @@ class local_cria_external_question extends external_api {
         return new external_single_structure($fields);
     }
 
+    //*********************Publish question*************************
+    /**
+     * Returns description of method parameters
+     * @return external_function_parameters
+     */
+    public static function publish_parameters()
+    {
+        return new external_function_parameters(
+            array(
+                'id' => new external_value(PARAM_INT, 'Question id', false, 0)
+            )
+        );
+    }
+
+    /**
+     * @param $id
+     * @return array
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws restricted_context_exception
+     */
+    public static function publish($id)
+    {
+        global $CFG, $USER, $DB, $PAGE;
+
+        //Parameter validation
+        $params = self::validate_parameters(self::publish_parameters(), array(
+                'id' => $id
+            )
+        );
+
+        //Context validation
+        //OPTIONAL but in most web service it should present
+        $context = \context_system::instance();
+        self::validate_context($context);
+
+        // Get the question based on id
+        $question = $DB->get_record('local_cria_question', ['id' => $id]);
+        $INTENT = new intent($question->intent_id);
+        $publish = $INTENT->publish_question($id);
+        // Update record
+        if ($publish) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Returns description of method result value
+     * @return external_description
+     */
+    public static function publish_returns()
+    {
+        return new external_value(PARAM_BOOL, 'return ture or false');
+    }
 }

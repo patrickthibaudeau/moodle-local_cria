@@ -104,8 +104,13 @@
                                         <h3 class="float-left">{{#str}}questions, local_cria{{/str}}</h3>
                                     </div>
                                     <div class="col">
-                                        <a href="edit_question.php?intent_id={{id}}" class="btn btn-outline-primary
-                                        float-right">
+                                        <button type="button"
+                                                class="btn btn-outline-primary publish-questions ml-2 float-right"
+                                                >
+                                            {{#str}}publish_questions, local_cria{{/str}}
+                                        </button>
+                                        <a href="edit_question.php?intent_id={{id}}"
+                                        class="btn btn-outline-primary float-right">
                                         {{#str}}add_question, local_cria{{/str}}
                                         </a>
                                     </div>
@@ -114,7 +119,17 @@
                                     <table id="cira-questions-table" class="table table-striped">
                                         <thead>
                                         <tr>
-                                            <th>Select All/Unselect all</th>
+                                            <th><a
+                                                    href="javascript:void(e);"
+                                                    id="select-all-questions"
+                                            >
+                                                Select All
+                                            </a>/<a
+                                                    href="javascript:void(e);"
+                                                    id="deselect-all-questions">
+                                                Deselect all
+                                            </a>
+                                            </th>
                                             <th>{{#str}}question, local_cria{{/str}}</th>
                                             <th>{{#str}}actions, local_cria{{/str}}</th>
                                         </tr>

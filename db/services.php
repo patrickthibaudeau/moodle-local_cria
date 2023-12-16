@@ -162,4 +162,13 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_question_publish' => array(
+        'classname' => 'local_cria_external_question',
+        'methodname' => 'publish',
+        'classpath' => 'local/cria/classes/external/question.php',
+        'description' => 'Publish a question to criabot',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );
