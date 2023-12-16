@@ -144,4 +144,13 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_get_answer' => array(
+        'classname' => 'local_cria_external_question',
+        'methodname' => 'get_answer',
+        'classpath' => 'local/cria/classes/external/question.php',
+        'description' => 'Returns answer based on question id',
+        'type' => 'read',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );

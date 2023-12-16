@@ -72,10 +72,7 @@ class local_cria_external_question extends external_api {
         // Delete the question
         $DB->delete_records('local_cria_question', ['id' => $id]);
 
-
-
-
-
+        return true;
     }
 
     /**
@@ -83,7 +80,63 @@ class local_cria_external_question extends external_api {
      * @return external_description
      */
     public static function delete_returns() {
-        return new external_value(PARAM_TEXT, 'return code');
+        return new external_value(PARAM_BOOL, 'return code');
+    }
+
+    //*********************Get answer by question id*************************
+
+    /**
+     * Returns description of method parameters
+     * @return external_function_parameters
+     */
+    public static function get_answer_parameters()
+    {
+        return new external_function_parameters(
+            array(
+                'id' => new external_value(PARAM_INT, 'Question id', false, 0)
+            )
+        );
+    }
+
+    /**
+     * @param $id
+     * @return array
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws restricted_context_exception
+     */
+    public static function get_answer($id)
+    {
+        global $CFG, $USER, $DB, $PAGE;
+
+        //Parameter validation
+        $params = self::validate_parameters(self::get_answer_parameters(), array(
+                'id' => $id
+            )
+        );
+
+        //Context validation
+        //OPTIONAL but in most web service it should present
+        $context = \context_system::instance();
+        self::validate_context($context);
+
+       // Get the question based on id
+        $question = $DB->get_record('local_cria_question', ['id' => $id]);
+        // Update record
+
+        return (array)$question;
+    }
+
+    /**
+     * Returns description of method result value
+     * @return external_description
+     */
+    public static function get_answer_returns()
+    {
+        $fields = array(
+            'answer' => new external_value(PARAM_RAW, 'Answer', true)
+        );
+        return new external_single_structure($fields);
     }
 
 }

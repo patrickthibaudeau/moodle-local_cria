@@ -369,8 +369,20 @@ class intent extends crud
     public function get_bot_parameters_json(): string
     {
         $BOT = new \local_cria\bot($this->bot_id);
+        $params = $BOT->get_bot_parameters_json();
+        $params = json_decode($params);
+        $system_message = $params->system_message;
+        $system_message .= 'This bot is used for users asking questions with the following attributes: ';
+        $system_message .= 'language: ' . $this->lang;
+        if ($this->faculty) {
+            $system_message .= ', faculty: ' . $this->faculty;
+        }
+        if ($this->program) {
+            $system_message .= ', program: ' . $this->program;
+        }
+        $params->system_message = $system_message;
 
-        return $BOT->get_bot_parameters_json();
+        return json_encode($params);
     }
 
     /**
@@ -381,6 +393,19 @@ class intent extends crud
     {
         global $DB;
         if ($questions = $DB->get_records('local_cria_question', ['intent_id' => $this->id], 'id')) {
+            foreach ($questions as $question) {
+                // Get unindexed (unpublished) examples
+                $question_examples = $DB->get_records(
+                    'local_cria_question_example',
+                    [
+                        'questionid' => $question->id,
+                        'indexed' => 0
+                    ],
+                    'id');
+                if ($question_examples) {
+                    $question->published = false;
+                }
+            }
             return array_values($questions);
         }
         return false;
@@ -449,7 +474,7 @@ class intent extends crud
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public function create_intent_on_bot_server()
+    public function create_intent_on_bot_server($lang = 'en', $faculty = '', $program = '')
     {
         $bot_name = $this->bot_id . '-' . $this->id;
         return criabot::bot_create((string)$bot_name, $this->get_bot_parameters_json());

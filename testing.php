@@ -16,6 +16,7 @@ use local_cria\conversation_styles;
 use local_cria\bot;
 use local_cria\criabot;
 use local_cria\base;
+use local_cria\intent;
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
@@ -36,9 +37,10 @@ $context = context_system::instance();
 //**********************
 echo $OUTPUT->header();
 
-$bot_id = 18;
-$prompt = 'Write a Network Usage policy for York University.';
-print_object(local_cria_external_gpt::response($bot_id, false, $prompt, false));
+$bot_id = 1;
+$INTENT = new intent($bot_id);
+
+$INTENT->get_bot_parameters_json();
 
 
 
