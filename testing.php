@@ -40,7 +40,7 @@ echo $OUTPUT->header();
 $bot_id = 1;
 $INTENT = new intent($bot_id);
 
-$INTENT->get_bot_parameters_json();
+$INTENT->publish_question(1);
 
 
 

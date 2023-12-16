@@ -13,7 +13,7 @@ global $CFG, $OUTPUT, $USER, $PAGE, $DB, $SITE;
 $context = CONTEXT_SYSTEM::instance();
 
 require_login(1, false);
-$intent_id = required_param('intent_id',  PARAM_INT);
+$intent_id = required_param('intent_id', PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
 $parent_id = optional_param('parent_id', 0, PARAM_INT);
 
@@ -26,6 +26,11 @@ if ($id != 0) {
     $examples = $DB->get_records('local_cria_question_example', array('questionid' => $id));
     $formdata->examples = array_values($examples);
     $formdata->create_example_questions = false;
+
+    $draftid = file_get_submitted_draft_itemid('answereditor');
+    $currentText = file_prepare_draft_area($draftid, $context->id, 'local_cria', 'answer', $formdata->id, base::getEditorOptions($context), $formdata->answer);
+    $formdata->answereditor = array('text' => $currentText, 'format' => FORMAT_HTML, 'itemid' => $draftid);
+
 } else {
     $formdata = new stdClass();
     $formdata->id = 0;
@@ -57,12 +62,28 @@ if ($mform->is_cancelled()) {
         $DB->update_record('local_cria_question', $data);
     } else {
         // Update record
+        $data->published = 0;
         $DB->update_record('local_cria_question', $data);
     }
     if ($data->create_example_questions == true) {
         $INTENT = new intent($data->intent_id);
         $INTENT->create_example_questions($data->id);
     }
+
+    //save editor text
+    $draftid = file_get_submitted_draft_itemid('answereditor');
+    $answerText = file_save_draft_area_files(
+        $draftid,
+        $context->id,
+        'local_cria',
+        'answer',
+        $data->id,
+        base::getEditorOptions($context),
+        $data->answereditor['text']
+    );
+    $data->answer = $answerText;
+    // Update record
+    $DB->set_field('local_cria_question', 'answer', $data->answer, array('id' => $data->id));
 
     // Redirect to content page
     redirect($CFG->wwwroot . '/local/cria/edit_question.php?id=' . $data->id . '&intent_id=' . $data->intent_id);

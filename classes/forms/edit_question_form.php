@@ -17,6 +17,8 @@ class edit_question_form extends \moodleform
         // Create form object
         $mform = &$this->_form;
 
+        $context = \context_system::instance();
+
         $mform->addElement(
             'hidden',
             'id'
@@ -90,16 +92,18 @@ class edit_question_form extends \moodleform
 
         // Add answer field
         $mform->addElement(
-            'textarea',
-            'answer',
-            get_string('answer', 'local_cria')
+            'editor',
+            'answereditor',
+            get_string('answer', 'local_cria'),
+            null,
+            base::getEditorOptions($context)
         );
         $mform->setType(
-            'answer',
-            PARAM_TEXT
+            'answereditor',
+            PARAM_RAW
         );
         $mform->addRule(
-            'answer',
+            'answereditor',
             get_string('required'),
             'required',
             null,

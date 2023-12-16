@@ -153,4 +153,13 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_question_delete' => array(
+        'classname' => 'local_cria_external_question',
+        'methodname' => 'delete',
+        'classpath' => 'local/cria/classes/external/question.php',
+        'description' => 'Deletes question and all examples',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );

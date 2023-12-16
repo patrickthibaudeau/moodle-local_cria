@@ -67,19 +67,19 @@ function delete_question() {
     $(".delete-question").on('click', function () {
         var id = $(this).data('id');
         notification.confirm('Delete',
-            'Are you sure you want to delete this question? It cannot be recovered',
+            'Are you sure you want to delete this question? The question and all examples cannot be recovered.',
             'Delete',
             M.util.get_string('cancel', 'local_cria'), function () {
                 //Delete the record
                 var delete_content = ajax.call([{
-                    methodname: 'cria_content_delete',
+                    methodname: 'cria_question_delete',
                     args: {
                         id: id
                     }
                 }]);
 
                 delete_content[0].done(function ($result) {
-                    if ($result == 200) {
+                    if ($result == '200') {
                         location.reload();
                     } else {
                         alert($result);

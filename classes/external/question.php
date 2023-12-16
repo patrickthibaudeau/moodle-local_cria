@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-use local_cria\file;
+use local_cria\intent;
 use local_cria\criabot;
 
 /**
@@ -37,26 +37,26 @@ class local_cria_external_question extends external_api {
      * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function delete_example_parameters() {
+    public static function delete_parameters() {
         return new external_function_parameters(
             array(
-                'id' => new external_value(PARAM_INT, 'Content id', false, 0)
+                'id' => new external_value(PARAM_INT, 'Question id', false, 0)
             )
         );
     }
 
     /**
-     * @param $id
+     * @param $id Int
      * @return true
      * @throws dml_exception
      * @throws invalid_parameter_exception
      * @throws restricted_context_exception
      */
-    public static function delete_example($id) {
+    public static function delete($id) {
         global $CFG, $USER, $DB, $PAGE;
 
         //Parameter validation
-        $params = self::validate_parameters(self::delete_example_parameters(), array(
+        $params = self::validate_parameters(self::delete_parameters(), array(
                 'id' => $id
             )
         );
@@ -68,11 +68,20 @@ class local_cria_external_question extends external_api {
 
        // Get the question based on id
         $question = $DB->get_record('local_cria_question', ['id' => $id]);
-        // Update record
-        // Delete the question
-        $DB->delete_records('local_cria_question', ['id' => $id]);
-
-        return true;
+        $INTENT = new intent($question->intent_id);
+        // Delete question from criabot
+        $delete_on_bot_server = criabot::question_delete($INTENT->get_bot_name(), $question->document_name);
+        if ($delete_on_bot_server->status == 200) {
+            // Delete question from moodle
+            $DB->delete_records('local_cria_question', ['id' => $id]);
+            // Delete example questions
+            $DB->delete_records('local_cria_question_example', ['questionid' => $id]);
+            return 200;
+        } else {
+            \core\notification::error('Error deleting question on bot server. STATUS: '
+                . $delete_on_bot_server->status . ' MESSAGE: ' . $delete_on_bot_server->message);
+            return false;
+        }
     }
 
     /**

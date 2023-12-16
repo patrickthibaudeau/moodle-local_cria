@@ -412,6 +412,68 @@ class intent extends crud
     }
 
     /**
+     * Publish question to bot server
+     * @return array|false
+     * @throws \dml_exception
+     */
+    public function publish_question($question_id) {
+        global $DB;
+        // Get the question
+        $question = $DB->get_record('local_cria_question', ['id' => $question_id]);
+        // Get all question examples
+        $question_examples = $DB->get_records(
+            'local_cria_question_example',
+            [
+                'questionid' => $question_id,
+                'indexed' => 0
+            ],
+            'id'
+        );
+        // Put questions in a comma seperated string
+        $question_examples_string = $question->value;
+        foreach ($question_examples as $question_example) {
+            $question_examples_string .= ',' . $question_example->value;
+        }
+        // Create data set
+        $data = array(
+            'question_examples' => explode(',', $question_examples_string),
+            'question_answer' => $question->id
+        );
+        // publish question to bot server
+        $question_content = criabot::question_create($this->get_bot_name(), $data);
+        // Update question indexed
+        if (isset($question_content->status) && $question_content->status == 200) {
+            $DB->set_field(
+                'local_cria_question',
+                'published',
+                1,
+                ['id' => $question_id]
+            );
+            $DB->set_field(
+                'local_cria_question',
+                'document_name',
+                $question_content->document_name ,
+                ['id' => $question_id]
+            );
+            // Update all question examples indexed
+            foreach ($question_examples as $question_example) {
+                $DB->set_field(
+                    'local_cria_question_example',
+                    'indexed',
+                    1,
+                    ['id' => $question_example->id]
+                );
+            }
+            return true;
+        } else {
+            \core\notification::error(
+                'STATUS: ' . $question_content->status . ' CODE: ' . $question_content->code . ' Message: ' . $question_content->message
+            );
+            return false;
+        }
+    }
+
+    /**
      * Return user id
      */
     public function get_usermodified(): int

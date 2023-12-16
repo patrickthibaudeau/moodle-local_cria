@@ -114,6 +114,7 @@
                                     <table id="cira-questions-table" class="table table-striped">
                                         <thead>
                                         <tr>
+                                            <th>Select All/Unselect all</th>
                                             <th>{{#str}}question, local_cria{{/str}}</th>
                                             <th>{{#str}}actions, local_cria{{/str}}</th>
                                         </tr>
@@ -121,12 +122,14 @@
                                         <tbody>
                                         {{#questions}}
                                             <tr>
+
                                                 <td>
                                                     {{^published}}
                                                         <input type="checkbox" class="question-select"
                                                                data-id="{{id}}"/>
                                                     {{/published}}
                                                 </td>
+
                                                 <td>{{value}}</td>
                                                 <td>
                                                     <a href="edit_question.php?id={{id}}&intent_id={{intent_id}}"

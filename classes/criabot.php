@@ -186,17 +186,15 @@ class criabot
 
     /******** Question Content ********/
     /**
-     * @param $bot_id Int In this case, the bot id is actually an intent id..
+     * @param $bot_name String SHould be bot_id-intent_id
      * @param $question_id Int The question id
      * @param $data array [question_examples => []; question_answer => ']
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function question_create($bot_id, $question_id, $data) {
+    public static function question_create($bot_name, $data) {
         // Get Config
         $config = get_config('local_cria');
-
-        $bot_name = "$bot_id-$question_id";
         // Create model
         return gpt::_make_call(
             $config->criabot_url,
@@ -209,17 +207,16 @@ class criabot
 
     /**
      * Update question
-     * @param $bot_id Int In this case, the bot id is actually an intent id..
+     * @param $bot_name String SHould be bot_id-intent_id
      * @param $question_id Int The question id
      * @param $data array [document_name => '', question_examples => []; question_answer => ']
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function question_update($bot_id, $question_id, $data) {
+    public static function question_update($bot_name, $data) {
         // Get Config
         $config = get_config('local_cria');
 
-        $bot_name = "$bot_id-$question_id";
         // Create model
         return gpt::_make_call(
             $config->criabot_url,
@@ -232,24 +229,23 @@ class criabot
 
     /**
      * Update question
-     * @param $bot_id Int In this case, the bot id is actually an intent id..
+     * @param $bot_name String SHould be bot_id-intent_id
      * @param $question_id Int The question id
-     * @param $data array [document_name => '']
+     * @param $document_name array [document_name => '']
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function question_delete($bot_id, $question_id, $data) {
+    public static function question_delete($bot_name, $document_name) {
         // Get Config
         $config = get_config('local_cria');
 
-        $bot_name = "$bot_id-$question_id";
         // Create model
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            json_encode($data),
-            '/bots/'. $bot_name  . '/questions/delete',
-            'PATCH'
+            [],
+            '/bots/'. $bot_name  . '/questions/delete?document_name=' . $document_name,
+            'DELETE'
         );
     }
 
