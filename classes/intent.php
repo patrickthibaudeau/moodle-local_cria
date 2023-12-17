@@ -440,7 +440,11 @@ class intent extends crud
             'question_answer' => $question->id
         );
         // publish question to bot server
-        $question_content = criabot::question_create($this->get_bot_name(), $data);
+        if ($question->document_name) {
+            $question_content = criabot::question_update($this->get_bot_name(), $question->document_name, $data);
+        } else {
+            $question_content = criabot::question_create($this->get_bot_name(), $data);
+        }
         // Update question indexed
         if (isset($question_content->status) && $question_content->status == 200) {
             $DB->set_field(

@@ -243,13 +243,17 @@ class local_cria_external_question extends external_api {
         //OPTIONAL but in most web service it should present
         $context = \context_system::instance();
         self::validate_context($context);
+        //Get example
+        $question_example = $DB->get_record('local_cria_question_example', ['id' => $id]);
 
         $params['value'] = strip_tags($params['value']);
         $params['timemodified'] = time();
         $params['indexed'] = 0;
-        $params['userid'] = $USER->id;
+        $params['usermodified'] = $USER->id;
         // Update record
         $DB->update_record('local_cria_question_example', $params);
+        // Set publised to 0 for question
+        $DB->set_field('local_cria_question', 'published', 0, ['id' => $question_example->questionid]);
 
        return true;
     }
@@ -296,8 +300,12 @@ class local_cria_external_question extends external_api {
         //OPTIONAL but in most web service it should present
         $context = \context_system::instance();
         self::validate_context($context);
+        //Get example
+        $question_example = $DB->get_record('local_cria_question_example', ['id' => $id]);
 
         $DB->delete_records('local_cria_question_example', ['id' => $id]);
+        // Set publised to 0 for question
+        $DB->set_field('local_cria_question', 'published', 0, ['id' => $question_example->questionid]);
         return true;
     }
 
@@ -352,9 +360,11 @@ class local_cria_external_question extends external_api {
         $params['timecreated'] = time();
         $params['timemodified'] = time();
         $params['indexed'] = 0;
-        $params['userid'] = $USER->id;
+        $params['usermodified'] = $USER->id;
         // Update record
         $new_id = $DB->insert_record('local_cria_question_example', $params);
+        // Set publised to 0 for question
+        $DB->set_field('local_cria_question', 'published', 0, ['id' => $question_id]);
 
         return $new_id;
     }

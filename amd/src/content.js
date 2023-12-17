@@ -119,7 +119,7 @@ function publish_questions() {
             }]);
             publish_questions[0].done(function ($result) {
                 if ($result == true) {
-
+                    location.reload();
                 } else {
                     alert($result);
                 }
@@ -127,9 +127,6 @@ function publish_questions() {
                 console.log(e);
                 alert('An error occured, the question could not be published.');
             });
-            location.reload();
         });
-
-        $(this).text('Publish questions');
     });
 }

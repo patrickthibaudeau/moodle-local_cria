@@ -206,14 +206,13 @@ class criabot
     }
 
     /**
-     * Update question
-     * @param $bot_name String SHould be bot_id-intent_id
-     * @param $question_id Int The question id
-     * @param $data array [document_name => '', question_examples => []; question_answer => ']
+     * @param $bot_name
+     * @param $document_name
+     * @param $data
      * @return mixed
-     * @throws \local_cria\dml_exception
+     * @throws \dml_exception
      */
-    public static function question_update($bot_name, $data) {
+    public static function question_update($bot_name, $document_name, $data) {
         // Get Config
         $config = get_config('local_cria');
 
@@ -222,7 +221,7 @@ class criabot
             $config->criabot_url,
             $config->criadex_api_key,
             json_encode($data),
-            '/bots/'. $bot_name  . '/questions/update',
+            '/bots/'. $bot_name  . '/questions/update?document_name=' . $document_name,
             'PATCH'
         );
     }
