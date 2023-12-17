@@ -180,4 +180,13 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_question_example_delete' => array(
+        'classname' => 'local_cria_external_question',
+        'methodname' => 'delete_example',
+        'classpath' => 'local/cria/classes/external/question.php',
+        'description' => 'Delete example question',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );

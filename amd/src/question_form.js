@@ -3,12 +3,12 @@ import notification from 'core/notification';
 import ajax from 'core/ajax';
 
 export const init = () => {
-    console.log('question_form init')
     edit_question_example();
+    delete_example_question();
 };
 
 /**
- * Delete a content
+ * Edit question example
  */
 function edit_question_example() {
 
@@ -17,7 +17,6 @@ function edit_question_example() {
         var id = $(this).data('id');
         console.log(id);
         $(this).css('padding', '5px');
-
 
         $(this).on('keypress', function (e) {
             if (e.which == 13) {
@@ -41,5 +40,35 @@ function edit_question_example() {
         });
 
 
+    });
+}
+
+/**
+ * Delete example question
+ */
+function delete_example_question() {
+
+    $(".delete-question-example").off();
+    $(".delete-question-example").on('click', function () {
+        var id = $(this).data('id');
+
+        notification.confirm('Delete',
+            'Are you sure you want to delete this example question? The example question cannot be recovered.',
+            'Delete',
+            M.util.get_string('cancel', 'local_cria'), function () {
+                //Delete the record
+                var delete_content = ajax.call([{
+                    methodname: 'cria_question_example_delete',
+                    args: {
+                        id: id
+                    }
+                }]);
+
+                delete_content[0].done(function ($result) {
+                    location.reload();
+                }).fail(function () {
+                    alert('An error has occurred. The question example was not saved.');
+                });
+            });
     });
 }

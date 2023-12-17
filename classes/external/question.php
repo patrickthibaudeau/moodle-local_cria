@@ -262,4 +262,50 @@ class local_cria_external_question extends external_api {
     {
         return new external_value(PARAM_BOOL, 'return ture or false');
     }
+
+    //*********************Delete exmaple question*************************
+    /**
+     * Returns description of method parameters
+     * @return external_function_parameters
+     */
+    public static function delete_example_parameters() {
+        return new external_function_parameters(
+            array(
+                'id' => new external_value(PARAM_INT, 'Question id', true)
+            )
+        );
+    }
+
+    /**
+     * @param $id Int
+     * @return true
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws restricted_context_exception
+     */
+    public static function delete_example($id) {
+        global $CFG, $USER, $DB, $PAGE;
+
+        //Parameter validation
+        $params = self::validate_parameters(self::delete_parameters(), array(
+                'id' => $id
+            )
+        );
+
+        //Context validation
+        //OPTIONAL but in most web service it should present
+        $context = \context_system::instance();
+        self::validate_context($context);
+
+        $DB->delete_records('local_cria_question_example', ['id' => $id]);
+        return true;
+    }
+
+    /**
+     * Returns description of method result value
+     * @return external_description
+     */
+    public static function delete_example_returns() {
+        return new external_value(PARAM_BOOL, 'return code');
+    }
 }
