@@ -12,12 +12,12 @@ export const init = () => {
  * Edit question example
  */
 function edit_question_example() {
-
     $(".example-question").off();
     $(".example-question").on('click', function () {
         var id = $(this).data('id');
         let question = $(this)
-        console.log(id);
+        let row = $(this).closest('tr');
+
         $(this).css('padding', '5px');
 
         $(this).on('keypress', function (e) {
@@ -34,9 +34,14 @@ function edit_question_example() {
                 }]);
 
                 update_content[0].done(function ($result) {
-                    alert('question updated');
-                    let html = '<span class="badge badge-pill badge-warning">Unpublished</span>';
-                    question.closest('.delete-question-example').prepend(html);
+                    // Only add if span doesn't exist
+                    if (row.find('td > span').length == 0) {
+                        let html = '<span class="badge badge-pill badge-warning">Unpublished</span>';
+                        question.closest('td').append(html);
+                    }
+                    // Remove focus
+                    question.blur();
+                    $('id_save').focus();
                 }).fail(function () {
                     alert('An error has occurred. The question was not saved.');
                 });
@@ -77,14 +82,16 @@ function delete_example_question() {
     });
 }
 
+/**
+ * Add question example
+ */
 function add_question_example() {
     $('.btn-add-question-example').off();
     $('.btn-add-question-example').on('click', function () {
-        //Avoid the leave page message
-        window.onbeforeunload = null;
+        // Get question id
         var question_id = $('[name="id"]').val();
         var question_text = $('#cria-question-example').val();
-
+        // Add question example
         var add_question_example = ajax.call([{
             methodname: 'cria_question_example_insert',
             args: {
@@ -99,17 +106,19 @@ function add_question_example() {
                         <td>
                             <div class="example-question" style="cursor: pointer;" contenteditable="true"
                                  data-id="${id}">${question_text}</div>
+                                 <span class="badge badge-pill badge-warning">Unpublished</span>
                         </td>
                         <td>
-                            <span class="badge badge-pill badge-warning">Unpublished</span>
-                            
                             <button type="button" class="btn btn-outline-danger delete-question-example" data-id="${id}">
                                 Delete
                             </button>
                         </td>
                     </tr>` ;
+            // Append new question example
             $('#cria-question-examples-table').append(html);
+            // Reinitalize events
             delete_example_question();
+            edit_question_example();
         }).fail(function () {
             alert('An error has occurred. The question example was not saved.');
         });

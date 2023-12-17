@@ -108,9 +108,10 @@ function select_deselect_questions() {
 function publish_questions() {
     $('.publish-questions').off();
     $('.publish-questions').click(function () {
-        $(this).text('Publishing question(s)...');
+        let button = $(this);
+        button.text('Publishing question(s)...');
         $('input:checkbox.question-select:checked').each(function () {
-            console.log($(this).data('id'));
+            let input = $(this);
             var publish_questions = ajax.call([{
                 methodname: 'cria_question_publish',
                 args: {
@@ -119,7 +120,8 @@ function publish_questions() {
             }]);
             publish_questions[0].done(function ($result) {
                 if ($result == true) {
-                    location.reload();
+                    button.text('Publish question(s)');
+                    input.remove();
                 } else {
                     alert($result);
                 }
