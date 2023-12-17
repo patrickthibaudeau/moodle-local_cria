@@ -101,6 +101,7 @@ base::page(
     'standard'
 );
 
+$PAGE->requires->js_call_amd('local_cria/question_form', 'init', array());
 echo $OUTPUT->header();
 //**********************
 //*** DISPLAY HEADER ***

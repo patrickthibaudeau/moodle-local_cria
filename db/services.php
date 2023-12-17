@@ -171,4 +171,13 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_question_example_update' => array(
+        'classname' => 'local_cria_external_question',
+        'methodname' => 'update_example',
+        'classpath' => 'local/cria/classes/external/question.php',
+        'description' => 'Update example question',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );

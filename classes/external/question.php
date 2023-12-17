@@ -204,4 +204,62 @@ class local_cria_external_question extends external_api {
     {
         return new external_value(PARAM_BOOL, 'return ture or false');
     }
+
+    //*********************update example question*************************
+    /**
+     * Returns description of method parameters
+     * @return external_function_parameters
+     */
+    public static function update_example_parameters()
+    {
+        return new external_function_parameters(
+            array(
+                'id' => new external_value(PARAM_INT, 'Example question id', true),
+                'value' => new external_value(PARAM_RAW, 'Example question value', true)
+            )
+        );
+    }
+
+    /**
+     * @param $id
+     * @param $value
+     * @return bool
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws restricted_context_exception
+     */
+    public static function update_example($id, $value)
+    {
+        global $CFG, $USER, $DB, $PAGE;
+
+        //Parameter validation
+        $params = self::validate_parameters(self::update_example_parameters(), array(
+                'id' => $id,
+                'value' => $value
+            )
+        );
+
+        //Context validation
+        //OPTIONAL but in most web service it should present
+        $context = \context_system::instance();
+        self::validate_context($context);
+
+        $params['value'] = strip_tags($params['value']);
+        $params['timemodified'] = time();
+        $params['indexed'] = 0;
+        $params['userid'] = $USER->id;
+        // Update record
+        $DB->update_record('local_cria_question_example', $params);
+
+       return true;
+    }
+
+    /**
+     * Returns description of method result value
+     * @return external_description
+     */
+    public static function update_example_returns()
+    {
+        return new external_value(PARAM_BOOL, 'return ture or false');
+    }
 }
