@@ -189,4 +189,13 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_question_example_insert' => array(
+        'classname' => 'local_cria_external_question',
+        'methodname' => 'insert_example',
+        'classpath' => 'local/cria/classes/external/question.php',
+        'description' => 'Add example question',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );

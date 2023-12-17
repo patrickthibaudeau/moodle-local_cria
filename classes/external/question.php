@@ -308,4 +308,63 @@ class local_cria_external_question extends external_api {
     public static function delete_example_returns() {
         return new external_value(PARAM_BOOL, 'return code');
     }
+
+    //*********************Create example question*************************
+    /**
+     * Returns description of method parameters
+     * @return external_function_parameters
+     */
+    public static function insert_example_parameters()
+    {
+        return new external_function_parameters(
+            array(
+                'questionid' => new external_value(PARAM_INT, 'Question id', true),
+                'value' => new external_value(PARAM_TEXT, 'Example question value', true)
+            )
+        );
+    }
+
+    /**
+     * @param $id
+     * @param $value
+     * @return bool
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws restricted_context_exception
+     */
+    public static function insert_example($question_id, $value)
+    {
+        global $CFG, $USER, $DB, $PAGE;
+
+        //Parameter validation
+        $params = self::validate_parameters(self::insert_example_parameters(), array(
+                'questionid' => $question_id,
+                'value' => $value
+            )
+        );
+
+        //Context validation
+        //OPTIONAL but in most web service it should present
+        $context = \context_system::instance();
+        self::validate_context($context);
+
+
+        $params['timecreated'] = time();
+        $params['timemodified'] = time();
+        $params['indexed'] = 0;
+        $params['userid'] = $USER->id;
+        // Update record
+        $new_id = $DB->insert_record('local_cria_question_example', $params);
+
+        return $new_id;
+    }
+
+    /**
+     * Returns description of method result value
+     * @return external_description
+     */
+    public static function insert_example_returns()
+    {
+        return new external_value(PARAM_INT, 'Return new record id');
+    }
 }
