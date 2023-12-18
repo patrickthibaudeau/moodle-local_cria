@@ -446,19 +446,22 @@ class intent extends crud
             $question_content = criabot::question_create($this->get_bot_name(), $data);
         }
         // Update question indexed
-        if (isset($question_content->status) && $question_content->status == 200) {
+        if ($question_content->status == 200) {
             $DB->set_field(
                 'local_cria_question',
                 'published',
                 1,
                 ['id' => $question_id]
             );
-            $DB->set_field(
-                'local_cria_question',
-                'document_name',
-                $question_content->document_name ,
-                ['id' => $question_id]
-            );
+            // Only add document name if it does not exist
+            if (!$question->document_name) {
+                $DB->set_field(
+                    'local_cria_question',
+                    'document_name',
+                    $question_content->document_name,
+                    ['id' => $question_id]
+                );
+            }
             // Update all question examples indexed
             foreach ($question_examples as $question_example) {
                 $DB->set_field(

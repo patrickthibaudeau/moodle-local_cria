@@ -80,7 +80,7 @@ class local_cria_external_question extends external_api {
         } else {
             \core\notification::error('Error deleting question on bot server. STATUS: '
                 . $delete_on_bot_server->status . ' MESSAGE: ' . $delete_on_bot_server->message);
-            return false;
+            return 0;
         }
     }
 
@@ -89,7 +89,7 @@ class local_cria_external_question extends external_api {
      * @return external_description
      */
     public static function delete_returns() {
-        return new external_value(PARAM_BOOL, 'return code');
+        return new external_value(PARAM_INT, 'return code');
     }
 
     //*********************Get answer by question id*************************

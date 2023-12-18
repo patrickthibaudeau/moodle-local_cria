@@ -20,6 +20,10 @@
         mr-1">
         {{#str}}test_bot, local_cria{{/str}}
         </a>
+        <a href="{{config.wwwroot}}/local/cria/bot.php?id={{bot_id}}&return=content" class="btn btn-outline-primary float-right
+        mr-1">
+        {{#str}}edit_bot, local_cria{{/str}}
+        </a>
         {{#use_fine_tuning}}
             <a href="edit_intent.php?bot_id={{bot_id}}" class="btn btn-outline-primary float-right mr-1">
             {{#str}}new_category, local_cria{{/str}}

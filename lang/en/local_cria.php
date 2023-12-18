@@ -66,6 +66,7 @@ $string['description'] = 'Description';
 $string['display_settings'] = 'Display setttings';
 $string['documents'] = 'Documents';
 $string['edit'] = 'Edit';
+$string['edit_bot'] = 'Edit bot';
 $string['edit_content'] = 'Edit content';
 $string['edit_intent'] = 'Edit intent';
 $string['edit_question'] = 'Edit question';

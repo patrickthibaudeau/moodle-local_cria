@@ -12,6 +12,7 @@ use local_cria\bot;
 global $CFG, $OUTPUT, $USER, $PAGE, $DB, $SITE;
 
 $id = optional_param('id', 0, PARAM_INT);
+$return = optional_param('return', '', PARAM_INT);
 
 $context = CONTEXT_SYSTEM::instance();
 
