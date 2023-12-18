@@ -957,5 +957,71 @@ function xmldb_local_cria_upgrade($oldversion) {
         // Cria savepoint reached.
         upgrade_plugin_savepoint(true, 2023121500, 'local', 'cria');
     }
+
+    if ($oldversion < 2023121800) {
+
+        // Define field generate_answer to be added to local_cria_question.
+        $table = new xmldb_table('local_cria_question');
+        $field = new xmldb_field('generate_answer', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'program');
+
+        // Conditionally launch add field generate_answer.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field keywords to be added to local_cria_intents.
+        $table = new xmldb_table('local_cria_intents');
+        $field = new xmldb_field('keywords', XMLDB_TYPE_TEXT, null, null, null, null, null, 'description');
+
+
+        // Define field available_child to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('available_child', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'response_length');
+
+        // Conditionally launch add field available_child.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        // Conditionally launch add field keywords.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023121800, 'local', 'cria');
+    }
+
+    if ($oldversion < 2023121801) {
+
+        // Define field lang to be added to local_cria_files.
+        $table = new xmldb_table('local_cria_files');
+        $field = new xmldb_field('lang', XMLDB_TYPE_CHAR, '10', null, null, null, 'en', 'content');
+
+        // Conditionally launch add field lang.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field faculty to be added to local_cria_files.
+        $table = new xmldb_table('local_cria_files');
+        $field = new xmldb_field('faculty', XMLDB_TYPE_CHAR, '50', null, null, null, null, 'lang');
+
+        // Conditionally launch add field faculty.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field program to be added to local_cria_files.
+        $table = new xmldb_table('local_cria_files');
+        $field = new xmldb_field('program', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'faculty');
+
+        // Conditionally launch add field program.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023121801, 'local', 'cria');
+    }
     return true;
 }

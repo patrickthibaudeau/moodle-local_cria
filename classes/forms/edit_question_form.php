@@ -109,7 +109,7 @@ class edit_question_form extends \moodleform
             null,
             'client'
         );
-        /**
+
         $mform->addElement(
             'html',
         '<h3>' . get_string('audience', 'local_cria') . '</h3>'
@@ -149,7 +149,7 @@ class edit_question_form extends \moodleform
             'program',
             PARAM_TEXT
         );
-*/
+
         $mform->addElement(
             'html',
             '<h3>' . get_string('automated_tasks', 'local_cria') . '</h3>'
