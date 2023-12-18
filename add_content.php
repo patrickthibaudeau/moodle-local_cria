@@ -67,6 +67,9 @@ if ($id != 0) {
 // Set bot id in formdata
     $formdata->intent_id = $intent_id;
     $formdata->bot_id = $INTENT->get_bot_id();
+    $formdata->lang = $INTENT->get_lang();
+    $formdata->faculty = $INTENT->get_faculty();
+    $formdata->program = $INTENT->get_program();
 }
 
 // Create form
@@ -141,6 +144,9 @@ if ($mform->is_cancelled()) {
     $content_data = [
         'intent_id' => $data->intent_id,
         'content' => '',
+        'lang' => $data->lang,
+        'faculty' => $data->faculty,
+        'program' => $data->program,
         'name' => $filename,
         'usermodified' => $USER->id,
         'timemodified' => time(),

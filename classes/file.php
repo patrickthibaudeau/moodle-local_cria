@@ -43,6 +43,21 @@ class file extends crud
     private $content;
 
     /**
+     * @@var String
+     */
+    private $lang;
+
+    /**
+     * @var String
+     */
+    private $faculty;
+
+    /**
+     * @var String
+     */
+    private $program;
+
+    /**
      *
      * @var int
      */
@@ -104,6 +119,9 @@ class file extends crud
         $this->intent_id = $result->intent_id ?? 0;
         $this->name = $result->name ?? '';
         $this->content = $result->content ?? '';
+        $this->lang = $result->lang ?? '';
+        $this->faculty = $result->faculty ?? '';
+        $this->program = $result->program ?? '';
         $this->usermodified = $result->usermodified ?? 0;
         $this->timecreated = $result->timecreated ?? 0;
         $this->timemodified = $result->timemodified ?? 0;
@@ -149,6 +167,30 @@ class file extends crud
     public function get_content(): string
     {
         return $this->content;
+    }
+
+    /**
+     * @return lang - varchar (255)
+     */
+    public function get_lang(): string
+    {
+        return $this->lang;
+    }
+
+    /**
+     * @return faculty - varchar (255)
+     */
+    public function get_faculty(): string
+    {
+        return $this->faculty;
+    }
+
+    /**
+     * @return program - varchar (255)
+     */
+    public function get_program(): string
+    {
+        return $this->program;
     }
 
     /**
