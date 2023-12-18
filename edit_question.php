@@ -42,6 +42,7 @@ if ($id != 0) {
     $formdata->examples = false;
     $formdata->create_example_questions = true;
     $formdata->parent_id = $parent_id;
+    $formdata->generate_answer = 0;
 }
 
 

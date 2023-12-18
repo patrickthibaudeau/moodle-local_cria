@@ -110,6 +110,23 @@ class edit_question_form extends \moodleform
             'client'
         );
 
+        // Add yes/no select element to generate_answer
+        $mform->addElement(
+            'selectyesno',
+            'generate_answer',
+            get_string('generate_answer', 'local_cria')
+        );
+        $mform->setType(
+            'generate_answer',
+            PARAM_INT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'generate_answer',
+            'generate_answer',
+            'local_cria'
+        );
+
         $mform->addElement(
             'html',
         '<h3>' . get_string('audience', 'local_cria') . '</h3>'

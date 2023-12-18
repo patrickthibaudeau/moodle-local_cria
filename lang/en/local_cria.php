@@ -92,6 +92,9 @@ $string['fine_tuning'] = 'Fine-tuning';
 $string['fine_tuning_help'] = 'Fine-tuning will provide you with extra parameters to fine-tune your model. It will also' .
     ' allow you to separate your content into categories making your bot more precise and accurate.' .
     ' This is an advanced feature and should only be used if you know what you are doing.';
+$string['generate_answer'] = 'Let AI generate an answer based on your answer above?';
+$string['generate_answer_help'] = 'If yes, the AI will generate an answer based on the answer you provided above.'
+. ' If no, the answer above will be provided. NOTE: if you are using images, maps, videos or other media, you should always select no.';
 $string['gpt_cost'] = 'GPT cost?';
 $string['gpt_cost_help'] = 'Cost of GPT based per 1000 tokens';
 $string['groups'] = 'Groups';
