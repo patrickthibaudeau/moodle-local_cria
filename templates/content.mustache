@@ -20,7 +20,7 @@
         mr-1">
         {{#str}}test_bot, local_cria{{/str}}
         </a>
-        <a href="{{config.wwwroot}}/local/cria/bot.php?id={{bot_id}}&return=content" class="btn btn-outline-primary float-right
+        <a href="{{config.wwwroot}}/local/cria/edit_bot.php?id={{bot_id}}&return=content" class="btn btn-outline-primary float-right
         mr-1">
         {{#str}}edit_bot, local_cria{{/str}}
         </a>
@@ -64,7 +64,7 @@
                                         <h3 class="float-left">{{#str}}documents, local_cria{{/str}}</h3>
                                     </div>
                                     <div class="col">
-                                        <a href="add_content.php?intent_id={{id}}" class="btn btn-outline-primary
+                                        <a href="edit_content.php?intent_id={{id}}" class="btn btn-outline-primary
                                         float-right">
                                         {{#str}}add_document, local_cria{{/str}}
                                         </a>
@@ -83,7 +83,7 @@
                                             <tr>
                                                 <td>{{name}}</td>
                                                 <td>
-                                                    <a href="add_content.php?id={{id}}&intent_id={{intent_id}}"
+                                                    <a href="edit_content.php?id={{id}}&intent_id={{intent_id}}"
                                                     class="btn
                                                     btn-outline-primary">
                                                     {{#str}}update, local_cria{{/str}}

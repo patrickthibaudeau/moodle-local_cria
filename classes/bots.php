@@ -157,4 +157,22 @@ class bots {
 	    return $results;
     }
 
+    /**
+     * @return array
+     * @throws \dml_exception
+     */
+    public function get_available_child_bots($bot_id) {
+        global $DB;
+        // Get all bots that are available as child bots
+        $bots = $DB->get_records('local_cria_bot', ['available_child' => 1], 'name');
+        $available_bots = [];
+        foreach ($bots as $bot) {
+            if ($bot->id != $bot_id) {
+                $available_bots[$bot->id] = $bot->name;
+            }
+        }
+
+        return $available_bots;
+    }
+
 }

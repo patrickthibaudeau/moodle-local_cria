@@ -2,7 +2,7 @@
 
 require_once("../../config.php");
 
-require_once($CFG->dirroot . "/local/cria/classes/forms/bot_form.php");
+require_once($CFG->dirroot . "/local/cria/classes/forms/edit_bot_form.php");
 
 
 use local_cria\base;
@@ -12,7 +12,7 @@ use local_cria\bot;
 global $CFG, $OUTPUT, $USER, $PAGE, $DB, $SITE;
 
 $id = optional_param('id', 0, PARAM_INT);
-$return = optional_param('return', '', PARAM_INT);
+$return = optional_param('return', 'bot_config', PARAM_TEXT);
 
 $context = CONTEXT_SYSTEM::instance();
 
@@ -24,6 +24,7 @@ if ($id) {
     $formdata->description_editor['text'] = $formdata->description;
     $formdata->welcome_message_editor['text'] = $formdata->welcome_message;
     $formdata->bot_max_tokens = $BOT->get_model_max_tokens();
+    $formdata->child_bots = json_decode($formdata->child_bots);
 
 } else {
     $formdata = new stdClass();
@@ -37,13 +38,15 @@ if ($id) {
     $formdata->theme_color = '#e31837';
     $formdata->max_context = 50;
 }
+$formdata->return = $return;
 
-$mform = new \local_cria\bot_form(null, array('formdata' => $formdata));
+$mform = new \local_cria\edit_bot_form(null, array('formdata' => $formdata));
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
-    redirect($CFG->wwwroot . '/local/cria/bot_config.php');
+    redirect($CFG->wwwroot . '/local/cria/' . $return . '.php?id=' . $id);
 } else if ($data = $mform->get_data()) {
-
+    $return = $data->return;
+    unset($data->return);
     if ($data->id) {
         $BOT = new bot($data->id);
         $data->description = $data->description_editor['text'];
@@ -65,17 +68,13 @@ if ($mform->is_cancelled()) {
     }
 
 
-    redirect($CFG->wwwroot . '/local/cria/bot_config.php');
-
-
+    redirect($CFG->wwwroot . '/local/cria/'. $return . '.php?id=' . $data->id);
 } else {
-
     $mform->set_data($mform);
 }
 
-
 base::page(
-    new moodle_url('/local/cria/bot.php', ['id' => $id]),
+    new moodle_url('/local/cria/edit_bot.php', ['id' => $id]),
     get_string('bot', 'local_cria'),
     '',
     $context,
@@ -83,6 +82,8 @@ base::page(
 );
 $PAGE->requires->js_call_amd('local_cria/bot_form', 'init');
 $PAGE->requires->js(new moodle_url('/local/cria/js/jscolor.js'));
+$PAGE->requires->css(new moodle_url('/local/cria/css/select2.min.css'));
+$PAGE->requires->css(new moodle_url('/local/cria/css/select2-bootstrap4.min.css'));
 
 echo $OUTPUT->header();
 //**********************

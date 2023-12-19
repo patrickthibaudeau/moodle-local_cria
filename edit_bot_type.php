@@ -46,7 +46,7 @@ if ($mform->is_cancelled()) {
 
 
 base::page(
-    new moodle_url('/local/cria/bot.php', ['id' => $id]),
+    new moodle_url('/local/cria/edit_bot.php', ['id' => $id]),
     get_string('bot', 'local_cria'),
     '',
     $context,

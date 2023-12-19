@@ -9,6 +9,8 @@ $string['add_model'] = 'Add model';
 $string['add_provider'] = 'Add provider';
 $string['add_question'] = 'Add question';
 $string['add_type'] = 'Add type';
+$string['available_child'] = 'Make this bot available to other bots';
+$string['available_child_help'] = 'Select Yes if you want this bot to be available to other bots as a child bot. This is useful if you want to create a bot that uses the content of another bot.';
 $string['advanced_settings'] = 'Advanced settings';
 $string['all'] = 'All';
 $string['answer'] = 'Answer';
@@ -44,6 +46,8 @@ $string['cachedef_cria_system_messages'] = 'Caches all system messages for bots'
 $string['cancel'] = 'Cancel';
 $string['chatbot_framework'] = 'Chatbot framework';
 $string['chat_does_not_exist'] = 'The chat requested does not exist.';
+$string['child_bots'] = 'Child bots';
+$string['child_bots_help'] = 'Select the bots you want to make available to this bot. This is useful if you want to create a bot that uses the content of another bot.';
 $string['chunk_limit'] = 'Number of words per chunk';
 $string['chunk_limit_help'] = 'OpenAI works on chunks of text. This setting defines the number of words per chunk.<br>
 For GPT-3.5-turbo 16k, the maximum number of words per chunk is 12000.';

@@ -2,8 +2,13 @@ import $ from 'jquery';
 import notification from 'core/notification';
 import ajax from 'core/ajax';
 import ModalFactory from 'core/modal_factory';
+import select2 from 'local_cria/select2';
 
 export const init = () => {
+    // Set child_bots as select2
+    $('#id_child_bots').select2({
+        'theme': 'bootstrap4',
+    });
     set_tone_button();
     set_length_button();
     get_bot_type_message();

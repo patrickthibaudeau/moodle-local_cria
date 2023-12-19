@@ -2,6 +2,7 @@
 
 namespace local_cria;
 
+use local_cria\base;
 use local_cria\bot;
 use local_cria\bots;
 use local_cria\models;
@@ -12,7 +13,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/lib/formslib.php');
 require_once($CFG->dirroot . '/config.php');
 
-class bot_form extends \moodleform
+class edit_bot_form extends \moodleform
 {
 
     protected function definition()
@@ -34,6 +35,16 @@ class bot_form extends \moodleform
         $mform->setType(
             'id',
             PARAM_INT
+        );
+
+        // return element
+        $mform->addElement(
+            'hidden',
+            'return'
+        );
+        $mform->setType(
+            'return',
+            PARAM_TEXT
         );
 
         // bot max tokens element
@@ -99,6 +110,23 @@ class bot_form extends \moodleform
         $mform->setType(
             'description',
             PARAM_RAW
+        );
+
+        // Add select yes/no element fora available_child
+        $mform->addElement(
+            'selectyesno',
+            'available_child',
+            get_string('available_child', 'local_cria')
+        );
+        $mform->setType(
+            'available_child',
+            PARAM_INT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'available_child',
+            'available_child',
+            'local_cria'
         );
 
         // Html element as a header for Bot personality
@@ -383,33 +411,24 @@ class bot_form extends \moodleform
             0
         );
 
-//        } else {
-//            // Set all elements to hidden
-//            $mform->addElement(
-//                'hidden',
-//                'max_tokens'
-//            );
-//            $mform->addElement(
-//                'hidden',
-//                'temperature'
-//            );
-//            $mform->addElement(
-//                'hidden',
-//                'top_p'
-//            );
-//            $mform->addElement(
-//                'hidden',
-//                'top_k'
-//            );
-//            $mform->addElement(
-//                'hidden',
-//                'min_relevance'
-//            );
-//            $mform->addElement(
-//                'hidden',
-//                'max_context'
-//            );
-//        }
+        // Add multi select element for child_bots
+        $child_bots =$mform->addElement(
+            'select',
+            'child_bots',
+            get_string('child_bots', 'local_cria'),
+            base::get_available_child_bots($formdata->id)
+        );
+        $child_bots->setMultiple(true);
+        $mform->setType(
+            'child_bots',
+            PARAM_RAW
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'child_bots',
+            'child_bots',
+            'local_cria'
+        );
 
         $mform->addElement(
             'html',
