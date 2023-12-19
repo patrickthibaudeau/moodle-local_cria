@@ -9,6 +9,8 @@ export const init = () => {
     $('#id_child_bots').select2({
         'theme': 'bootstrap4',
     });
+    // Add a few classes to the select2 element
+    $('.select2-selection__choice__remove').addClass('btn btn-sm btn-danger mr-1');
     set_tone_button();
     set_length_button();
     get_bot_type_message();
