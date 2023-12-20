@@ -49,8 +49,10 @@ function get_response() {
             $('#cria-completion-tokens').html(result.completion_tokens);
             $('#cria-total-tokens').html(result.total_tokens);
             $('#cria-cost').html('$' + result.cost.toPrecision(6));
-        }).fail(function () {
-            alert('An error has occurred.');
+        }).fail(function (e) {
+            alert(e.message + ' Your prompt contains unsupported characters. ' +
+                'Please try again. Note: grounding content is not supported.');
+            location.reload();
         });
     });
 }

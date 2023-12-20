@@ -45,7 +45,7 @@ class local_cria_external_gpt extends external_api {
             array(
                 'bot_id' => new external_value(PARAM_INT, 'ID of the bot being used', false, 0),
                 'chat_id' => new external_value(PARAM_RAW, 'Chat ID from indexing server', false, 0),
-                'prompt' => new external_value(PARAM_TEXT, 'Question asked by user', false, ''),
+                'prompt' => new external_value(PARAM_RAW, 'Question asked by user', false, ''),
                 'content' => new external_value(PARAM_RAW, 'User content', false, '')
             )
         );

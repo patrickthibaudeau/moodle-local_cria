@@ -90,7 +90,7 @@ class gpt
     /**
      * Build the message to send to the API
      * @param int $bot_id
-     * @param string $prompt
+     * @param $prompt
      * @return object
      * @throws \dml_exception
      */
