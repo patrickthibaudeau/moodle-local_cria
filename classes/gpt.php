@@ -124,7 +124,8 @@ class gpt
                     $context = substr($chunk_text[$i - 1], -$context_window_size);
                     $chunk = $context . $chunk;
                 }
-                $full_prompt = $chunk . "\n" . $prompt;
+                // Use grounding context
+                $full_prompt = "---\n" . $chunk . "\n---\n" . $prompt;
                 // Use Criadex to make the call
                 $result = criadex::query(
                     $params->llm_model_id,
@@ -314,15 +315,15 @@ class gpt
         $data->message = $message;
 
         // Enter log into database
-        logs::insert(
-            $bot_id,
-            $prompt,
-            $data->message,
-            $data->prompt_tokens,
-            $data->completion_tokens,
-            $data->total_tokens,
-            $data->cost,
-            '');
+//        logs::insert(
+//            $bot_id,
+//            $prompt,
+//            $data->message,
+//            $data->prompt_tokens,
+//            $data->completion_tokens,
+//            $data->total_tokens,
+//            $data->cost,
+//            '');
 
         return $data;
     }

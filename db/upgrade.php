@@ -1023,5 +1023,99 @@ function xmldb_local_cria_upgrade($oldversion) {
         // Cria savepoint reached.
         upgrade_plugin_savepoint(true, 2023121801, 'local', 'cria');
     }
+
+    if ($oldversion < 2023122300) {
+
+        // Define table local_cria_entity to be created.
+        $table = new xmldb_table('local_cria_entity');
+
+        // Adding fields to table local_cria_entity.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('bot_id', XMLDB_TYPE_INTEGER, '10', null, null, null, '0');
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+        // Adding keys to table local_cria_entity.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('usermodified', XMLDB_KEY_FOREIGN, ['usermodified'], 'user', ['id']);
+
+        // Conditionally launch create table for local_cria_entity.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table local_cria_keyword to be created.
+        $table = new xmldb_table('local_cria_keyword');
+
+        // Adding fields to table local_cria_keyword.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('entity_id', XMLDB_TYPE_INTEGER, '10', null, null, null, '0');
+        $table->add_field('value', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+        // Adding keys to table local_cria_keyword.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('usermodified', XMLDB_KEY_FOREIGN, ['usermodified'], 'user', ['id']);
+
+        // Conditionally launch create table for local_cria_keyword.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define table local_cria_synonyms to be created.
+        $table = new xmldb_table('local_cria_synonyms');
+
+        // Adding fields to table local_cria_synonyms.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('keyword_id', XMLDB_TYPE_INTEGER, '10', null, null, null, '0');
+        $table->add_field('value', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+
+        // Adding keys to table local_cria_synonyms.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('usermodified', XMLDB_KEY_FOREIGN, ['usermodified'], 'user', ['id']);
+
+        // Conditionally launch create table for local_cria_synonyms.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Define field keywords to be added to local_cria_files.
+        $table = new xmldb_table('local_cria_files');
+        $field = new xmldb_field('keywords', XMLDB_TYPE_TEXT, null, null, null, null, null, 'content');
+
+        // Conditionally launch add field keywords.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field keywords to be added to local_cria_intents.
+        $table = new xmldb_table('local_cria_intents');
+        $field = new xmldb_field('keywords', XMLDB_TYPE_TEXT, null, null, null, null, null, 'description');
+
+        // Conditionally launch add field keywords.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field keywords to be added to local_cria_question.
+        $table = new xmldb_table('local_cria_question');
+        $field = new xmldb_field('keywords', XMLDB_TYPE_TEXT, null, null, null, null, null, 'answer');
+
+        // Conditionally launch add field keywords.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2023122300, 'local', 'cria');
+    }
+
     return true;
 }

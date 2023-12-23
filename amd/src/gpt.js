@@ -20,13 +20,11 @@ function get_response() {
         $('#cria-cost').html('$0.00');
 
         var bot_id = $(this).data('bot_id');
-        var prompt = '[INSTRUCTIONS]' +
+        var prompt =
             $('#default-user-prompt').val() +
-            $('#user-prompt').val() +
-            '[/INSTRUCTIONS]'
-        var content = '[CONTEXT]' +
-            $('#cria-test-input').val() +
-            '[/CONTEXT]'
+            $('#user-prompt').val();
+        var content =
+            $('#cria-test-input').val() ;
         var chat_id = $('#cria-chat-id').val();
         $("#submit-question").hide();
         $("#starting-process").show();
@@ -51,7 +49,7 @@ function get_response() {
             $('#cria-cost').html('$' + result.cost.toPrecision(6));
         }).fail(function (e) {
             alert(e.message + ' Your prompt contains unsupported characters. ' +
-                'Please try again. Note: grounding content is not supported.');
+                'Please try again.');
             location.reload();
         });
     });
