@@ -16,8 +16,8 @@ $(document).ready(function () {
                 $('.entity-dt-delete').on('click', function () {
                     id = $(this).data('id');
                     $('#cria-delete-modal').modal('toggle');
-                    $('.cria-modal-delete-confirm').off();
-                    $('.cria-modal-delete-confirm').on('click', function () {
+                    $('#cria-modal-delete-confirm').off();
+                    $('#cria-modal-delete-confirm').on('click', function () {
                         $('#cria-delete-modal').modal('toggle');
                         $.ajax({
                             url: wwwroot + '/local/cria/ajax/delete_entity.php?id=' + id,

@@ -59,7 +59,7 @@ if ($mform->is_cancelled()) {
     }
 
     // Redirect to content page
-    redirect($CFG->wwwroot . '/local/cria/edit_keywords.php?id=' . $data->id . '&entity_id=' . $data->entity_id);
+    redirect($CFG->wwwroot . '/local/cria/edit_keyword.php?id=' . $data->id . '&entity_id=' . $data->entity_id);
 } else {
     // Show form
     $mform->set_data($mform);

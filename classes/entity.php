@@ -208,7 +208,7 @@ class entity extends crud
     {
         global $DB;
         // Loop through all keywords and delete synonyms and the keyword
-        $sql = "SELECT id FROM {local_cria_entity_keyword} WHERE entity_id = ?";
+        $sql = "SELECT id FROM {local_cria_keyword} WHERE entity_id = ?";
         $keywords = $DB->get_records_sql($sql, [$this->id]);
         foreach ($keywords as $keyword) {
             $KEYWORD = new keyword($keyword->id);
