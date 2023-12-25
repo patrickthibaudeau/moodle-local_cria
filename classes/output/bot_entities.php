@@ -16,10 +16,9 @@
 namespace local_cria\output;
 
 use local_cria\bot;
-use local_cria\files;
-use local_cria\intents;
+use local_cria\entities;
 
-class content implements \renderable, \templatable
+class bot_entities implements \renderable, \templatable
 {
     /**
      * @var int
@@ -31,10 +30,9 @@ class content implements \renderable, \templatable
      */
     private $active_intent_id;
 
-    public function __construct($bot_id, $activer_intent_id = 0)
+    public function __construct($bot_id)
     {
         $this->bot_id = $bot_id;
-        $this->active_intent_id = $activer_intent_id;
     }
 
 
@@ -50,18 +48,12 @@ class content implements \renderable, \templatable
     {
         global $USER, $CFG, $DB;
         $BOT = new bot($this->bot_id);
-        if ($this->active_intent_id == 0) {
-            $this->active_intent_id = $BOT->get_default_intent_id();
-        }
-        $INTENTS = new intents($this->bot_id);
-        $intents = array_values($INTENTS->get_records_with_related_data($this->active_intent_id));
 
         $data = [
             'bot_id' => $this->bot_id,
-            'intents' => $intents,
-            'use_fine_tuning' => $BOT->get_fine_tuning(),
-            'content_page' => true,
-            'return_url' => 'content'
+            'delete_message' => get_string('delete_entity_help', 'local_cria'),
+            'entities_page' => true,
+            'return_url' => 'bot_entities',
         ];
 
         return $data;

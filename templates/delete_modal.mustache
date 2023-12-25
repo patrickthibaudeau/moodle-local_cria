@@ -1,0 +1,22 @@
+<!-- Bootstrap Delete Modal -->
+<div class="modal fade" id="cria-delete-modal" tabindex="-1" aria-labelledby="cria-delete-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="cria-delete-modal-label">
+                    {{#str}}delete, local_cria{{/str}} {{#str}}entity, local_cria{{/str}}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="{{#str}}cancel, local_cria{{/str}}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{delete_message}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">{{#str}}cancel, local_cria{{/str}}</button>
+                <button type="button" class="btn btn-danger" id="cria-modal-delete-confirm">{{#str}}delete, local_cria{{/str}}</button>
+            </div>
+        </div>
+    </div>
+</div>

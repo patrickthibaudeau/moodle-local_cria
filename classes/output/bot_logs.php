@@ -45,9 +45,11 @@ class bot_logs implements \renderable, \templatable
         $BOT = new bot($this->bot_id);
 
         $data = [
+            'bot_id' => $this->bot_id,
             'name' => $BOT->get_name(),
             'logs' => logs::get_logs($this->bot_id),
             'total_usage_cost' => logs::get_total_usage_cost($this->bot_id),
+            'bot_logs_page' => true
         ];
         return $data;
     }

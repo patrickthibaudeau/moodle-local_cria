@@ -1,0 +1,37 @@
+<input type="hidden" id="bot_id" value="{{bot_id}}"/>
+<input type="hidden" id="entity_id" value="{{entity_id}}"/>
+{{> local_cria/bot_nav_buttons}}
+
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <h3 class="card-header">
+                <div class="col">
+                    <h3 class="float-left">{{#str}}keywords, local_cria{{/str}}</h3>
+                </div>
+                <div class="col">
+                    <a href="edit_keyword.php?entity_id={{entity_id}}"
+                    class="btn btn-outline-primary float-right">
+                    {{#str}}add_keyword, local_cria{{/str}}
+                    </a>
+                </div>
+            </h3>
+            <div class="card-body">
+                <table id="cria-keywords-table" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>{{#str}}name, local_cria{{/str}}</th>
+                        <th>{{#str}}actions, local_cria{{/str}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{{> local_cria/delete_modal}}

@@ -15,7 +15,6 @@ export const init = () => {
  * Delete a content
  */
 function delete_content() {
-
     $(".delete-content").off();
     $(".delete-content").on('click', function () {
         var id = $(this).data('id');
@@ -64,7 +63,6 @@ function edit_intent() {
  * Delete quetison
  */
 function delete_question() {
-
     $(".delete-question").off();
     $(".delete-question").on('click', function () {
         var id = $(this).data('id');

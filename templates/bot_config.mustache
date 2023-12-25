@@ -74,13 +74,13 @@
                             <td>{{type_name}}</td>
                             <td>
                                 {{#local/cria:edit_bots}}
-                                    <a href="edit_bot.php?id={{id}}" class="btn btn-outline-primary">
+                                    <a href="edit_bot.php?bot_id={{id}}" class="btn btn-outline-primary">
                                     {{#str}}edit, local_cria{{/str}}
                                     </a>
                                 {{/local/cria:edit_bots}}
                                 {{#local/cria:edit_bot_content}}
                                     {{#use_bot_server}}
-                                        <a href="content.php?id={{id}}" class="btn btn-outline-primary">
+                                        <a href="content.php?bot_id={{id}}" class="btn btn-outline-primary">
                                         {{#str}}content, local_cria{{/str}}
                                         </a>
                                     {{/use_bot_server}}

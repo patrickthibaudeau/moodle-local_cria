@@ -6,7 +6,7 @@ global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
 
 require_login(1, false);
 
-$bot_id = required_parAM('id', PARAM_INT);
+$bot_id = required_param('bot_id', PARAM_INT);
 
 $context = context_system::instance();
 
@@ -21,6 +21,8 @@ $BOT = new \local_cria\bot($bot_id);
 
 $PAGE->requires->js_call_amd('local_cria/content', 'init');
 
+// Add secondary navigation
+include_once('bot_secondaray_nav.php');
 //**************** ******
 //*** DISPLAY HEADER ***
 //**********************

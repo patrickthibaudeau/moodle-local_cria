@@ -198,4 +198,32 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    // Synonyms
+    'cria_synonym_update' => array(
+        'classname' => 'local_cria_external_synonym',
+        'methodname' => 'update',
+        'classpath' => 'local/cria/classes/external/synonym.php',
+        'description' => 'Update synonym',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_synonym_delete' => array(
+        'classname' => 'local_cria_external_synonym',
+        'methodname' => 'delete',
+        'classpath' => 'local/cria/classes/external/synonym.php',
+        'description' => 'Delete synonym',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_synonym_insert' => array(
+        'classname' => 'local_cria_external_synonym',
+        'methodname' => 'insert',
+        'classpath' => 'local/cria/classes/external/synonym.php',
+        'description' => 'Add synonym',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );

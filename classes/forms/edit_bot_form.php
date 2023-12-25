@@ -47,6 +47,16 @@ class edit_bot_form extends \moodleform
             PARAM_TEXT
         );
 
+        // Bot id element
+        $mform->addElement(
+            'hidden',
+            'bot_id'
+        );
+        $mform->setType(
+            'bot_id',
+            PARAM_INT
+        );
+
         // bot max tokens element
         $mform->addElement(
             'hidden',

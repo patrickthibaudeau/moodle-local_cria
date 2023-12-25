@@ -15,12 +15,16 @@
 
 namespace local_cria\output;
 
-use local_cria\bot;
-use local_cria\files;
-use local_cria\intents;
+use local_cria\keywords;
+use local_cria\entity;
 
-class content implements \renderable, \templatable
+class bot_keywords implements \renderable, \templatable
 {
+    /**
+     * @var int
+     */
+    private $entity_id;
+
     /**
      * @var int
      */
@@ -31,10 +35,10 @@ class content implements \renderable, \templatable
      */
     private $active_intent_id;
 
-    public function __construct($bot_id, $activer_intent_id = 0)
+    public function __construct($entity_id, $bot_id)
     {
+        $this->entity_id = $entity_id;
         $this->bot_id = $bot_id;
-        $this->active_intent_id = $activer_intent_id;
     }
 
 
@@ -49,19 +53,13 @@ class content implements \renderable, \templatable
     public function export_for_template(\renderer_base $output)
     {
         global $USER, $CFG, $DB;
-        $BOT = new bot($this->bot_id);
-        if ($this->active_intent_id == 0) {
-            $this->active_intent_id = $BOT->get_default_intent_id();
-        }
-        $INTENTS = new intents($this->bot_id);
-        $intents = array_values($INTENTS->get_records_with_related_data($this->active_intent_id));
+        $KEYWORDS = new keywords($this->entity_id);
 
         $data = [
             'bot_id' => $this->bot_id,
-            'intents' => $intents,
-            'use_fine_tuning' => $BOT->get_fine_tuning(),
-            'content_page' => true,
-            'return_url' => 'content'
+            'entity_id' => $this->entity_id,
+            'delete_message' => get_string('delete_keyword_help', 'local_cria'),
+            'keywords_page' => true
         ];
 
         return $data;

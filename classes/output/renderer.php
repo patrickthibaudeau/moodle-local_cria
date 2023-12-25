@@ -169,4 +169,19 @@ class renderer extends \plugin_renderer_base {
         $data = $intent->export_for_template($this);
         return $this->render_from_template('local_cria/intent_questions', $data);
     }
+
+    /**
+     * @param \templatable $role
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_bot_entities(\templatable $entities) {
+        $data = $entities->export_for_template($this);
+        return $this->render_from_template('local_cria/bot_entities', $data);
+    }
+    public function render_bot_keywords(\templatable $keywords) {
+        $data = $keywords->export_for_template($this);
+        return $this->render_from_template('local_cria/bot_keywords', $data);
+    }
+
 }

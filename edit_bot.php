@@ -11,7 +11,7 @@ use local_cria\bot;
 
 global $CFG, $OUTPUT, $USER, $PAGE, $DB, $SITE;
 
-$id = optional_param('id', 0, PARAM_INT);
+$id = optional_param('bot_id', 0, PARAM_INT);
 $return = optional_param('return', 'bot_config', PARAM_TEXT);
 
 $context = CONTEXT_SYSTEM::instance();
@@ -21,6 +21,7 @@ require_login(1, false);
 if ($id) {
     $BOT = new bot($id);
     $formdata = $BOT->get_record();
+    $formdata->bot_id = $id;
     $formdata->description_editor['text'] = $formdata->description;
     $formdata->welcome_message_editor['text'] = $formdata->welcome_message;
     $formdata->bot_max_tokens = $BOT->get_model_max_tokens();
@@ -43,7 +44,7 @@ $formdata->return = $return;
 $mform = new \local_cria\edit_bot_form(null, array('formdata' => $formdata));
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
-    redirect($CFG->wwwroot . '/local/cria/' . $return . '.php?id=' . $id);
+    redirect($CFG->wwwroot . '/local/cria/' . $return . '.php?bot_id=' . $id);
 } else if ($data = $mform->get_data()) {
     $return = $data->return;
     unset($data->return);
@@ -68,13 +69,13 @@ if ($mform->is_cancelled()) {
     }
 
 
-    redirect($CFG->wwwroot . '/local/cria/'. $return . '.php?id=' . $data->id);
+    redirect($CFG->wwwroot . '/local/cria/'. $return . '.php?bot_id=' . $data->id);
 } else {
     $mform->set_data($mform);
 }
 
 base::page(
-    new moodle_url('/local/cria/edit_bot.php', ['id' => $id]),
+    new moodle_url('/local/cria/edit_bot.php', ['bot_id' => $id]),
     get_string('bot', 'local_cria'),
     '',
     $context,

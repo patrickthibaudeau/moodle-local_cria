@@ -1,0 +1,40 @@
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            <div class="col">
+                <b>{{#str}}synonyms, local_cria{{/str}}</b>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="cria-synonyms-table" class="table table-striped">
+                <tbody>
+                {{#synonyms}}
+                    <tr>
+                        <td>
+                            <div class="edit-synonym" style="cursor: pointer;" contenteditable="true"
+                                 data-id="{{id}}">{{value}}
+                            </div>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-outline-danger delete-synonym" data-id="{{id}}">
+                                {{#str}}delete, local_cria{{/str}}
+                            </button>
+                        </td>
+                    </tr>
+                {{/synonyms}}
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer">
+            <div class="col">
+                <div class="input-group mb-2 mr-sm-2">
+                    <input type="text" class="form-control" id="cria-synonym"
+                    placeholder="Enter new synonym here">
+                    <div class="input-group-append btn-add-synonym" style="cursor:pointer;">
+                        <div class="input-group-text"><i class="bi bi-plus-square"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

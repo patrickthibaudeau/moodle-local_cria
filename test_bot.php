@@ -7,7 +7,7 @@ global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
 require_login(1, false);
 $context = context_system::instance();
 
-$bot_id = required_param('id', PARAM_INT);
+$bot_id = required_param('bot_id', PARAM_INT);
 
 \local_cria\base::page(
     $CFG->wwwroot . '/local/cria/test_bot.php',

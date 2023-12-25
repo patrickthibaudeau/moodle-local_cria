@@ -1,0 +1,43 @@
+<input type="hidden" id="bot-id" value="{{bot_id}}">
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-2">
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse float-right" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        </ul>
+        {{^content_page}}
+            <a href="content.php?bot_id={{bot_id}}" class="btn btn-outline-primary mr-1">
+            {{#str}}content, local_cria{{/str}}
+        {{/content_page}}
+        {{^entities_page}}
+            <a href="bot_entities.php?bot_id={{bot_id}}" class="btn btn-outline-primary mr-1">
+            {{#str}}entities, local_cria{{/str}}
+        {{/entities_page}}
+        {{^keywords_page}}
+            <a href="{{config.wwwroot}}/local/cria/edit_bot.php?bot_id={{bot_id}}&return={{return_url}}" class="btn
+            btn-outline-primary
+            mr-1">
+            {{#str}}edit_bot, local_cria{{/str}}
+            </a>
+        {{/keywords_page}}
+        {{^test_bot_page}}
+            <a href="{{config.wwwroot}}/local/cria/test_bot.php?bot_id={{bot_id}}" class="btn btn-outline-primary
+            mr-1">
+            {{#str}}test_bot, local_cria{{/str}}
+            </a>
+        {{/test_bot_page}}
+        {{^bot_logs_page}}
+            <a href="{{config.wwwroot}}/local/cria/bot_logs.php?bot_id={{bot_id}}" class="btn btn-outline-primary
+            mr-1">
+            {{#str}}logs, local_cria{{/str}}
+            </a>
+        {{/bot_logs_page}}
+        </a>
+        <a href="bot_config.php" class="btn btn-outline-primary mr-1">
+            {{#str}}bots, local_cria{{/str}}
+        </a>
+    </div>
+</nav>

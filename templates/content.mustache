@@ -7,30 +7,7 @@
         color: #0d6efd;
     }
 </style>
-<div class="row">
-    <div class="col">
-        <input type="hidden" id="bot-id" value="{{bot_id}}">
-        <a href="bot_config.php" class="btn btn-outline-primary float-right mr-1">
-            {{#str}}bots, local_cria{{/str}}
-        </a>
-        <a href="{{config.wwwroot}}/local/cria/logs.php?id={{bot_id}}" class="btn btn-outline-primary float-right mr-1">
-        {{#str}}logs, local_cria{{/str}}
-        </a>
-        <a href="{{config.wwwroot}}/local/cria/test_bot.php?id={{bot_id}}" class="btn btn-outline-primary float-right
-        mr-1">
-        {{#str}}test_bot, local_cria{{/str}}
-        </a>
-        <a href="{{config.wwwroot}}/local/cria/edit_bot.php?id={{bot_id}}&return=content" class="btn btn-outline-primary float-right
-        mr-1">
-        {{#str}}edit_bot, local_cria{{/str}}
-        </a>
-        {{#use_fine_tuning}}
-            <a href="edit_intent.php?bot_id={{bot_id}}" class="btn btn-outline-primary float-right mr-1">
-            {{#str}}new_category, local_cria{{/str}}
-            </a>
-        {{/use_fine_tuning}}
-    </div>
-</div>
+{{> local_cria/bot_nav_buttons}}
 <div class="row">
     <div class="col">
         <ul class="nav nav-tabs" id="cria-content-tabs" role="tablist">
@@ -50,6 +27,19 @@
                     </button>
                 </li>
             {{/intents}}
+            <li class="nav-item">
+                <a href="edit_intent.php?bot_id={{bot_id}}"
+                class="nav-link"
+                id="new-category"
+                data-target="#new-category"
+                type="link"
+                title="{{#str}}new_category, local_cria{{/str}}"
+                aria-controls="new-category"
+                aria-selected="false">
+                <i class="bi bi-plus-circle"></i>
+                </a
+                href="edit_intent.php?bot_id={{bot_id}}">
+            </li>
         </ul>
         <div class="tab-content" id="cria-content-tab">
             {{#intents}}
@@ -71,7 +61,7 @@
                                     </div>
                                 </h3>
                                 <div class="card-body">
-                                    <table id="cira-documents-table" class="table table-striped">
+                                    <table id="cria-documents-table" class="table table-striped">
                                         <thead>
                                         <tr>
                                             <th>{{#str}}name, local_cria{{/str}}</th>
@@ -110,7 +100,7 @@
                                     <div class="col">
                                         <button type="button"
                                                 class="btn btn-outline-primary ml-2 float-right publish-questions"
-                                                >
+                                        >
                                             {{#str}}publish_questions, local_cria{{/str}}
                                         </button>
                                         <a href="edit_question.php?intent_id={{id}}"
@@ -120,7 +110,7 @@
                                     </div>
                                 </h3>
                                 <div class="card-body">
-                                    <table id="cira-questions-table" class="table table-striped">
+                                    <table id="cria-questions-table" class="table table-striped">
                                         <thead>
                                         <tr>
                                             <th><a
