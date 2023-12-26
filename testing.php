@@ -65,21 +65,8 @@ $bot_id = 74;
 //    }
 //}
 
-// Set datatables parameters
-datatables::set_table('local_cria_entity');
-datatables::set_query_params(['bot_id' => $bot_id]);
-datatables::set_term('');
-datatables::set_order_column('name');
-datatables::set_order_direction('ASC');
-datatables::set_columns(['id','name']);
-datatables::set_require_actions(true);
-datatables::set_action_column('id');
-datatables::set_action_class_name('entity');
-datatables::set_start(0);
-datatables::set_end(25);
-// Get results
-
-print_object(datatables::get_records());
+$BOT = new \local_cria\bot($bot_id);
+print_object($BOT->get_available_keywords());
 
 //**********************
 //*** DISPLAY FOOTER ***

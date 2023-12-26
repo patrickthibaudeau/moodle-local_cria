@@ -18,6 +18,7 @@ class edit_question_form extends \moodleform
         $mform = &$this->_form;
 
         $context = \context_system::instance();
+        $BOT = new bot($formdata->bot_id);
 
         $mform->addElement(
             'hidden',
@@ -126,6 +127,15 @@ class edit_question_form extends \moodleform
             'generate_answer',
             'local_cria'
         );
+
+        // Keywords multiselect element
+        $keywords = $mform->addElement(
+            'selectgroups',
+            'keywords',
+            get_string('keywords', 'local_cria'),
+            $BOT->get_available_keywords()
+        );
+        $keywords->setMultiple(true);
 
         $mform->addElement(
             'html',

@@ -21,10 +21,15 @@ class keywords
      *
      * @global \moodle_database $DB
      */
-    public function __construct()
+    public function __construct($entity_id = 0)
     {
         global $DB;
-        $this->results = $DB->get_records('local_cria_keyword', null, 'value');
+
+        if ($entity_id == 0) {
+            $this->results = [];
+        } else {
+            $this->results = $DB->get_records('local_cria_keyword', ['entity_id' => $entity_id], 'value');
+        }
     }
 
     /**

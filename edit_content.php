@@ -62,6 +62,7 @@ $INTENT = new intent($intent_id);
 if ($id != 0) {
     $formdata = $DB->get_record('local_cria_files', array('id' => $id));
     $formdata->bot_id = $INTENT->get_bot_id();
+    $formdata->keywords = json_decode($formdata->keywords);
 } else {
     $formdata = new stdClass();
 // Set bot id in formdata
@@ -76,8 +77,12 @@ if ($id != 0) {
 $mform = new \local_cria\edit_content_form(null, array('formdata' => $formdata));
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
-    redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $formdata->bot_id . '&intent_id=' . $formdata->intent_id);
+    redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $formdata->bot_id . '&intent_id=' . $formdata->intent_id);
 } else if ($data = $mform->get_data()) {
+    // Convert keywords to JSON
+    $keywords = json_encode($data->keywords);
+    unset($data->keywords);
+
     $FILE = new file();
     // Set update to false
     $update = false;
@@ -144,6 +149,7 @@ if ($mform->is_cancelled()) {
     $content_data = [
         'intent_id' => $data->intent_id,
         'content' => '',
+        'keywords' => $keywords,
         'lang' => $data->lang,
         'faculty' => $data->faculty,
         'program' => $data->program,
@@ -173,7 +179,7 @@ if ($mform->is_cancelled()) {
     }
 
     // Redirect to content page
-    redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $data->bot_id . '&intent_id=' . $data->intent_id);
+    redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $data->bot_id . '&intent_id=' . $data->intent_id);
 } else {
     // Show form
     $mform->set_data($mform);
@@ -187,7 +193,8 @@ base::page(
     $context,
     'standard'
 );
-
+$PAGE->requires->css(new moodle_url('/local/cria/css/select2.min.css'));
+$PAGE->requires->css(new moodle_url('/local/cria/css/select2-bootstrap4.min.css'));
 $PAGE->requires->js_call_amd('local_cria/add_content_form', 'init');
 
 echo $OUTPUT->header();

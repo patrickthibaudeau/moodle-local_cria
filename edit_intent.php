@@ -29,7 +29,7 @@ if ($id != 0) {
 $mform = new \local_cria\edit_intent_form(null, array('formdata' => $formdata));
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
-    redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $formdata->bot_id . '&intent_id=' . $formdata->id);
+    redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $formdata->bot_id . '&intent_id=' . $formdata->id);
 } else if ($data = $mform->get_data()) {
     if ($data->id == 0) {
         // In sert new record
@@ -41,7 +41,7 @@ if ($mform->is_cancelled()) {
         $INTENT->update_record($data);
     }
     // Redirect to content page
-    redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $data->bot_id . '&intent_id=' . $data->id);
+    redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $data->bot_id . '&intent_id=' . $data->id);
 } else {
     // Show form
     $mform->set_data($mform);

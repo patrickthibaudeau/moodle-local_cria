@@ -26,6 +26,7 @@ if ($id != 0) {
     $examples = $DB->get_records('local_cria_question_example', array('questionid' => $id));
     $formdata->examples = array_values($examples);
     $formdata->create_example_questions = false;
+    $formdata->keywords = json_decode($formdata->keywords);
 
     $draftid = file_get_submitted_draft_itemid('answereditor');
     $currentText = file_prepare_draft_area($draftid, $context->id, 'local_cria', 'answer', $formdata->id, base::getEditorOptions($context), $formdata->answer);
@@ -50,8 +51,12 @@ if ($id != 0) {
 $mform = new \local_cria\edit_question_form(null, array('formdata' => $formdata));
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
-    redirect($CFG->wwwroot . '/local/cria/content.php?id=' . $formdata->bot_id);
+    redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $formdata->bot_id);
 } else if ($data = $mform->get_data()) {
+    // Convert keywords to JSON
+    $keywords = json_encode($data->keywords);
+    unset($data->keywords);
+    $data->keywords = $keywords;
     $data->usermodified = $USER->id;
     $data->timemodified = time();
     if ($data->id == 0) {
@@ -102,6 +107,8 @@ base::page(
     'standard'
 );
 
+$PAGE->requires->css(new moodle_url('/local/cria/css/select2.min.css'));
+$PAGE->requires->css(new moodle_url('/local/cria/css/select2-bootstrap4.min.css'));
 $PAGE->requires->js_call_amd('local_cria/question_form', 'init', array());
 echo $OUTPUT->header();
 //**********************

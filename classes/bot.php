@@ -842,4 +842,31 @@ class bot extends crud
         }
     }
 
+    /**
+     * @return array
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function get_available_keywords(): array
+    {
+        $ENTITIES = new entities($this->id);
+        $keywords = [];
+        $i = 0;
+        foreach ($ENTITIES->get_records() as $entity) {
+            $KEYWORDS = new keywords($entity->id);
+            $entity_keywords = $KEYWORDS->get_records();
+            $options = [];
+            foreach ($entity_keywords as $ek) {
+                $options[$ek->id] = $ek->value;
+            }
+            $keywords[$entity->name] = $options;
+
+            unset($KEYWORDS);
+            $i++;
+        }
+        unset($ENTITIES);
+
+        return $keywords;
+    }
+
 }

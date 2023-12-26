@@ -93,6 +93,12 @@ class file extends crud
      */
     private $table;
 
+    /**
+     *
+     * @var string
+     */
+    private $keywords;
+
 
     /**
      *
@@ -122,6 +128,7 @@ class file extends crud
         $this->lang = $result->lang ?? '';
         $this->faculty = $result->faculty ?? '';
         $this->program = $result->program ?? '';
+        $this->keywords = $result->keywords ?? '';
         $this->usermodified = $result->usermodified ?? 0;
         $this->timecreated = $result->timecreated ?? 0;
         $this->timemodified = $result->timemodified ?? 0;
@@ -191,6 +198,23 @@ class file extends crud
     public function get_program(): string
     {
         return $this->program;
+    }
+
+    /**
+     * @return keywords - varchar (255)
+     */
+    public function get_keywords(): string
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * @return array of keywords
+     */
+    public function get_keywords_array(): array
+    {
+        $keywords = json_decode($this->get_keywords());
+        return $keywords;
     }
 
     /**

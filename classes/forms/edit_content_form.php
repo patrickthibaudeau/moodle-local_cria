@@ -1,6 +1,6 @@
 <?php
-namespace local_cria;
 
+namespace local_cria;
 
 
 defined('MOODLE_INTERNAL') || die();
@@ -18,6 +18,8 @@ class edit_content_form extends \moodleform
         $formdata = $this->_customdata['formdata'];
         // Create form object
         $mform = &$this->_form;
+
+        $BOT = new bot($formdata->bot_id);
 
         $mform->addElement(
             'hidden',
@@ -78,6 +80,17 @@ class edit_content_form extends \moodleform
             get_string('error_importfile', 'local_cria'),
             'required'
         );
+
+        // Keywords multiselect element
+        $keywords = $mform->addElement(
+            'selectgroups',
+            'keywords',
+            get_string('keywords', 'local_cria'),
+            $BOT->get_available_keywords()
+        );
+        $keywords->setMultiple(true);
+
+
         $mform->addElement(
             'html',
             '<h3>' . get_string('audience', 'local_cria') . '</h3>'
@@ -130,7 +143,6 @@ class edit_content_form extends \moodleform
         $this->add_action_buttons();
         $this->set_data($formdata);
     }
-
 
 
     // Perform some extra moodle validation

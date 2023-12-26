@@ -8,7 +8,7 @@
 
 namespace local_cria;
 
-class entitys
+class entities
 {
 
     /**
@@ -21,11 +21,16 @@ class entitys
      *
      * @global \moodle_database $DB
      */
-    public function __construct()
+    public function __construct($bot_id = 0)
     {
         global $DB;
-        $this->results = $DB->get_records('local_cria_entity' , null, 'name');
+        if ($bot_id == 0) {
+            $this->results = [];
+        } else {
+            $this->results = $DB->get_records('local_cria_entity', ['bot_id' => $bot_id], 'name');
+        }
     }
+
 
     /**
      * Get records
