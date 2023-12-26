@@ -29,44 +29,41 @@ $context = context_system::instance();
 echo $OUTPUT->header();
 
 $bot_id = 74;
-//$savy = file_get_contents('/var/www/html/local/cria/SAVY_entities_Keywords.json');
+$savy = file_get_contents('/var/www/html/local/cria/SAVY_entities_Keywords.json');
 //
-//$entities = json_decode( $savy );
+$entities = json_decode( $savy );
 
 
 //print_object($entities);
 
-//foreach($entities as $entity) {
-//    $entity->bot_id = $bot_id;
-//    $entity->name = $entity->entity;
-//    $entity->usermodified = $USER->id;
-//    $entity->timemodified = time();
-//    $entity->timecreated = time();
-//    $entity_id = $DB->insert_record('local_cria_entity', $entity);
-//    // Loop through all values and insert into the keyword table
-//    foreach($entity->values as $value) {
-//        $keyword = new \stdClass();
-//        $keyword->entity_id = $entity_id;
-//        $keyword->value = $value->value;
-//        $keyword->usermodified = $USER->id;
-//        $keyword->timemodified = time();
-//        $keyword->timecreated = time();
-//        $keyword_id = $DB->insert_record('local_cria_keyword', (array)$keyword);
-//        // Loop through all synonyms and insert into the synonym table
-//        foreach($value->synonyms as $key => $synonym) {
-//            $syn = new \stdClass();
-//            $syn->keyword_id = $keyword_id;
-//            $syn->value = $synonym;
-//            $syn->usermodified = $USER->id;
-//            $syn->timemodified = time();
-//            $syn->timecreated = time();
-//            $syn_id = $DB->insert_record('local_cria_synonyms', (array)$syn);
-//        }
-//    }
-//}
-
-$BOT = new \local_cria\bot($bot_id);
-print_object($BOT->get_available_keywords());
+foreach($entities as $entity) {
+    $entity->bot_id = $bot_id;
+    $entity->name = $entity->entity;
+    $entity->usermodified = $USER->id;
+    $entity->timemodified = time();
+    $entity->timecreated = time();
+    $entity_id = $DB->insert_record('local_cria_entity', $entity);
+    // Loop through all values and insert into the keyword table
+    foreach($entity->values as $value) {
+        $keyword = new \stdClass();
+        $keyword->entity_id = $entity_id;
+        $keyword->value = $value->value;
+        $keyword->usermodified = $USER->id;
+        $keyword->timemodified = time();
+        $keyword->timecreated = time();
+        $keyword_id = $DB->insert_record('local_cria_keyword', (array)$keyword);
+        // Loop through all synonyms and insert into the synonym table
+        foreach($value->synonyms as $key => $synonym) {
+            $syn = new \stdClass();
+            $syn->keyword_id = $keyword_id;
+            $syn->value = $synonym;
+            $syn->usermodified = $USER->id;
+            $syn->timemodified = time();
+            $syn->timecreated = time();
+            $syn_id = $DB->insert_record('local_cria_synonyms', (array)$syn);
+        }
+    }
+}
 
 //**********************
 //*** DISPLAY FOOTER ***
