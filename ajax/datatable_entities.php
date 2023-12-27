@@ -85,6 +85,4 @@ $params = [
 ];
 //print_object($params);
 // Return Datatables json object
-$content = json_encode($params);
-$content = str_replace('<pre class="notifytiny"></pre>', '', $content);
-print($content);
+echo strip_tags(json_encode($params));
