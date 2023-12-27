@@ -85,4 +85,6 @@ $params = [
 ];
 //print_object($params);
 // Return Datatables json object
-echo json_encode($params);
+$content = json_encode($params);
+$content = str_replace('<pre class="notifytiny"></pre>', '', $content);
+echo $content;
