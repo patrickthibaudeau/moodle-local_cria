@@ -145,7 +145,6 @@ class criadex
             '"llm_model_id": ' . $model_id . ',' .
             '"embedding_model_id": ' . $embedding_model_id . '}';
         // Update model
-        print_object(json_decode($data));
         return gpt::_make_call(
             $config->criadex_url,
             $config->criadex_api_key,

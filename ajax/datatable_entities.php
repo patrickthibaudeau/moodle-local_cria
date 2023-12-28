@@ -85,4 +85,4 @@ $params = [
 ];
 //print_object($params);
 // Return Datatables json object
-echo strip_tags(json_encode($params));
+echo json_encode($params);
