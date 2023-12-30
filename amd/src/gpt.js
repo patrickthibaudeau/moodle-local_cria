@@ -40,13 +40,16 @@ function get_response() {
         }]);
 
         gpt_response[0].done(function (result) {
-             $("#submit-question").show();
+            console.log(result);
+            let json = JSON.parse(result.stacktrace);
+            $("#submit-question").show();
             $("#starting-process").hide();
             $('#cria-conversation').append().html(`${result.message}`);
             $('#cria-prompt-tokens').html(result.prompt_tokens);
             $('#cria-completion-tokens').html(result.completion_tokens);
             $('#cria-total-tokens').html(result.total_tokens);
             $('#cria-cost').html('$' + result.cost.toPrecision(6));
+            $('#stacktrace').html('<pre>' + JSON.stringify(json, null, '\t') + '</pre>');
         }).fail(function (e) {
             alert(e.message + ' Your prompt contains unsupported characters. ' +
                 'Please try again.');

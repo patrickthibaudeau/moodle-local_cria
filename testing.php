@@ -17,6 +17,8 @@ global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
 require_login(1, false);
 $context = context_system::instance();
 
+$prompt = optional_param('prompt', '', PARAM_TEXT);
+
 \local_cria\base::page(
     new moodle_url('/local/cria/testing.php'),
     get_string('pluginname', 'local_cria'),
@@ -31,7 +33,8 @@ $context = context_system::instance();
 echo $OUTPUT->header();
 
 $bot_id = 55;
-$prompt = "WHo teaches the course?";
+//$prompt = "WHo teaches the course?";
+$BOT = new \local_cria\bot($bot_id);
 //$savy = file_get_contents('/var/www/html/local/cria/SAVY_entities_Keywords.json');
 ////
 //$entities = json_decode( $savy );
@@ -68,12 +71,13 @@ $prompt = "WHo teaches the course?";
 //    }
 //}
 
-$results = json_decode(file_get_contents('/var/www/moodledata/temp/result.json'));
-print_object($results);
+
 //$intents_result = criadex::get_top_intent($bot_id, $prompt);
 //print_object($intents_result);
-//$result = criabot::chat_send( 'fa1602a6-91d8-490b-aff2-6ce68342b454', $prompt, [], true );
-//print_object($result);
+$session = criabot::chat_start($BOT->get_bot_name());
+$chat_id = $session->chat_id;
+$result = criabot::chat_send( $chat_id, $prompt, [], true );
+print_object($result);
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

@@ -30,8 +30,13 @@ class gpt
         $file_name = false
     )
     {
+        global $CFG;
         $config = get_config('local_cria');
-
+        // Set stacktrace
+        $stacktrace = 'X-Api-Stacktrace: false';
+        if ($CFG->debug != 0) {
+            $stacktrace = 'X-Api-Stacktrace: true';
+        }
         $ch = curl_init();
         // Set curl attributes for regular API calls
         // If there is a file path, then it's a file upload
@@ -48,7 +53,8 @@ class gpt
             // Set headers
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                     'Content-Type: application/json',
-                    'x-api-key: ' . $api_key
+                    'x-api-key: ' . $api_key,
+                    $stacktrace
                 )
             );
         } else {
@@ -61,6 +67,7 @@ class gpt
             $headers = [
                 'Accept: application/json',
                 'x-api-key: ' . $api_key,
+                $stacktrace,
                 'Content-Type: multipart/form-data',
             ];
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
@@ -81,6 +88,7 @@ class gpt
         curl_setopt($ch, CURLOPT_URL, $url);
 
         $result = json_decode(curl_exec($ch));
+        file_put_contents('/var/www/moodledata/temp/gpt_result.json', json_encode($result));
         curl_close($ch);
 
         return $result;
@@ -96,7 +104,6 @@ class gpt
      */
     protected static function _build_message($bot_id, $prompt, $content = '')
     {
-        file_put_contents('/var/www/moodledata/temp/cria_call.txt', $bot_id . ', ' . $prompt . ', ' . $content);
         // Create object that will return the data
         $data = new \stdClass();
         $BOT = new bot($bot_id);

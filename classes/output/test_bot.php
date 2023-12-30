@@ -54,7 +54,10 @@ class test_bot implements \renderable, \templatable
             $session = criabot::chat_start($this->bot_id . '-' . $BOT->get_default_intent_id());
             $chat_id = $session->chat_id;
         }
-
+        $debug = false;
+        if ($CFG->debug != 0) {
+            $debug = true;
+        }
         $data = [
             'bot_id' => $this->bot_id,
             'name' => $BOT->get_name(),
@@ -65,6 +68,7 @@ class test_bot implements \renderable, \templatable
             'requires_user_prompt' => $BOT->get_requires_user_prompt(),
             'test_bot_page' => true,
             'return_url' => 'test_bot',
+            'debug' => $debug,
         ];
 
         return $data;

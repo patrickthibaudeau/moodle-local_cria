@@ -130,7 +130,6 @@ class local_cria_external_gpt extends external_api
 
         if ($chat_id != 0) {
             $result = criabot::chat_send($chat_id, $prompt, $filters, true);
-            file_put_contents('/var/www/moodledata/temp/result.json', json_encode($result));
             // Set question index name
             $question_index_name = $bot_name . '-question-index';
             // Check if using generated answer
@@ -181,8 +180,8 @@ class local_cria_external_gpt extends external_api
             $message->prompt_tokens = $prompt_tokens;
             $message->completion_tokens = $completion_tokens;
             $message->total_tokens = $total_tokens;
+            $message->stacktrace = json_encode($result, JSON_PRETTY_PRINT);
             $message->cost = gpt::_get_cost($bot_id, $prompt_tokens, $completion_tokens);
-            file_put_contents('/var/www/moodledata/temp/message.json', json_encode($message));
             // Insert logs
             logs::insert(
                 $bot_id,
@@ -195,6 +194,7 @@ class local_cria_external_gpt extends external_api
                 $result->reply->context);
         } else {
             $message = gpt::get_response($bot_id, $prompt, $content, false);
+            $message->stacktrace = '';
         }
 
         if ($prompt == false) {
@@ -225,7 +225,8 @@ class local_cria_external_gpt extends external_api
             'completion_tokens' => new external_value(PARAM_INT, 'Number of completion tokens used', true),
             'total_tokens' => new external_value(PARAM_INT, 'Total tokens used', true),
             'cost' => new external_value(PARAM_FLOAT, 'Cost of GTP call', true),
-            'message' => new external_value(PARAM_RAW, 'ID Number', true)
+            'message' => new external_value(PARAM_RAW, 'ID Number', true),
+            'stacktrace' => new external_value(PARAM_RAW, 'Stacktrace data', true)
         );
         return new external_single_structure($fields);
     }
