@@ -86,9 +86,16 @@ class gpt
         // Set URL
         $url = $service_url . $call;
         curl_setopt($ch, CURLOPT_URL, $url);
-
+        if ($CFG->debug != 0) {
+            curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        }
         $result = json_decode(curl_exec($ch));
-        file_put_contents('/var/www/moodledata/temp/gpt_result.json', json_encode($result));
+        if ($CFG->debug != 0) {
+            $info = curl_getinfo($ch);
+            $header = curl_getinfo($ch, CURLINFO_HEADER_OUT);
+            $result->info = $info;
+            $result->header = $header;
+        }
         curl_close($ch);
 
         return $result;
