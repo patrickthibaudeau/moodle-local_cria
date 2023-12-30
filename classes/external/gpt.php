@@ -132,6 +132,7 @@ class local_cria_external_gpt extends external_api
             $result = criabot::chat_send($chat_id, $prompt, $filters, true);
             // Set question index name
             $question_index_name = $bot_name . '-question-index';
+            $document_index_name = $bot_name . '-document-index';
             // Check if using generated answer
             $use_generated_answer = false;
             if (isset($result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->return_generated_answer)) {
@@ -142,6 +143,16 @@ class local_cria_external_gpt extends external_api
             $question_id = false;
             if (isset($result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->question_id)) {
                 $question_id = $result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->question_id;
+            }
+
+            // Get filename
+            $file_name = false;
+            if (isset($result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->file_name)) {
+                $file_name = $result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->file_name;
+            }
+
+            if (isset($result->reply->index_responses->$document_index_name->nodes[0]->node->metadata->file_name)) {
+                $file_name = $result->reply->index_responses->$document_index_name->nodes[0]->node->metadata->file_name;
             }
             // If the answer should not be generated and there is a question id then get the answer from the database
             if ($use_generated_answer == false && $question_id != false) {
@@ -180,13 +191,22 @@ class local_cria_external_gpt extends external_api
             $message->prompt_tokens = $prompt_tokens;
             $message->completion_tokens = $completion_tokens;
             $message->total_tokens = $total_tokens;
+            if ($file_name != false) {
+                $message->file_name = $file_name;
+                $file_name_for_logs = 'file name: ' . $file_name . "<br>\n";
+            } else {
+                $message->file_name = '';
+                $file_name_for_logs = '';
+            }
             $message->stacktrace = json_encode($result, JSON_PRETTY_PRINT);
             $message->cost = gpt::_get_cost($bot_id, $prompt_tokens, $completion_tokens);
+
+
             // Insert logs
             logs::insert(
                 $bot_id,
                 $prompt,
-                $content,
+                $file_name_for_logs . $content,
                 $prompt_tokens,
                 $completion_tokens,
                 $total_tokens,
@@ -225,6 +245,7 @@ class local_cria_external_gpt extends external_api
             'completion_tokens' => new external_value(PARAM_INT, 'Number of completion tokens used', true),
             'total_tokens' => new external_value(PARAM_INT, 'Total tokens used', true),
             'cost' => new external_value(PARAM_FLOAT, 'Cost of GTP call', true),
+            'file_name' => new external_value(PARAM_TEXT, 'File name from which response was generated', true),
             'message' => new external_value(PARAM_RAW, 'ID Number', true),
             'stacktrace' => new external_value(PARAM_RAW, 'Stacktrace data', true)
         );

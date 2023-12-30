@@ -14,7 +14,7 @@
                         <input type="hidden" id="cria-chat-id" value="{{chat_id}}">
                         <input type="hidden" id="default-user-prompt" value="{{user_prompt}}">
                         {{#requires_user_prompt}}
-                            <textarea id="user-prompt" class="form-control mt-2 mb-2" ></textarea>
+                            <textarea id="user-prompt" class="form-control mt-2 mb-2"></textarea>
                         {{/requires_user_prompt}}
                         {{^requires_user_prompt}}
                             <input type="hidden" id="user-prompt">
@@ -25,7 +25,8 @@
                                 data-bot_id="{{bot_id}}"
                         >{{#str}}submit, local_cria{{/str}}
                         </button>
-                        <div id="starting-process" class="progress mt-2" style="display:none; height: 30px; width: 100%;">
+                        <div id="starting-process" class="progress mt-2"
+                             style="display:none; height: 30px; width: 100%;">
                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-info"
                                  role="progressbar"
                                  aria-valuenow="100"
@@ -41,9 +42,17 @@
     <div class="col">
         {{> local_cria/test_bot_statistics}}
         <div class="card mt-3">
-            <h3 class="card-header">
-                {{#str}}response, local_cria{{/str}}
-            </h3>
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        <h3>{{#str}}response, local_cria{{/str}}</h3>
+                    </div>
+                    <div class="col">
+                        <div style="font-size: 0.8em;" class="float-right">{{#str}}retrieved_from, local_cria{{/str}}:</div>
+                        <div id="cria-file-name" style="font-size: 0.8em;" class="float-right"></div>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <div id="cria-conversation">
                 </div>

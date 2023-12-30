@@ -50,6 +50,7 @@ function get_response() {
             $('#cria-total-tokens').html(result.total_tokens);
             $('#cria-cost').html('$' + result.cost.toPrecision(6));
             $('#stacktrace').html('<pre>' + JSON.stringify(json, null, '\t') + '</pre>');
+            $('#cria-file-name').html(result.file_name);
         }).fail(function (e) {
             alert(e.message + ' Your prompt contains unsupported characters. ' +
                 'Please try again.');

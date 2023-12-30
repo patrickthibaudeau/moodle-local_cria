@@ -76,6 +76,7 @@ $BOT = new \local_cria\bot($bot_id);
 //print_object($intents_result);
 $session = criabot::chat_start($BOT->get_bot_name());
 $chat_id = $session->chat_id;
+print_object($chat_id);
 $result = criabot::chat_send( $chat_id, $prompt, [], true );
 print_object($result);
 //**********************
