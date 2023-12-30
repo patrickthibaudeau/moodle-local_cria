@@ -298,10 +298,20 @@ class criabot
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function chat_send($chat_id, $prompt) {
+    public static function chat_send($chat_id, $prompt, $filters = [], $direct_question_answer = false) {
         // Get Config
         $config = get_config('local_cria');
+        // If $filters is empty, create empty array
+        if (empty($filters)) {
+            $filters = [
+                "must" => [],
+                "must_not" => [],
+                "should" => []
+            ];
+        }
         $data = [
+            'direct_question_answer' => $direct_question_answer,
+            'metadata_filter' => $filters,
             'prompt' => $prompt
         ];
         $query_string = http_build_query($data);
@@ -309,8 +319,8 @@ class criabot
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            '',
-            '/bots/'. $chat_id  . '/chats/send/?' . $query_string,
+            json_encode($data),
+            '/bots/'. $chat_id  . '/chats/send',
             'POST'
         );
     }
@@ -352,6 +362,47 @@ class criabot
             '',
             '/bots/'. $chat_id  . '/chats/history',
             'GET'
+        );
+    }
+
+    // Direct query
+
+    /**
+     * @param $bot_name
+     * @param $prompt
+     * @param $filters
+     * @return mixed
+     * @throws \dml_exception
+     */
+    public static function query(
+        $bot_name,
+        $prompt,
+        $filters = [],
+    )
+    {
+        // Get config
+        $config = get_config('local_cria');
+        // If no filters are set, set to empty array
+        if (!$filters) {
+            $filters = [
+                "must" => [],
+                "must_not" => [],
+                "should" => []
+            ];
+        }
+        // Build data object
+        $data = [
+            "direct_question_answer" => false,
+            "metadata_filter" => $filters,
+            "prompt" => $prompt
+        ];
+        // Update model
+        return gpt::_make_call(
+            $config->criabot_url,
+            $config->criadex_api_key,
+            json_encode($data),
+            '/bots/' . $bot_name . '/chats/query',
+            'POST'
         );
     }
 }

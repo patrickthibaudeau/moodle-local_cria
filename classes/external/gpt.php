@@ -23,13 +23,15 @@
 require_once($CFG->libdir . "/externallib.php");
 require_once("$CFG->dirroot/config.php");
 
+use local_cria\base;
 use local_cria\gpt;
 use local_cria\criabot;
 use local_cria\criadex;
 use local_cria\logs;
 use local_cria\bot;
 
-class local_cria_external_gpt extends external_api {
+class local_cria_external_gpt extends external_api
+{
     //**************************** SEARCH USERS **********************
 
     /*     * ***********************
@@ -40,13 +42,17 @@ class local_cria_external_gpt extends external_api {
      * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function response_parameters() {
+    public static function response_parameters()
+    {
         return new external_function_parameters(
             array(
                 'bot_id' => new external_value(PARAM_INT, 'ID of the bot being used', false, 0),
                 'chat_id' => new external_value(PARAM_RAW, 'Chat ID from indexing server', false, 0),
                 'prompt' => new external_value(PARAM_RAW, 'Question asked by user', false, ''),
-                'content' => new external_value(PARAM_RAW, 'User content', false, '')
+                'content' => new external_value(PARAM_RAW, 'User content', false, ''),
+                'filters' => new external_value(PARAM_RAW,
+                    'Filters as a JSON object containing the following keys {"must":[], "must_not": [], "should": []}',
+                    false, '')
             )
         );
     }
@@ -56,12 +62,14 @@ class local_cria_external_gpt extends external_api {
      * @param $chat_id
      * @param $prompt
      * @param $content
+     * @param $filters
      * @return string
      * @throws dml_exception
      * @throws invalid_parameter_exception
      * @throws restricted_context_exception
      */
-    public static function response($bot_id, $chat_id, $prompt, $content) {
+    public static function response($bot_id, $chat_id, $prompt, $content, $filters)
+    {
         global $CFG, $USER, $DB, $PAGE;
 
         //Parameter validation
@@ -69,7 +77,8 @@ class local_cria_external_gpt extends external_api {
                 'bot_id' => $bot_id,
                 'chat_id' => $chat_id,
                 'prompt' => $prompt,
-                'content' => $content
+                'content' => $content,
+                'filters' => $filters
             )
         );
         //Context validation
@@ -77,8 +86,41 @@ class local_cria_external_gpt extends external_api {
         $context = \context_system::instance();
         self::validate_context($context);
         $BOT = new bot($bot_id);
-        if ($BOT->use_bot_server() && $chat_id == false) {
-            $session = criabot::chat_start($bot_id . '-' . $BOT->get_default_intent_id());
+        //If $filters is not empty then convert into array
+        if (!empty($filters)) {
+            $filters = json_decode($filters);
+        }
+        // Does this bot use criabot server?
+        if ($BOT->use_bot_server()) {
+            // Find out how many intents the bot has
+            // If more than one then make a call to criadex to get the best intent (child bot) to use
+            if ($BOT->get_number_of_intents() > 1) {
+                // Make call to criadex to return the best intent to use.
+                $intents_result = criadex::get_top_intent($bot_id, $prompt);
+                $bot_name = $intents_result->agent_response->ranked_intents[0]->name;
+                // Get cost of call
+                $cost = gpt::_get_cost(
+                    $bot_id,
+                    $intents_result->agent_response->usage[0]->prompt_tokens,
+                    $intents_result->agent_response->usage[0]->completion_tokens
+                );
+                // Enter into logs
+                logs::insert(
+                    $bot_id,
+                    $prompt,
+                    json_encode($intents_result),
+                    $intents_result->agent_response->usage[0]->prompt_tokens,
+                    $intents_result->agent_response->usage[0]->completion_tokens,
+                    $intents_result->agent_response->usage[0]->total_tokens,
+                    $cost
+                );
+                // Start chat with the best child bot available
+                $session = criabot::chat_start($bot_name);
+            } else {
+                $bot_name = $BOT->get_bot_name();
+                $session = criabot::chat_start($bot_name);
+            }
+
             $chat_id = $session->chat_id;
         }
         // Always get user prompt if there is one.
@@ -87,12 +129,42 @@ class local_cria_external_gpt extends external_api {
         }
 
         if ($chat_id != 0) {
-            $result = criabot::chat_send($chat_id, $prompt);
-            // Clean up content
-            $content = nl2br(htmlspecialchars($result->reply->content->content));
-            $content = gpt::make_email($content);
-            $content = gpt::make_link($content);
+            $result = criabot::chat_send($chat_id, $prompt, $filters, true);
+            file_put_contents('/var/www/moodledata/temp/result.json', json_encode($result));
+            // Set question index name
+            $question_index_name = $bot_name . '-question-index';
+            // Check if using generated answer
+            $use_generated_answer = false;
+            if (isset($result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->return_generated_answer)) {
+                $use_generated_answer = $result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->return_generated_answer;
+            }
 
+            // Check if question id is set
+            $question_id = false;
+            if (isset($result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->question_id)) {
+                $question_id = $result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->question_id;
+            }
+            // If the answer should not be generated and there is a question id then get the answer from the database
+            if ($use_generated_answer == false && $question_id != false) {
+                include_once($CFG->dirroot . '/lib/filelib.php');
+                $context = \context_system::instance();
+                $question = $DB->get_record('local_cria_question', ['id' => (int)$question_id]);
+                $content = file_rewrite_pluginfile_urls(
+                    $question->answer,
+                    'pluginfile.php',
+                    $context->id,
+                    'local_cria',
+                    'answer',
+                    $question->id);
+                $content = format_text($content, FORMAT_HTML, base::getEditorOptions($context), $context);
+            } else {
+                // Get the generated answer and clean up content
+                $content = nl2br(htmlspecialchars($result->reply->content->content));
+                $content = gpt::make_email($content);
+                $content = gpt::make_link($content);
+            }
+
+            // Build message object
             $message = new \stdClass();
             $message->message = $content;
             // Get token usage
@@ -110,6 +182,7 @@ class local_cria_external_gpt extends external_api {
             $message->completion_tokens = $completion_tokens;
             $message->total_tokens = $total_tokens;
             $message->cost = gpt::_get_cost($bot_id, $prompt_tokens, $completion_tokens);
+            file_put_contents('/var/www/moodledata/temp/message.json', json_encode($message));
             // Insert logs
             logs::insert(
                 $bot_id,
@@ -140,12 +213,12 @@ class local_cria_external_gpt extends external_api {
     }
 
 
-
     /**
      * Returns users result value
      * @return external_description
      */
-    public static function response_returns() {
+    public static function response_returns()
+    {
 //        return new external_multiple_structure(self::response_details());
         $fields = array(
             'prompt_tokens' => new external_value(PARAM_INT, 'Number of prompt tokens', false),

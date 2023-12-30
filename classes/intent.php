@@ -13,6 +13,7 @@ use local_cria\crud;
 use local_cria\criabot;
 use local_cria\criabdex;
 use local_cria\logs;
+use local_cria\keywords;
 
 class intent extends crud
 {
@@ -204,7 +205,7 @@ class intent extends crud
         // Add to logs
         $this->insert_log_record($results, $prompt);
 
-        $messages = json_decode($results->response->message->content);
+        $messages = json_decode($results->agent_response->chat_response->message->content);
         foreach ($messages as $example) {
             $data = new \stdClass();
             $data->questionid = $question->id;
@@ -249,7 +250,7 @@ class intent extends crud
     public function insert_log_record($results, $prompt)
     {
         // Get token usage
-        $token_usage = $results->response->raw->usage;
+        $token_usage = $results->agent_response->chat_response->raw->usage;
         // loop through token usage and add the prompt tokens and completion tokens
         $prompt_tokens = 0;
         $completion_tokens = 0;
@@ -420,6 +421,9 @@ class intent extends crud
         global $DB;
         // Get the question
         $question = $DB->get_record('local_cria_question', ['id' => $question_id]);
+        // Get keywords and synonyms
+        $KEYWORDS = new keywords();
+        $keywords = $KEYWORDS->get_keywords_for_criabot($question->keywords);
         // Get all question examples
         $question_examples = $DB->get_records(
             'local_cria_question_example',
@@ -434,10 +438,16 @@ class intent extends crud
         foreach ($question_examples as $question_example) {
             $question_examples_string .= ',' . $question_example->value;
         }
+        $return_generated_answer = $question->generate_answer ? true : false;
         // Create data set
         $data = array(
             'question_examples' => explode(',', $question_examples_string),
-            'question_answer' => $question->id
+            'question_answer' => strip_tags($question->answer),
+            'file_metadata' => [
+                'keywords' => $keywords,
+                'question_id' => $question_id,
+                'return_generated_answer' => $return_generated_answer,
+            ]
         );
         // publish question to bot server
         if ($question->document_name) {

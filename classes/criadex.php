@@ -121,7 +121,7 @@ class criadex
             $config->criadex_url,
             $config->criadex_api_key,
             json_encode($data),
-            '/azure/models/' . $model_id . '/query',
+            '/azure/models/' . $model_id . '/agents/chat',
             'POST'
         );
     }
@@ -254,6 +254,38 @@ class criadex
             '',
             '/index_auth/' . $api_key . '/list',
             'GET'
+        );
+    }
+
+    /*****************************Intents**********************************/
+    /**
+     * @param $model_id
+     * @param $intents
+     * @param $prompt
+     * @return void
+     */
+    public static function get_top_intent($bot_id, $prompt) {
+        // Get config
+        $config = get_config('local_cria');
+        $BOT = new bot($bot_id);
+        // Build data object
+        $data = [
+            'max_tokens' => $BOT->get_max_tokens(),
+            'temperature' => $BOT->get_temperature(),
+            'top_p' => $BOT->get_top_p(),
+            'intents' => $BOT->get_intents(),
+            'prompt' => $prompt
+        ];
+
+        $model_config = $BOT->get_model_config();
+
+        // Update model
+        return gpt::_make_call(
+            $config->criadex_url,
+            $config->criadex_api_key,
+            json_encode($data),
+            '/azure/models/' . $model_config->criadex_model_id . '/agents/intents',
+            'POST'
         );
     }
 }

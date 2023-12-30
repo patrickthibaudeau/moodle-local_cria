@@ -96,6 +96,7 @@ class gpt
      */
     protected static function _build_message($bot_id, $prompt, $content = '')
     {
+        file_put_contents('/var/www/moodledata/temp/cria_call.txt', $bot_id . ', ' . $prompt . ', ' . $content);
         // Create object that will return the data
         $data = new \stdClass();
         $BOT = new bot($bot_id);
@@ -140,7 +141,7 @@ class gpt
                 $completion_tokens = $completion_tokens + $result->response->raw->usage->completion_tokens;
                 $total_tokens = $total_tokens + $result->response->raw->usage->total_tokens;
                 // Capture the response
-                $summary[] = $result->response->message->content;
+                $summary[] = $result->agent_response->chat_response->message->content;
             }
             if (count($summary) > 1) {
                 $content_prompt = '';
@@ -162,11 +163,11 @@ class gpt
                     $params->top_p
                 );
                 // Add the number of tokens used for the comparison to the total tokens
-                $prompt_tokens = $prompt_tokens + $comparison_result->response->raw->usage->prompt_tokens;
-                $completion_tokens = $completion_tokens + $comparison_result->response->raw->usage->completion_tokens;
-                $total_tokens = $total_tokens + $comparison_result->response->raw->usage->total_tokens;
+                $prompt_tokens = $prompt_tokens + $comparison_result->agent_response->raw->usage->prompt_tokens;
+                $completion_tokens = $completion_tokens + $comparison_result->agent_response->raw->usage->completion_tokens;
+                $total_tokens = $total_tokens + $comparison_result->agent_response->raw->usage->total_tokens;
 
-                $answer = $comparison_result->choices[0]->message->content;
+                $answer = $comparison_result->agent_response->chat_response->message->content;
                 if ($answer == 'True') {
                     $summaries = $summary[0];
                 } else {
@@ -197,11 +198,12 @@ class gpt
                 $params->temperature,
                 $params->top_p
             );
-            $summaries = $result->response->message->content;
+            $summaries = $result->agent_response->chat_response->message->content;
+
             // Add the number of tokens used for the prompt to the total tokens
-            $prompt_tokens = $result->response->raw->usage->prompt_tokens;
-            $completion_tokens = $result->response->raw->usage->completion_tokens;
-            $total_tokens = $result->response->raw->usage->total_tokens;
+            $prompt_tokens = $result->agent_response->raw->usage->prompt_tokens;
+            $completion_tokens = $result->agent_response->raw->usage->completion_tokens;
+            $total_tokens = $result->agent_response->raw->usage->total_tokens;
         }
 
         // Get the cost of the call

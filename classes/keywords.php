@@ -56,4 +56,21 @@ class keywords
         return $array;
     }
 
+    public function get_keywords_for_criabot($keywords_json)
+    {
+        global $DB;
+        // Get keywords and synonyms
+        $keywords = [];
+        $keywords_array = json_decode($keywords_json);
+        foreach ($keywords_array as $key => $keyword_id) {
+            $keyword = $DB->get_record('local_cria_keyword', ['id' => $keyword_id]);
+            $keywords[] = $keyword->value;
+            // Get synonyms
+            $synonyms = $DB->get_records('local_cria_synonyms', ['keyword_id' => $keyword_id]);
+            foreach ($synonyms as $synonym) {
+                $keywords[] = $synonym->value;
+            }
+        }
+        return $keywords;
+    }
 }

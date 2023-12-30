@@ -53,6 +53,8 @@ $string['child_bots_help'] = 'Select the bots you want to make available to this
 $string['chunk_limit'] = 'Number of words per chunk';
 $string['chunk_limit_help'] = 'OpenAI works on chunks of text. This setting defines the number of words per chunk.<br>
 For GPT-3.5-turbo 16k, the maximum number of words per chunk is 12000.';
+$string['compare_text_bot_id'] = 'Compare text bot id';
+$string['compare_text_bot_id_help'] = 'Enter the bot id to use for the compare text requirement when using non-indexed bots.';
 $string['completion_cost'] = 'Completion cost';
 $string['completion_tokens'] = 'Completion tokens';
 $string['content'] = 'Content';

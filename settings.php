@@ -67,6 +67,13 @@ if ($hassiteconfig) {
         '', PARAM_TEXT, 255
     ));
 
+    $settings->add( new admin_setting_configtext(
+        'local_cria/compare_text',
+        get_string('compare_text_bot_id', 'local_cria'),
+        get_string('compare_text_bot_id_help', 'local_cria'),
+        0, PARAM_INT, 10
+    ));
+
     // MinutesMaster id
     $settings->add( new admin_setting_configtext(
         'local_cria/minutes_master',
@@ -114,6 +121,8 @@ if ($hassiteconfig) {
         get_string('programs_help', 'local_cria'),
         '', PARAM_TEXT, 255
     ));
+
+
 
 
     $ADMIN->add('localplugins', $settings);

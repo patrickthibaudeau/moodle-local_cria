@@ -1,36 +1,21 @@
 # moodle-local_cria
-Tool to build factual bots with OpenAI technology
+## Description
+Cria is a front-end interface that allows you  to create bots based on LLMs.
+Currently, the only supported LLM is Ms Azure OpenAI.
 
-#SecondOpiion
-SecondOpinion is a built-in bot app that helps professors grade short student work based on a rubric provided.
-
-The rubric must have the following structure
-
+Cria is built specifically for Univerisities and other educational institutions that are looking at 
+creating bots for their students, staff and faculty. Building bots is a s easy as uploading word docuemnts
+or creating questions within the interface.
 
 
-Skill name/type  
-(x Points)
+## Installation
+1. Download the zip file
+2. Unzip the file in the {root}/local folder
+3. Rename the folder to "cria"
+4. Go to Site Administration > Notifications to install the plugin
+5. Go to Site Administration > Plugins > Local plugins > Cria to configure the plugin
 
-Description of skill
+## Configuration
 
-##Example
+You must have an Azure Subscription and access to Azure OpenAI to use this plugin.
 
-Course Concepts & Terminology:  
-(4.00000 Points)
-
-Did the student answer the question make strong and direct connections with course readings and/or real-life situations? Did they use course language correctly, source corroborating material and make citations properly?
-
-Information Literacy, Inquiry & Modelling:  
-(4.00000 Points)
-
-Did the student complete their self-evaluation, address where there are gaps in the work, makes reference to course material that supports why this gap exists and make one suggestion from course material to address this gap?
-
-Self Determination:  
-(4.00000 Points)
-
-Did the student meet the submission timelines and guidelines?
-
-Communication Critical Thinking Problem Solving:  
-(4.00000 Points)
-
-How well did the student create their own question to answer, articulate why this question was of value to answer, state the steps needed to answer the question, and finally answer the question correctly?
