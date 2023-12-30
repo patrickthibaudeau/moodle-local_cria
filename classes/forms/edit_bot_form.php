@@ -302,6 +302,10 @@ class edit_bot_form extends \moodleform
             get_string('max_tokens', 'local_cria'),
             ['style' => 'width: 100px;']
         );
+        $mform->setType(
+            'max_tokens',
+            PARAM_INT
+        );
         // Add help button
         $mform->addHelpButton(
             'max_tokens',
@@ -322,6 +326,10 @@ class edit_bot_form extends \moodleform
             'temperature',
             get_string('temperature', 'local_cria'),
             ['style' => 'width: 100px;']
+        );
+        $mform->setType(
+            'temperature',
+            PARAM_FLOAT
         );
         // Add help button
         $mform->addHelpButton(
@@ -344,12 +352,19 @@ class edit_bot_form extends \moodleform
             get_string('top_p', 'local_cria'),
             ['style' => 'width: 100px;']
         );
+        $mform->setType(
+            'top_p',
+            PARAM_FLOAT
+        );
         // Add help button
         $mform->addHelpButton(
             'top_p',
             'top_p',
             'local_cria'
         );
+        $mform->setType(
+            'top_p',
+            PARAM_FLOAT);
         // Hide element unless fine_tuning is set to 1
         $mform->hideIf(
             'top_p',
@@ -364,6 +379,10 @@ class edit_bot_form extends \moodleform
             'top_k',
             get_string('top_k', 'local_cria'),
             ['style' => 'width: 100px;']
+        );
+        $mform->setType(
+            'top_k',
+            PARAM_INT
         );
         // Add help button
         $mform->addHelpButton(
@@ -386,6 +405,10 @@ class edit_bot_form extends \moodleform
             get_string('min_relevance', 'local_cria'),
             ['style' => 'width: 100px;']
         );
+        $mform->setType(
+            'min_relevance',
+            PARAM_FLOAT
+        );
         // Add help button
         $mform->addHelpButton(
             'min_relevance',
@@ -406,6 +429,10 @@ class edit_bot_form extends \moodleform
             'max_context',
             get_string('max_context', 'local_cria'),
             ['style' => 'width: 100px;']
+        );
+        $mform->setType(
+            'max_context',
+            PARAM_INT
         );
         // Add help button
         $mform->addHelpButton(
@@ -444,31 +471,6 @@ class edit_bot_form extends \moodleform
             'html',
             '</div>'
         );
-        $mform->setType(
-            'max_tokens',
-            PARAM_INT
-        );
-        $mform->setType(
-            'temperature',
-            PARAM_FLOAT
-        );
-        $mform->setType(
-            'top_p',
-            PARAM_FLOAT
-        );
-        $mform->setType(
-            'top_k',
-            PARAM_FLOAT
-        );
-        $mform->setType(
-            'min_relevance',
-            PARAM_INT
-        );
-        $mform->setType(
-            'max_context',
-            PARAM_INT
-        );
-
 
         // System reserved form element
         if (has_capability('local/cria:view_advanced_bot_options', $context)) {

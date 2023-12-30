@@ -35,7 +35,7 @@ if ($id) {
     $formdata->temperature = 0.1;
     $formdata->top_p = 0.1;
     $formdata->top_k = 0.1;
-    $formdata->minimum_relevance = 0.3;
+    $formdata->min_relevance = 0.8;
     $formdata->theme_color = '#e31837';
     $formdata->max_context = 50;
 }
@@ -49,6 +49,7 @@ if ($mform->is_cancelled()) {
     $return = $data->return;
     unset($data->return);
     if ($data->id) {
+
         $BOT = new bot($data->id);
         $data->description = $data->description_editor['text'];
         $BOT->update_record($data);
