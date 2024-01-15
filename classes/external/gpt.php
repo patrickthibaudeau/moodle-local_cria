@@ -86,12 +86,14 @@ class local_cria_external_gpt extends external_api
         $context = \context_system::instance();
         self::validate_context($context);
         $BOT = new bot($bot_id);
+        file_put_contents('/var/www/moodledata/temp/bot.json', json_encode($BOT));
         //If $filters is not empty then convert into array
         if (!empty($filters)) {
             $filters = json_decode($filters);
         }
         // Does this bot use criabot server?
-        if ($BOT->use_bot_server()) {
+        if ($BOT->use_bot_server() && $chat_id != 0) {
+            file_put_contents('/var/www/moodledata/temp/use_bot_server.txt', 'true');
             // Find out how many intents the bot has
             // If more than one then make a call to criadex to get the best intent (child bot) to use
             if ($BOT->get_number_of_intents() > 1) {
@@ -114,45 +116,42 @@ class local_cria_external_gpt extends external_api
                     $intents_result->agent_response->usage[0]->total_tokens,
                     $cost
                 );
-                // Start chat with the best child bot available
-                $session = criabot::chat_start($bot_name);
             } else {
                 $bot_name = $BOT->get_bot_name();
-                $session = criabot::chat_start($bot_name);
             }
-
-            $chat_id = $session->chat_id;
         }
+
+        file_put_contents('/var/www/moodledata/temp/bot_name.txt', $bot_name);
         // Always get user prompt if there is one.
         if ($BOT->get_user_prompt()) {
             $prompt = $BOT->get_user_prompt() . ' ' . $prompt;
         }
 
         if ($chat_id != 0) {
-            $result = criabot::chat_send($chat_id, $prompt, $filters, true);
+            $result = criabot::chat_send($chat_id, $bot_name, $prompt, $filters);
             // Set question index name
             $question_index_name = $bot_name . '-question-index';
             $document_index_name = $bot_name . '-document-index';
             // Check if using generated answer
             $use_generated_answer = false;
-            if (isset($result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->return_generated_answer)) {
-                $use_generated_answer = $result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->return_generated_answer;
+            if (isset($result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->return_generated_answer)) {
+                $use_generated_answer = $result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->return_generated_answer;
             }
 
             // Check if question id is set
             $question_id = false;
-            if (isset($result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->question_id)) {
-                $question_id = $result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->question_id;
+            if (isset($result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->question_id)) {
+                $question_id = $result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->question_id;
             }
 
             // Get filename
             $file_name = false;
-            if (isset($result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->file_name)) {
-                $file_name = $result->reply->index_responses->$question_index_name->nodes[0]->node->metadata->file_name;
+            if (isset($result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->file_name)) {
+                $file_name = $result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->file_name;
             }
 
-            if (isset($result->reply->index_responses->$document_index_name->nodes[0]->node->metadata->file_name)) {
-                $file_name = $result->reply->index_responses->$document_index_name->nodes[0]->node->metadata->file_name;
+            if (isset($result->reply->group_responses->$document_index_name->nodes[0]->node->metadata->file_name)) {
+                $file_name = $result->reply->group_responses->$document_index_name->nodes[0]->node->metadata->file_name;
             }
             // If the answer should not be generated and there is a question id then get the answer from the database
             if ($use_generated_answer == false && $question_id != false) {
@@ -214,7 +213,8 @@ class local_cria_external_gpt extends external_api
                 $result->reply->context);
         } else {
             $message = gpt::get_response($bot_id, $prompt, $content, false);
-            $message->stacktrace = '';
+            $message->stacktrace = '[]';
+            $message->file_name = '';
         }
 
         if ($prompt == false) {

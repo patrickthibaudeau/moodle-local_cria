@@ -54,6 +54,9 @@ if ($mform->is_cancelled()) {
     redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $formdata->bot_id);
 } else if ($data = $mform->get_data()) {
     // Convert keywords to JSON
+    if (!isset($data->keywords)) {
+        $data->keywords = [];
+    }
     $keywords = json_encode($data->keywords);
     unset($data->keywords);
     $data->keywords = $keywords;

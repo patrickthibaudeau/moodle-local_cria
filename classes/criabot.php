@@ -255,7 +255,7 @@ class criabot
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function chat_start($bot_name) {
+    public static function chat_start() {
         // Get Config
         $config = get_config('local_cria');
         // Create model
@@ -263,7 +263,7 @@ class criabot
             $config->criabot_url,
             $config->criadex_api_key,
             '',
-            '/bots/'. $bot_name  . '/chats/start',
+            '/bots/chats/start',
             'POST'
         );
     }
@@ -294,11 +294,12 @@ class criabot
     /**
      * Send a chat to a bot
      * @param $chat_id String
+     * @param $bot_name String
      * @param $prompt String
      * @return mixed
      * @throws \local_cria\dml_exception
      */
-    public static function chat_send($chat_id, $prompt, $filters = [], $direct_question_answer = false) {
+    public static function chat_send($chat_id, $bot_name, $prompt, $filters = []) {
         // Get Config
         $config = get_config('local_cria');
         // If $filters is empty, create empty array
@@ -309,18 +310,19 @@ class criabot
                 "should" => []
             ];
         }
+
         $data = [
-            'direct_question_answer' => $direct_question_answer,
-            'metadata_filter' => $filters,
-            'prompt' => $prompt
+            'prompt' => $prompt,
+            'bot_name' => $bot_name,
+            'metadata_filter' => $filters
         ];
-        $query_string = http_build_query($data);
+        file_put_contents('/var/www/moodledata/temp/chat_send_data.json', json_encode($data));
         // Create model
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
             json_encode($data),
-            '/bots/'. $chat_id  . '/chats/send',
+            '/bots/chats/'. $chat_id  . '/send',
             'POST'
         );
     }

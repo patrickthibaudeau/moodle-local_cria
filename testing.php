@@ -10,6 +10,7 @@ require_once("$CFG->dirroot/local/cria/classes/gpttokenizer/Vocab.php");
 use local_cria\datatables;
 use local_cria\criadex;
 use local_cria\criabot;
+use local_cria\gpt;
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
@@ -32,9 +33,18 @@ $prompt = optional_param('prompt', '', PARAM_TEXT);
 //**********************
 echo $OUTPUT->header();
 
-$bot_id = 55;
-//$prompt = "WHo teaches the course?";
+$bot_id = 84;
+$prompt = "WHo teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
+
+
+
+$session = criabot::chat_start();
+$chat_id = $session->chat_id;
+//print_object($chat_id);
+$results = local_cria_external_gpt::response($bot_id,$chat_id,$prompt, '', '');
+print_object($results);
+
 //$savy = file_get_contents('/var/www/html/local/cria/SAVY_entities_Keywords.json');
 ////
 //$entities = json_decode( $savy );
@@ -74,11 +84,16 @@ $BOT = new \local_cria\bot($bot_id);
 
 //$intents_result = criadex::get_top_intent($bot_id, $prompt);
 //print_object($intents_result);
-$session = criabot::chat_start($BOT->get_bot_name());
-$chat_id = $session->chat_id;
-print_object($chat_id);
-$result = criabot::chat_send( $chat_id, $prompt, [], true );
-print_object($result);
+//$session = criabot::chat_start($BOT->get_bot_name());
+//$chat_id = $session->chat_id;
+//print_object($chat_id);
+//$result = criabot::chat_send( $chat_id, $prompt, [], true );
+//print_object($result);
+
+//$json = file_get_contents('/var/www/moodledata/temp/chunk_result_0.json');
+//$content = json_decode($json);
+//$chunks = gpt::_split_into_chunks(55, $content);
+//print_object($content);
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

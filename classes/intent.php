@@ -255,7 +255,7 @@ class intent extends crud
         $prompt_tokens = 0;
         $completion_tokens = 0;
         $total_tokens = 0;
-
+print_object($results);
         $prompt_tokens = $token_usage->prompt_tokens;
         $completion_tokens = $token_usage->completion_tokens;
         $total_tokens = $token_usage->total_tokens;
@@ -265,7 +265,7 @@ class intent extends crud
         logs::insert(
             $this->bot_id,
             $prompt,
-            $results->response->message->content,
+            $results->agent_response->chat_response->message->content,
             $prompt_tokens,
             $completion_tokens,
             $total_tokens,

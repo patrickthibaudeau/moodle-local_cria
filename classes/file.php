@@ -306,9 +306,6 @@ class file extends crud
      */
     public function upload_files_to_indexing_server($bot_name, $file_path, $file_name, $update = false)
     {
-        // Create indexes if they don't exist
-        base::create_cria_indexes($bot_name);
-
         if ($update) {
             // update file
             return criabot::document_update($bot_name, $file_path, $file_name);

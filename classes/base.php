@@ -400,7 +400,7 @@ class base
             );
 
             // Check to see if Index authorization exists
-            $api_key_exists = criadex::index_authorization_check($bot_name . '-document-index', );
+            $api_key_exists = criadex::index_authorization_check($bot_name . '-document-index', $api_key );
             // If index authorization does not exist, create it
             if ($api_key_exists != 200) {
                 criadex::index_authorization_create($bot_name . '-document-index', $api_key);
@@ -418,7 +418,7 @@ class base
             );
 
             // Check to see if Index authorization exists
-            $api_key_exists = criadex::index_authorization_check($bot_name . '-question-index', );
+            $api_key_exists = criadex::index_authorization_check($bot_name . '-question-index', $api_key);
             // If index authorization does not exist, create it
             if ($api_key_exists != 200) {
                 criadex::index_authorization_create($bot_name . '-question-index', $api_key);
@@ -436,7 +436,7 @@ class base
             );
 
             // Check to see if Index authorization exists
-            $api_key_exists = criadex::index_authorization_check($bot_name . '-cache-index', );
+            $api_key_exists = criadex::index_authorization_check($bot_name . '-cache-index', $api_key);
             // If index authorization does not exist, create it
             if ($api_key_exists != 200) {
                 criadex::index_authorization_create($bot_name . '-cache-index', $api_key);

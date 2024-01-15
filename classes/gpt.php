@@ -32,6 +32,7 @@ class gpt
     {
         global $CFG;
         $config = get_config('local_cria');
+        file_put_contents('/var/www/moodledata/temp/call.json', $call );
         // Set stacktrace
         $stacktrace = 'X-Api-Stacktrace: false';
         if ($CFG->debug != 0) {
@@ -90,12 +91,12 @@ class gpt
             curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         }
         $result = json_decode(curl_exec($ch));
-        if ($CFG->debug != 0) {
-            $info = curl_getinfo($ch);
-            $header = curl_getinfo($ch, CURLINFO_HEADER_OUT);
-            $result->info = $info;
-            $result->header = $header;
-        }
+//        if ($CFG->debug != 0) {
+//            $info = curl_getinfo($ch);
+//            $header = curl_getinfo($ch, CURLINFO_HEADER_OUT);
+//            $result->info = $info;
+//            $result->header = $header;
+//        }
         curl_close($ch);
 
         return $result;
@@ -123,6 +124,7 @@ class gpt
 //        $user_content = preg_replace('/\s+/', ' ', trim($user_content));
 //        if there is user content, split into chunks
         if ($user_content) {
+            file_put_contents('/var/www/moodledata/temp/content.json', $user_content);
             // Get number of words in content and split it into chunks if it's too long
             $chunk_text = self::_split_into_chunks($bot_id, $user_content);
             // Determine the context window size (overlap)
@@ -140,7 +142,7 @@ class gpt
                     $chunk = $context . $chunk;
                 }
                 // Use grounding context
-                $full_prompt = "---\n" . $chunk . "\n---\n" . $prompt;
+                $full_prompt =  $chunk . "\n" . $prompt;
                 // Use Criadex to make the call
                 $result = criadex::query(
                     $params->llm_model_id,
@@ -150,10 +152,11 @@ class gpt
                     $params->temperature,
                     $params->top_p
                     );
+                file_put_contents('/var/www/moodledata/temp/chunk_result_'. $i . '.json', json_encode($result));
                 // Add the number of tokens used for the prompt to the total tokens
-                $prompt_tokens = $prompt_tokens + $result->response->raw->usage->prompt_tokens;
-                $completion_tokens = $completion_tokens + $result->response->raw->usage->completion_tokens;
-                $total_tokens = $total_tokens + $result->response->raw->usage->total_tokens;
+                $prompt_tokens = $prompt_tokens + $result->agent_response->usage[0]->prompt_tokens;
+                $completion_tokens = $completion_tokens + $result->agent_response->usage[0]->completion_tokens;
+                $total_tokens = $total_tokens + $result->agent_response->usage[0]->total_tokens;
                 // Capture the response
                 $summary[] = $result->agent_response->chat_response->message->content;
             }
@@ -177,9 +180,9 @@ class gpt
                     $params->top_p
                 );
                 // Add the number of tokens used for the comparison to the total tokens
-                $prompt_tokens = $prompt_tokens + $comparison_result->agent_response->raw->usage->prompt_tokens;
-                $completion_tokens = $completion_tokens + $comparison_result->agent_response->raw->usage->completion_tokens;
-                $total_tokens = $total_tokens + $comparison_result->agent_response->raw->usage->total_tokens;
+                $prompt_tokens = $prompt_tokens + $comparison_result->agent_response->usage[0]->prompt_tokens;
+                $completion_tokens = $completion_tokens + $comparison_result->agent_response->usage[0]->completion_tokens;
+                $total_tokens = $total_tokens + $comparison_result->agent_response->usage[0]->total_tokens;
 
                 $answer = $comparison_result->agent_response->chat_response->message->content;
                 if ($answer == 'True') {
@@ -192,18 +195,6 @@ class gpt
                 $summaries = implode('', $summary);
             }
         } else {
-            $messages = [
-                'messages' => [
-                    [
-                        'role' => 'system',
-                        'content' => $system_message
-                    ],
-                    [
-                        'role' => 'user',
-                        'content' => $prompt
-                    ]
-                ]
-            ];
             $result = criadex::query(
                 $params->llm_model_id,
                 $params->system_message,
@@ -215,9 +206,9 @@ class gpt
             $summaries = $result->agent_response->chat_response->message->content;
 
             // Add the number of tokens used for the prompt to the total tokens
-            $prompt_tokens = $result->agent_response->raw->usage->prompt_tokens;
-            $completion_tokens = $result->agent_response->raw->usage->completion_tokens;
-            $total_tokens = $result->agent_response->raw->usage->total_tokens;
+            $prompt_tokens = $result->agent_response->usage[0]->prompt_tokens;
+            $completion_tokens = $result->agent_response->usage[0]->completion_tokens;
+            $total_tokens = $result->agent_response->usage[0]->total_tokens;
         }
 
         // Get the cost of the call
@@ -238,22 +229,21 @@ class gpt
      * @param $long_text
      * @return array
      */
-    protected static function _split_into_chunks($bot_id, $long_text)
+    public static function _split_into_chunks($bot_id, $long_text)
     {
         $BOT = new bot($bot_id);
         $max_tokens = $BOT->get_max_tokens();
         $max_context = $BOT->get_max_context();
-        $max_width = 4000; // Equivalent of 1000 tokens
+        $characters_per_token = 3; //For english, but should work for most languages
 
         // Get the length of the long text
-        $text_word_count = strlen($long_text);
-        $words_per_chunk = (int)((($max_tokens + $max_context) /1000) * $max_width);
-
+        $text_word_count = mb_strlen($long_text);
+        $characters_per_chunk = (int)(($max_tokens - $max_context) * $characters_per_token);
 
         $long_text = str_replace("\n", ' ', $long_text);
-        // split the long text into chunks based on the number of words_per_chunk, but do not cut a word apart
-
-        $chunks = explode("\n", wordwrap($long_text, $words_per_chunk, "\n"));
+        // split the long text into chunks based on the number of characters_per_chunk, but do not cut a word apart
+//        $chunks = explode("\n", wordwrap($long_text, $characters_per_chunk, "\n"));
+        $chunks = str_split($long_text, 5000);
 
         return $chunks;
     }
