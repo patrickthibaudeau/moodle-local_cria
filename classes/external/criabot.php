@@ -56,8 +56,8 @@ class local_cria_external_criabot extends external_api
         global $CFG, $USER, $DB, $PAGE;
 
         //Parameter validation
-        $params = self::validate_parameters(self::chat_start_parameters(), array()
-        );
+//        $params = self::validate_parameters(self::chat_start_parameters(), array()
+//        );
 
         //Context validation
         //OPTIONAL but in most web service it should present
