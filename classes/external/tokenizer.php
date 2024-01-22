@@ -86,7 +86,6 @@ class local_cria_external_tokenizer extends external_api {
 
         $message = ['cost' => $cost];
 
-        file_put_contents('/var/www/moodledata/temp/tokneizer.txt',  'numberOfTokens: ' . $numberOfTokens . "\n" .' completion: ' . $completion . "\n" .' cost: ' . $cost);
         return json_encode($message);
     }
 

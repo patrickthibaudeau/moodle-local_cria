@@ -443,6 +443,7 @@ print_object($results);
         $data = array(
             'question_examples' => explode(',', $question_examples_string),
             'question_answer' => strip_tags($question->answer),
+            'llm_reply' => $return_generated_answer,
             'file_metadata' => [
                 'keywords' => $keywords,
                 'question_id' => $question_id,

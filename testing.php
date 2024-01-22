@@ -32,9 +32,9 @@ $prompt = optional_param('prompt', '', PARAM_TEXT);
 //*** DISPLAY HEADER ***
 //**********************
 echo $OUTPUT->header();
-
-$bot_id = 84;
-$prompt = "WHo teaches the course?";
+echo '<script type="text/javascript" src="https://criachat-api.yorku.dev/embed?botId=85&embedTheme=E31837" async> </script>';
+$bot_id = 85;
+$prompt = "Who teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
 
 

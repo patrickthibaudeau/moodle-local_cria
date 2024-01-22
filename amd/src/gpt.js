@@ -3,6 +3,7 @@ import ajax from 'core/ajax';
 
 export const init = () => {
     get_response();
+    page_unload();
 };
 
 /**
@@ -24,7 +25,7 @@ function get_response() {
             $('#default-user-prompt').val() +
             $('#user-prompt').val();
         var content =
-            $('#cria-test-input').val() ;
+            $('#cria-test-input').val();
         var chat_id = $('#cria-chat-id').val();
         $("#submit-question").hide();
         $("#starting-process").show();
@@ -56,5 +57,14 @@ function get_response() {
                 'Please try again.');
             location.reload();
         });
+    });
+}
+
+function page_unload() {
+    window.addEventListener('beforeunload', function (e) {
+        e.preventDefault();
+        e.returnValue = '';
+        alert('Please wait for the process to complete.');
+
     });
 }

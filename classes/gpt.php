@@ -32,7 +32,6 @@ class gpt
     {
         global $CFG;
         $config = get_config('local_cria');
-        file_put_contents('/var/www/moodledata/temp/call.json', $call );
         // Set stacktrace
         $stacktrace = 'X-Api-Stacktrace: false';
         if ($CFG->debug != 0) {
@@ -124,7 +123,6 @@ class gpt
 //        $user_content = preg_replace('/\s+/', ' ', trim($user_content));
 //        if there is user content, split into chunks
         if ($user_content) {
-            file_put_contents('/var/www/moodledata/temp/content.json', $user_content);
             // Get number of words in content and split it into chunks if it's too long
             $chunk_text = self::_split_into_chunks($bot_id, $user_content);
             // Determine the context window size (overlap)
@@ -152,7 +150,6 @@ class gpt
                     $params->temperature,
                     $params->top_p
                     );
-                file_put_contents('/var/www/moodledata/temp/chunk_result_'. $i . '.json', json_encode($result));
                 // Add the number of tokens used for the prompt to the total tokens
                 $prompt_tokens = $prompt_tokens + $result->agent_response->usage[0]->prompt_tokens;
                 $completion_tokens = $completion_tokens + $result->agent_response->usage[0]->completion_tokens;

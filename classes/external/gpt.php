@@ -86,14 +86,13 @@ class local_cria_external_gpt extends external_api
         $context = \context_system::instance();
         self::validate_context($context);
         $BOT = new bot($bot_id);
-        file_put_contents('/var/www/moodledata/temp/bot.json', json_encode($BOT));
+
         //If $filters is not empty then convert into array
         if (!empty($filters)) {
             $filters = json_decode($filters);
         }
         // Does this bot use criabot server?
         if ($BOT->use_bot_server() && $chat_id != 0) {
-            file_put_contents('/var/www/moodledata/temp/use_bot_server.txt', 'true');
             // Find out how many intents the bot has
             // If more than one then make a call to criadex to get the best intent (child bot) to use
             if ($BOT->get_number_of_intents() > 1) {
@@ -120,8 +119,6 @@ class local_cria_external_gpt extends external_api
                 $bot_name = $BOT->get_bot_name();
             }
         }
-
-        file_put_contents('/var/www/moodledata/temp/bot_name.txt', $bot_name);
         // Always get user prompt if there is one.
         if ($BOT->get_user_prompt()) {
             $prompt = $BOT->get_user_prompt() . ' ' . $prompt;
@@ -129,76 +126,49 @@ class local_cria_external_gpt extends external_api
 
         if ($chat_id != 0) {
             $result = criabot::chat_send($chat_id, $bot_name, $prompt, $filters);
-            // Set question index name
-            $question_index_name = $bot_name . '-question-index';
-            $document_index_name = $bot_name . '-document-index';
-            // Check if using generated answer
-            $use_generated_answer = false;
-            if (isset($result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->return_generated_answer)) {
-                $use_generated_answer = $result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->return_generated_answer;
-            }
-
-            // Check if question id is set
-            $question_id = false;
-            if (isset($result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->question_id)) {
-                $question_id = $result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->question_id;
-            }
-
-            // Get filename
-            $file_name = false;
-            if (isset($result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->file_name)) {
-                $file_name = $result->reply->group_responses->$question_index_name->nodes[0]->node->metadata->file_name;
-            }
-
-            if (isset($result->reply->group_responses->$document_index_name->nodes[0]->node->metadata->file_name)) {
-                $file_name = $result->reply->group_responses->$document_index_name->nodes[0]->node->metadata->file_name;
-            }
-            // If the answer should not be generated and there is a question id then get the answer from the database
-            if ($use_generated_answer == false && $question_id != false) {
-                include_once($CFG->dirroot . '/lib/filelib.php');
-                $context = \context_system::instance();
-                $question = $DB->get_record('local_cria_question', ['id' => (int)$question_id]);
-                $content = file_rewrite_pluginfile_urls(
-                    $question->answer,
-                    'pluginfile.php',
-                    $context->id,
-                    'local_cria',
-                    'answer',
-                    $question->id);
-                $content = format_text($content, FORMAT_HTML, base::getEditorOptions($context), $context);
+            // Get token usage
+            $token_usage = $result->total_usage;
+            // Check if the context type is a question
+            if ($result->reply->context->context_type == "QUESTION") {
+                // Return llm_reply or DB reply
+                if ($result->reply->context->node->node->metadata->llm_reply == true) {
+                    $content = nl2br(htmlspecialchars($result->reply->content->content));
+                    $content = gpt::make_email($content);
+                    $content = gpt::make_link($content);
+                } else {
+                    include_once($CFG->dirroot . '/lib/filelib.php');
+                    $context = \context_system::instance();
+                    $question_id = $result->reply->context->node->node->metadata->question_id;
+                    $question = $DB->get_record('local_cria_question', ['id' => (int)$question_id]);
+                    $content = file_rewrite_pluginfile_urls(
+                        $question->answer,
+                        'pluginfile.php',
+                        $context->id,
+                        'local_cria',
+                        'answer',
+                        $question->id);
+                    $content = format_text($content, FORMAT_HTML, base::getEditorOptions($context), $context);
+                }
+                $file_name = $result->reply->context->node->node->metadata->file_name;
             } else {
-                // Get the generated answer and clean up content
                 $content = nl2br(htmlspecialchars($result->reply->content->content));
                 $content = gpt::make_email($content);
                 $content = gpt::make_link($content);
+                $file_name = $result->reply->context->nodes[0]->node->metadata->file_name;
             }
 
             // Build message object
             $message = new \stdClass();
             $message->message = $content;
-            // Get token usage
-            $token_usage = $result->reply->token_usage;
-            // loop through token usage and add the prompt tokens and completion tokens
-            $prompt_tokens = 0;
-            $completion_tokens = 0;
-            $total_tokens = 0;
-            foreach ($token_usage as $token) {
-                $prompt_tokens = $prompt_tokens + $token->prompt_tokens;
-                $completion_tokens = $completion_tokens + $token->completion_tokens;
-                $total_tokens = $total_tokens + $token->total_tokens;
-            }
-            $message->prompt_tokens = $prompt_tokens;
-            $message->completion_tokens = $completion_tokens;
-            $message->total_tokens = $total_tokens;
-            if ($file_name != false) {
-                $message->file_name = $file_name;
-                $file_name_for_logs = 'file name: ' . $file_name . "<br>\n";
-            } else {
-                $message->file_name = '';
-                $file_name_for_logs = '';
-            }
+            $message->prompt_tokens = $token_usage->prompt_tokens;
+            $message->completion_tokens = $token_usage->completion_tokens;
+            $message->total_tokens = $token_usage->total_tokens;
+            // File name
+            $message->file_name = $file_name;
+            $file_name_for_logs = 'file name: ' . $file_name . "<br>\n";
+
             $message->stacktrace = json_encode($result, JSON_PRETTY_PRINT);
-            $message->cost = gpt::_get_cost($bot_id, $prompt_tokens, $completion_tokens);
+            $message->cost = gpt::_get_cost($bot_id, $token_usage->prompt_tokens, $token_usage->completion_tokens);
 
 
             // Insert logs
@@ -206,11 +176,12 @@ class local_cria_external_gpt extends external_api
                 $bot_id,
                 $prompt,
                 $file_name_for_logs . $content,
-                $prompt_tokens,
-                $completion_tokens,
-                $total_tokens,
+                $token_usage->prompt_tokens,
+                $token_usage->completion_tokens,
+                $token_usage->total_tokens,
                 $message->cost,
-                $result->reply->context);
+                json_encode($result->reply->context)
+            );
         } else {
             $message = gpt::get_response($bot_id, $prompt, $content, false);
             $message->stacktrace = '[]';
@@ -228,7 +199,6 @@ class local_cria_external_gpt extends external_api
         $data = [
             (array)$message
         ];
-
         return (array)$message;
     }
 

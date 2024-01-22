@@ -18,13 +18,33 @@ function process_notes() {
         var bot_id = $(this).data('bot_id');
         var language = $('#language').val();
         var content = '---' + $('#notes').val() + '---' + "\\n"
-        var prompt = `Create meeting notes from the context provided and separate the notes by topic. Each topic should be in a 
-        numbered list. Once done, create all action items from the context. Format the action items as a list having 
-        the following headings: Assigned to, Description, Date due`;
+        // var prompt = `Create meeting notes from the context provided and separate the notes by topic. Each topic should be in a
+        // numbered list. Once done, create all action items from the context. Format the action items as a list having
+        // the following headings: Assigned to, Description, Date due`;
+        var prompt = `Create meeting notes from the context provided and separate the notes by topic.
+        Also identify action items from the context add add them to the action_items object
+        Return the results in the following valid JSON format:
+        @@topic_result@@
+        [
+            {
+             "topic": Topic name,
+             "topic_notes: [{"note": "Note 1"}],
+             "action_items": [{"assigned_to": "Person 1", "description": "Description 1", "date_due": "Date 1"}],
+            }
+        ]
+        @@/topic_result@@
+`;
         if (language == 'fr') {
-            prompt = `Créez des notes de réunion à partir du context et séparez les notes par sujet. Chaque sujet doit être dans une 
-            liste numérotée. Une fois terminé, créez toutes les tâches à partir de la transcription. Formatez les 
-            tâches comme une list ayant les entêtes suivantes: Assigné à, Description, Date d'échéance`;
+            prompt = `Create meeting notes from the context provided in french and separate the notes by topic. 
+        Also identify action items from the context. 
+        Return the results in the following JSON format:
+        [
+            {
+             "topic": Topic name,
+             "topic_notes: [{"0": "Note 1"}, {"1": "2"} ...],
+             "action_items": [{"assigned_to": "Person 1", "description": "Description 1", "date_due": "Date 1"}],
+            }
+        ]`;
         }
         // Get all values from various fields
         var project_name = $('#project_name').val();

@@ -316,7 +316,7 @@ class criabot
             'bot_name' => $bot_name,
             'metadata_filter' => $filters
         ];
-        file_put_contents('/var/www/moodledata/temp/chat_send_data.json', json_encode($data));
+
         // Create model
         return gpt::_make_call(
             $config->criabot_url,
