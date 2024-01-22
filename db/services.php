@@ -226,4 +226,23 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    // Chatting
+    'cria_get_chat_id' => array(
+        'classname' => 'local_cria_external_criabot',
+        'methodname' => 'chat_start',
+        'classpath' => 'local/cria/classes/external/criabot.php',
+        'description' => 'Starts a chat session and returns the chat id',
+        'type' => 'read',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_bot_exists' => array(
+        'classname' => 'local_cria_external_criabot',
+        'methodname' => 'bot_exists',
+        'classpath' => 'local/cria/classes/external/criabot.php',
+        'description' => 'Check to see if a bot exists',
+        'type' => 'read',
+        'capabilities' => '',
+        'ajax' => true
+    ),
 );
