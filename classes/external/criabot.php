@@ -65,7 +65,7 @@ class local_cria_external_criabot extends external_api
         self::validate_context($context);
 
         $session = criabot::chat_start();
-print_object($session);
+
         return $session->chat_id;
     }
 
