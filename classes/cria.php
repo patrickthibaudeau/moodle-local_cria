@@ -110,7 +110,8 @@ class cria
      */
     public static function delete_bot($bot_id)
     {
-        // Create bot
+        $BOT = new bot($bot_id);
+
         return gpt::_make_call($bot_id, [], 'delete', 'DELETE', true);
     }
 

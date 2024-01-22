@@ -72,10 +72,9 @@ class local_cria_external_bot extends external_api
 
         if ($BOT->use_bot_server()) {
             // Delete bot on indexing server
-            cria::delete_bot($id);
+            $BOT = new bot($id);
+            $BOT->delete_record();
         }
-
-        $DB->delete_records('local_cria_bot', array('id' => $id));
 
         return true;
     }

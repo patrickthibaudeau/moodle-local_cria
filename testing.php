@@ -32,18 +32,18 @@ $prompt = optional_param('prompt', '', PARAM_TEXT);
 //*** DISPLAY HEADER ***
 //**********************
 echo $OUTPUT->header();
-echo '<script type="text/javascript" src="https://criachat-api.yorku.dev/embed?botId=85&embedTheme=E31837" async> </script>';
+
 $bot_id = 85;
 $prompt = "Who teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
 
+$BOT->delete_record();
 
-
-$session = criabot::chat_start();
-$chat_id = $session->chat_id;
+//$session = criabot::chat_start();
+//$chat_id = $session->chat_id;
 //print_object($chat_id);
-$results = local_cria_external_gpt::response($bot_id,$chat_id,$prompt, '', '');
-print_object($results);
+//$results = local_cria_external_gpt::response($bot_id,$chat_id,$prompt, '', '');
+//print_object($results);
 
 //$savy = file_get_contents('/var/www/html/local/cria/SAVY_entities_Keywords.json');
 ////

@@ -853,6 +853,12 @@ class bot extends crud
         return $intent->id ?? 0;
     }
 
+    public function get_all_intents(): array
+    {
+        global $DB;
+        return $DB->get_records('local_cria_intents', ['bot_id' => $this->id]);
+    }
+
     /**
      * @param $intent_id int
      * @return void
@@ -946,6 +952,36 @@ class bot extends crud
         unset($ENTITIES);
 
         return $keywords;
+    }
+
+    /**
+     * @return bool
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function delete_record(): bool
+    {
+        global $DB;
+        // Does this bot use indexing?
+        if ($this->use_bot_server()) {
+            // How many intents does this bot have?
+            $intents = $this->get_all_intents();
+            // Let's get all files for the intent and delete them
+            // Once files are deleted, delete the intent/bot
+            foreach($intents as $intent) {
+                $INTENT = new intent($intent->id);
+                $files = $INTENT->get_files();
+                foreach ($files as $file) {
+                    $FILE = new file($file->id);
+                    $FILE->delete_record();
+                    unset($FILE);
+                }
+                $INTENT->delete_record();
+                unset($INTENT);
+            }
+
+        }
+        return $DB->delete_records($this->table, array('id' => $this->get_id()));
     }
 
 }

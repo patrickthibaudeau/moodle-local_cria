@@ -330,4 +330,20 @@ class file extends crud
     }
 
 
+    /**
+     * Delete file from indexing server and local database
+     * @return bool
+     */
+    public function delete_record(): bool
+    {
+        global $DB;
+        // Delete on criabot server
+        $result = criabot::document_delete($this->get_bot_name(), $this->get_name());
+        if($result->status == '200') {
+            // Delete on local database
+            return $DB->delete_records($this->table, array('id' => $this->get_id()));
+        } else {
+            return false;
+        }
+    }
 }
