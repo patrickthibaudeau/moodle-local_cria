@@ -119,7 +119,7 @@ class local_cria_external_criabot extends external_api
         self::validate_context($context);
 
         // Check if bot exists
-        if ($bot = $DB->get_record('local_cria_bots', array('id' => $bot_id))) {
+        if ($bot = $DB->get_record('local_cria_bot', array('id' => $bot_id))) {
             if ($intent = $DB->get_record('local_cria_intents', $params)) {
                 return 200;
             } else {
