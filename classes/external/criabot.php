@@ -75,7 +75,7 @@ class local_cria_external_criabot extends external_api
      */
     public static function chat_start_returns()
     {
-        return new external_value(PARAM_TEXT, 'chat id');
+        return new external_value(PARAM_RAW, 'chat id');
     }
 
     /****** Check to see if BOT exists ******/
