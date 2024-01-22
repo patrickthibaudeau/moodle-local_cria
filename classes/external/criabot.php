@@ -89,7 +89,8 @@ class local_cria_external_criabot extends external_api
     {
         return new external_function_parameters(
             array(
-                'bot_id' => new external_value(PARAM_INT, 'ID of the bot being used', false, 0)
+                'bot_id' => new external_value(PARAM_INT, 'ID of the bot being used', false, 0),
+                'bot_api_key' => new external_value(PARAM_RAW, 'BOT api key', false, ''),
             )
         );
     }
@@ -101,13 +102,14 @@ class local_cria_external_criabot extends external_api
      * @throws invalid_parameter_exception
      * @throws restricted_context_exception
      */
-    public static function bot_exists($bot_id)
+    public static function bot_exists($bot_id, $bot_api_key)
     {
         global $CFG, $USER, $DB, $PAGE;
 
         //Parameter validation
         $params = self::validate_parameters(self::bot_exists_parameters(), array(
-                'bot_id' => $bot_id
+                'bot_id' => $bot_id,
+                'bot_api_key' => $bot_api_key
             )
         );
 
@@ -116,13 +118,17 @@ class local_cria_external_criabot extends external_api
         $context = \context_system::instance();
         self::validate_context($context);
 
-        $BOT = new bot($bot_id);
-        $bot_details = criabot::bot_about($BOT->get_bot_name());
-        if ($bot_details->status == 200) {
-            return true;
+        // Check if bot exists
+        if ($bot = $DB->get_record('local_cria_bots', array('id' => $bot_id))) {
+            if ($intent = $DB->get_record('local_cria_intents', $params)) {
+                return 200;
+            } else {
+                return 401;
+            }
         } else {
-            return false;
+            return 404;
         }
+
     }
 
     /**
@@ -131,6 +137,6 @@ class local_cria_external_criabot extends external_api
      */
     public static function bot_exists_returns()
     {
-        return new external_value(PARAM_BOOL, 'boolean');
+        return new external_value(PARAM_INT, 'boolean');
     }
 }
