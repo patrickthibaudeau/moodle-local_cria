@@ -58,6 +58,13 @@ if ($hassiteconfig) {
         '', PARAM_TEXT, 255
     ));
 
+    $settings->add( new admin_setting_configtext(
+        'local_cria/criaembed_url',
+        get_string('criaembed_url', 'local_cria'),
+        get_string('criaembed_url_help', 'local_cria'),
+        '', PARAM_TEXT, 255
+    ));
+
 
     //Embedding Server
     $settings->add( new admin_setting_configtext(

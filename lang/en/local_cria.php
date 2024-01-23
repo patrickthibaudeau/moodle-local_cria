@@ -263,6 +263,8 @@ $string['criabot_url'] = 'CriaBot URL';
 $string['criabot_url_help'] = 'Enter the URL for the CriaBot instance you are connecting too.';
 $string['criadex_url'] = 'CriaDex URL';
 $string['criadex_url_help'] = 'Enter the URL for the CriaDex instance you are connecting too.';
+$string['criaembed_url'] = 'CriaEmbed URL';
+$string['criaembed_url_help'] = 'Enter the URL for the CriaEmbed instance you are connecting too.';
 $string['criadex_api_key'] = 'CriaDex API key';
 $string['criadex_api_key_help'] = 'Enter the API key for the CriaDex instance you are connecting too. ' .
     'Note: MUST BE A MASTER KEY<br> ' .

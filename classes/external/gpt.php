@@ -129,7 +129,12 @@ class local_cria_external_gpt extends external_api
             // Get token usage
             $token_usage = $result->total_usage;
             // Check if the context type is a question
-            if ($result->reply->context->context_type == "QUESTION") {
+            if (empty($result->reply->context)) {
+                $content = nl2br(htmlspecialchars($result->reply->content->content));
+                $content = gpt::make_email($content);
+                $content = gpt::make_link($content);
+                $file_name = "No reply cmessage";
+            } else if ($result->reply->context->context_type == "QUESTION") {
                 // Return llm_reply or DB reply
                 if ($result->reply->context->node->node->metadata->llm_reply == true) {
                     $content = nl2br(htmlspecialchars($result->reply->content->content));
