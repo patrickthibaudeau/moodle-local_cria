@@ -10,6 +10,7 @@ require_once("$CFG->dirroot/local/cria/classes/gpttokenizer/Vocab.php");
 use local_cria\datatables;
 use local_cria\criadex;
 use local_cria\criabot;
+use local_cria\criaembed;
 use local_cria\gpt;
 
 // CHECK And PREPARE DATA
@@ -37,7 +38,9 @@ $bot_id = 85;
 $prompt = "Who teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
 
-$BOT->delete_record();
+$embed_bot = criaembed::manage_get_config(2);
+print_object($embed_bot);
+//$BOT->delete_record();
 
 //$session = criabot::chat_start();
 //$chat_id = $session->chat_id;
