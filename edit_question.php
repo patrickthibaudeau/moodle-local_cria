@@ -56,8 +56,12 @@ if ($mform->is_cancelled()) {
     // Convert keywords to JSON
     if (!isset($data->keywords)) {
         $data->keywords = [];
+        $keywords = json_encode($data->keywords);
+    } else {
+        $keywords = '';
     }
-    $keywords = json_encode($data->keywords);
+
+
     unset($data->keywords);
     $data->keywords = $keywords;
     $data->usermodified = $USER->id;

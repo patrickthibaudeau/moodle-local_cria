@@ -216,9 +216,6 @@ class intent extends crud
 
 
         $results = criadex::query($params->llm_model_id, $system_message, $prompt, 1024);
-        print_object($results);
-
-        die;
         // Add to logs
         $this->insert_log_record($results, $prompt);
 

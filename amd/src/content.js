@@ -79,11 +79,7 @@ function delete_question() {
                 }]);
 
                 delete_content[0].done(function ($result) {
-                    if ($result == '200') {
-                        location.reload();
-                    } else {
-                        alert($result);
-                    }
+                    location.reload();
                 }).fail(function () {
                     alert('An error occured, the question could not be deleted.');
                 });
