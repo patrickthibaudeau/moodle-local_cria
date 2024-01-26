@@ -606,7 +606,9 @@ class bot extends crud
         // Only if bot uses bot server
         // Otherwise, create bot on bot server
         if ($NEW_BOT->use_bot_server()) {
-            $this->create_default_intent($id);
+            $intent_id = $this->create_default_intent($id);
+            // Create embed server code
+            criaembed::manage_insert($intent_id);
         } else {
             $NEW_BOT->create_bot_on_bot_server(0);
         }
@@ -629,6 +631,16 @@ class bot extends crud
         // If this bot uses the bot server, update the bot on the bot server
         if ($this->use_bot_server()) {
             $default_intent = $this->create_default_intent($this->id);
+            // Update embed server code
+            $embed_bot = criaembed::manage_get_config($this->get_default_intent_id());
+            // If embed doesn't exist then create it
+            if ($embed_bot->status == 404) {
+                criaembed::manage_insert($this->get_default_intent_id());
+            } else {
+                // Update embed
+                criaembed::manage_update($this->get_default_intent_id());
+            }
+
             return $default_intent;
         } else {
             $this->update_bot_on_bot_server(0);
