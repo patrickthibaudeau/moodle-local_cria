@@ -71,7 +71,7 @@ class local_cria_external_gpt extends external_api
     public static function response($bot_id, $chat_id, $prompt, $content, $filters)
     {
         global $CFG, $USER, $DB, $PAGE;
-
+        require_once($CFG->dirroot . '/local/cria/classes/Michelf/MarkdownExtra.inc.php');
         //Parameter validation
         $params = self::validate_parameters(self::response_parameters(), array(
                 'bot_id' => $bot_id,
@@ -161,7 +161,8 @@ class local_cria_external_gpt extends external_api
                 $content = gpt::make_link($content);
                 $file_name = $result->reply->context->nodes[0]->node->metadata->file_name;
             }
-
+            // Parse content with Markdown
+            $content = \Michelf\MarkdownExtra::defaultTransform($content);
             // Build message object
             $message = new \stdClass();
             $message->message = $content;
