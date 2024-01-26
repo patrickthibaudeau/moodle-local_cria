@@ -226,6 +226,21 @@ class bot extends crud
     private $no_context_llm_guess;
 
     /**
+     * @var string
+     */
+    private $title;
+
+    /**
+     * @var string
+     */
+    private $subtitle;
+
+    /**
+     * @var string
+     */
+    private $icon_url;
+
+    /**
      *
      *
      */
@@ -280,6 +295,9 @@ class bot extends crud
         $this->fine_tuning = $result->fine_tuning ?? 0;
         $this->tone = $result->tone ?? '';
         $this->response_length = $result->response_length ?? '';
+        $this->title = $result->title ?? '';
+        $this->subtitle = $result->subtitle ?? '';
+        $this->icon_url = $result->icon_url ?? '';
     }
 
     /**
@@ -504,6 +522,30 @@ class bot extends crud
     public function get_child_bots_array(): array
     {
         return json_decode($this->child_bots);
+    }
+
+    /**
+     * @return string
+     */
+    public function get_title(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_subtitle(): string
+    {
+        return $this->subtitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_icon_url(): string
+    {
+        return $this->icon_url;
     }
 
     /**

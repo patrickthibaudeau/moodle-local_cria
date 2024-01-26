@@ -170,9 +170,6 @@ class intent extends crud
         // If embed doesn't exist then create it
         if ($embed_bot->status == 404) {
             criaembed::manage_insert($data->id);
-        } else if ($embed_bot->status == "200") {
-            // Update embed
-            criaembed::manage_update($data->id);
         }
 
         if ($data->published) {

@@ -23,11 +23,11 @@ class criaembed
 
         $data = [
             'botAuthKey' => $INTENT->get_bot_api_key(),
-            'botTitle' => $BOT->get_name(),
-            'botSubTitle' => "",
+            'botTitle' => $BOT->get_title(),
+            'botSubTitle' => $BOT->get_subtitle(),
             'botGreeting' => $BOT->get_welcome_message(),
-            'botIconUrl' => "",
-            "botEmbedTheme" => "",
+            'botIconUrl' => $BOT->get_icon_url(),
+            "botEmbedTheme" => $BOT->get_theme_color(),
         ];
         // Create model
         return gpt::_make_call(

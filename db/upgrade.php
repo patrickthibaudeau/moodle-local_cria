@@ -1,7 +1,8 @@
 <?php
 defined('MOODLE_INTERNAL') || die();
 
-function xmldb_local_cria_upgrade($oldversion) {
+function xmldb_local_cria_upgrade($oldversion)
+{
     global $DB;
 
     $dbman = $DB->get_manager();
@@ -419,25 +420,24 @@ function xmldb_local_cria_upgrade($oldversion) {
         }
 
 
+        // Define table local_cria_providers to be created.
+        $table = new xmldb_table('local_cria_providers');
 
-            // Define table local_cria_providers to be created.
-            $table = new xmldb_table('local_cria_providers');
+        // Adding fields to table local_cria_providers.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
 
-            // Adding fields to table local_cria_providers.
-            $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
-            $table->add_field('name', XMLDB_TYPE_CHAR, '255', null, null, null, null);
-            $table->add_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
-            $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
-            $table->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        // Adding keys to table local_cria_providers.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+        $table->add_key('usermodified', XMLDB_KEY_FOREIGN, ['usermodified'], 'user', ['id']);
 
-            // Adding keys to table local_cria_providers.
-            $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-            $table->add_key('usermodified', XMLDB_KEY_FOREIGN, ['usermodified'], 'user', ['id']);
-
-            // Conditionally launch create table for local_cria_providers.
-            if (!$dbman->table_exists($table)) {
-                $dbman->create_table($table);
-            }
+        // Conditionally launch create table for local_cria_providers.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
 
         // Define table local_cria_models to be created.
         $table = new xmldb_table('local_cria_models');
@@ -677,7 +677,7 @@ function xmldb_local_cria_upgrade($oldversion) {
 
         // Changing type of field top_k on table local_cria_bot to number.
         $table = new xmldb_table('local_cria_bot');
-        $field = new xmldb_field('top_k', XMLDB_TYPE_NUMBER, '2, 1', null, null, null, '0.9',  'top_p');
+        $field = new xmldb_field('top_k', XMLDB_TYPE_NUMBER, '2, 1', null, null, null, '0.9', 'top_p');
 
         // Launch change of type for field top_k.
         $dbman->change_field_type($table, $field);
@@ -817,7 +817,7 @@ function xmldb_local_cria_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-         // Define field child_bots to be added to local_cria_bot.
+        // Define field child_bots to be added to local_cria_bot.
         $table = new xmldb_table('local_cria_bot');
         $field = new xmldb_field('child_bots', XMLDB_TYPE_TEXT, null, null, null, null, null, 'theme_color');
 
@@ -1139,6 +1139,38 @@ function xmldb_local_cria_upgrade($oldversion) {
 
         // Cria savepoint reached.
         upgrade_plugin_savepoint(true, 2024012600, 'local', 'cria');
+    }
+
+    if ($oldversion < 2024012601) {
+
+        // Define field title to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('title', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'fine_tuning');
+
+        // Conditionally launch add field title.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+        // Define field subtitle to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('subtitle', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'title');
+
+        // Conditionally launch add field subtitle.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field icon_url to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('icon_url', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'welcome_message');
+
+        // Conditionally launch add field icon_url.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2024012601, 'local', 'cria');
     }
 
     return true;

@@ -616,6 +616,29 @@ class edit_bot_form extends \moodleform
             'display-settings-nav-start',
             get_string('display_settings', 'local_cria')
         );
+
+        // Add title element
+        $mform->addElement(
+            'text',
+            'title',
+            get_string('title', 'local_cria')
+        );
+        $mform->setType(
+            'title',
+            PARAM_TEXT
+        );
+
+        // Add subtitle element
+        $mform->addElement(
+            'text',
+            'subtitle',
+            get_string('subtitle', 'local_cria')
+        );
+        $mform->setType(
+            'subtitle',
+            PARAM_TEXT
+        );
+
         // Welcome message element
         $mform->addElement(
             'textarea',
@@ -625,6 +648,17 @@ class edit_bot_form extends \moodleform
         $mform->setType(
             'welcome_message',
             PARAM_RAW
+        );
+
+        // Add icon url element
+        $mform->addElement(
+            'text',
+            'icon_url',
+            get_string('icon_url', 'local_cria')
+        );
+        $mform->setType(
+            'icon_url',
+            PARAM_TEXT
         );
 
         // Welcome message element
