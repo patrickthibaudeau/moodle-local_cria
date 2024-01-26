@@ -13,6 +13,7 @@ use local_cria\criabot;
 use local_cria\criaembed;
 use local_cria\gpt;
 use local_cria\intent;
+use local_cria\bot;
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
