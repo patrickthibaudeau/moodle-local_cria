@@ -152,7 +152,8 @@ function local_cria_pluginfile($course, $cm, $context, $filearea, $args, $forced
         'provider',
         'bot',
         'content',
-        'answer'
+        'answer',
+        'bot_icon'
     );
 
     if (!in_array($filearea, $fileAreas)) {

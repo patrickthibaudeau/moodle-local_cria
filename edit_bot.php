@@ -26,7 +26,21 @@ if ($id) {
     $formdata->welcome_message_editor['text'] = $formdata->welcome_message;
     $formdata->bot_max_tokens = $BOT->get_model_max_tokens();
     $formdata->child_bots = json_decode($formdata->child_bots);
-
+    $draftitemid = file_get_submitted_draft_itemid('icon_url');
+    file_prepare_draft_area(
+    // The $draftitemid is the target location.
+        $draftitemid,
+        $context->id,
+        'local_cria',
+        'bot_icon',
+        $formdata->id,
+        [
+            'subdirs' => 0,
+            'maxbytes' => 0,
+            'maxfiles' => 1
+        ]
+    );
+    $formdata->icon_url = $draftitemid;
 } else {
     $formdata = new stdClass();
     $formdata->model_id = false;
@@ -51,7 +65,7 @@ if ($mform->is_cancelled()) {
     $return = $data->return;
     unset($data->return);
     if ($data->id) {
-
+        $id = $data->id;
         $BOT = new bot($data->id);
         $data->description = $data->description_editor['text'];
         $BOT->update_record($data);
@@ -68,6 +82,19 @@ if ($mform->is_cancelled()) {
         unset($bot);
     }
 
+    file_save_draft_area_files(
+    // The $data->attachments property contains the itemid of the draft file area.
+        $data->icon_url,
+        $context->id,
+        'local_cria',
+        'bot_icon',
+        $id,
+        [
+            'subdirs' => 0,
+            'maxbytes' => 0,
+            'maxfiles' => 1
+        ]
+    );
 
     redirect($CFG->wwwroot . '/local/cria/' . $return . '.php?bot_id=' . $data->id);
 } else {

@@ -652,13 +652,15 @@ class edit_bot_form extends \moodleform
 
         // Add icon url element
         $mform->addElement(
-            'text',
+            'filemanager',
             'icon_url',
-            get_string('icon_url', 'local_cria')
+            get_string('icon_url', 'local_cria'),
+            null,
+            ['subdirs' => 0, 'maxbytes' => 0, 'maxfiles' => 1, 'accepted_types' => ['image']]
         );
         $mform->setType(
             'icon_url',
-            PARAM_TEXT
+            PARAM_RAW
         );
 
         // Welcome message element

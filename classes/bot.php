@@ -236,11 +236,6 @@ class bot extends crud
     private $subtitle;
 
     /**
-     * @var string
-     */
-    private $icon_url;
-
-    /**
      *
      *
      */
@@ -297,7 +292,6 @@ class bot extends crud
         $this->response_length = $result->response_length ?? '';
         $this->title = $result->title ?? '';
         $this->subtitle = $result->subtitle ?? '';
-        $this->icon_url = $result->icon_url ?? '';
     }
 
     /**
@@ -545,7 +539,24 @@ class bot extends crud
      */
     public function get_icon_url(): string
     {
-        return $this->icon_url;
+        $fs = get_file_storage();
+        $contextid = \context_system::instance()->id;
+// Returns an array of `stored_file` instances.
+        $files = $fs->get_area_files($contextid, 'local_cria', 'bot_icon', $this->id);
+        foreach ($files as $file) {
+            if ($file->get_filename() != '.') {
+                $moodle_url = \moodle_url::make_pluginfile_url(
+                    $file->get_contextid(),
+                    $file->get_component(),
+                    $file->get_filearea(),
+                    $file->get_itemid(),
+                    $file->get_filepath(),
+                    $file->get_filename()
+                );
+                return $moodle_url->out();
+            }
+        }
+        return '';
     }
 
     /**
