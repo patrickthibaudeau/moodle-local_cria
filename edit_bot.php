@@ -38,6 +38,8 @@ if ($id) {
     $formdata->min_relevance = 0.8;
     $formdata->theme_color = '#e31837';
     $formdata->max_context = 50;
+    $formdata->no_context_use_message = 1;
+    $formdata->no_context_llm_guess = 0;
 }
 $formdata->return = $return;
 

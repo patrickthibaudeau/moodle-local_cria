@@ -83,9 +83,9 @@ class criadex
      * @param $model_id
      * @param $system_message
      * @param $prompt
-     * @param $max_tokens
-     * @param $temperature
-     * @param $top_p
+     * @param $max_tokens int
+     * @param $temperature float
+     * @param $top_p float
      * @return mixed
      * @throws \dml_exception
      */
@@ -100,6 +100,7 @@ class criadex
     {
         // Get config
         $config = get_config('local_cria');
+
         // Build data object
         $data = [
             'max_tokens' => $max_tokens,
@@ -116,7 +117,7 @@ class criadex
                 ]
             ]
         ];
-
+print_object(json_encode($data));
         // Update model
         return gpt::_make_call(
             $config->criadex_url,

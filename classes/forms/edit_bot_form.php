@@ -190,6 +190,23 @@ class edit_bot_form extends \moodleform
             PARAM_TEXT
         );
 
+        // No context use message form element
+        $mform->addElement(
+            'selectyesno',
+            'no_context_use_message',
+            get_string('no_context_use_message', 'local_cria')
+        );
+        $mform->setType(
+            'no_context_use_message',
+            PARAM_INT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'no_context_use_message',
+            'no_context_use_message',
+            'local_cria'
+        );
+
         // No context message form element
         $mform->addElement(
             'textarea',
@@ -199,6 +216,31 @@ class edit_bot_form extends \moodleform
         $mform->setType(
             'no_context_message',
             PARAM_TEXT
+        );
+
+        // Set rule hide if no_context_use_message is set to 0
+        $mform->hideIf(
+            'no_context_message',
+            'no_context_use_message',
+            'eq',
+            0
+        );
+
+        // No context llm guess element
+        $mform->addElement(
+            'selectyesno',
+            'no_context_llm_guess',
+            get_string('no_context_llm_guess', 'local_cria')
+        );
+        $mform->setType(
+            'no_context_llm_guess',
+            PARAM_INT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'no_context_llm_guess',
+            'no_context_llm_guess',
+            'local_cria'
         );
 
         // Model id form element

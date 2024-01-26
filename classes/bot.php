@@ -216,6 +216,16 @@ class bot extends crud
     private $fine_tuning;
 
     /**
+     * @var int
+     */
+    private $no_context_use_message;
+
+    /**
+     * @var int
+     */
+    private $no_context_llm_guess;
+
+    /**
      *
      *
      */
@@ -263,6 +273,8 @@ class bot extends crud
         $this->minimum_relevance = $result->minimum_relevance ?? 0;
         $this->max_context = $result->max_context ?? 0;
         $this->no_context_message = $result->no_context_message ?? '';
+        $this->no_context_use_message = $result->no_context_use_message ?? 0;
+        $this->no_context_llm_guess = $result->no_context_llm_guess ?? 0;
         $this->child_bots = $result->child_bots ?? '';
         $this->available_child = $result->available_child ?? 0;
         $this->fine_tuning = $result->fine_tuning ?? 0;
@@ -429,6 +441,23 @@ class bot extends crud
     }
 
     /**
+     * @return int
+     */
+    public function get_no_context_use_message(): int
+    {
+        return $this->no_context_use_message;
+    }
+
+
+    /**
+     * @return int
+     */
+    public function get_no_context_llm_guess(): int
+    {
+        return $this->no_context_llm_guess;
+    }
+
+    /**
      * @return string
      */
     public function get_tone(): string
@@ -443,7 +472,6 @@ class bot extends crud
     {
         return $this->response_length;
     }
-
 
     /**
      * @return string
@@ -495,6 +523,8 @@ class bot extends crud
             '"min_relevance": ' . $this->get_minimum_relevance() . ',' .
             '"max_context": ' . $this->get_max_context() . ',' .
             '"no_context_message": "' . str_replace('"', '\"', $this->get_no_context_message()) . '",' .
+            '"no_context_use_message": ' . $this->get_no_context_use_message() . ',' .
+            '"no_context_llm_guess": ' . $this->get_no_context_llm_guess() . ',' .
             '"system_message": "' . str_replace('"', '\"', $this->get_bot_system_message()) . '",' .
             '"llm_model_id": ' . $MODEL->get_criadex_model_id() . ',' .
             '"embedding_model_id": ' . $EMBEDDING_MODEL->get_criadex_model_id() .

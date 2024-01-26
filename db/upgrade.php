@@ -1117,5 +1117,29 @@ function xmldb_local_cria_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2023122300, 'local', 'cria');
     }
 
+    if ($oldversion < 2024012600) {
+
+        // Define field no_context_use_message to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('no_context_use_message', XMLDB_TYPE_INTEGER, '1', null, null, null, '1', 'no_context_message');
+
+        // Conditionally launch add field no_context_use_message.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field no_context_llm_guess to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('no_context_llm_guess', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'no_context_use_message');
+
+        // Conditionally launch add field no_context_llm_guess.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2024012600, 'local', 'cria');
+    }
+
     return true;
 }

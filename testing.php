@@ -12,6 +12,7 @@ use local_cria\criadex;
 use local_cria\criabot;
 use local_cria\criaembed;
 use local_cria\gpt;
+use local_cria\intent;
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
@@ -38,8 +39,8 @@ $bot_id = 85;
 $prompt = "Who teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
 
-$embed_bot = criaembed::manage_get_config(2);
-print_object($embed_bot);
+$INTENT = new \local_cria\intent(2);
+$INTENT->create_example_questions(11);
 //$BOT->delete_record();
 
 //$session = criabot::chat_start();

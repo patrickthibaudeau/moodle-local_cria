@@ -210,14 +210,13 @@ class intent extends crud
 
         $BOT = new bot($this->bot_id);
         $params = json_decode($BOT->get_bot_parameters_json());
-        print_object($params);
+
         $question = $DB->get_record('local_cria_question', ['id' => $question_id]);
         $system_message = 'You are a bot that writes example questions based on a question provided';
         $prompt = '[question]' . $question->value . '[/question]';
         $prompt .= '[instructions]Write 5 rephrased example questions based on the content in [question]. ' .
             'Return each question in the following JSON format. [{"question": your answer},{"question": your answer}][/instructions]';
-        print_object($prompt);
-        die;
+
 
         $results = criadex::query($params->llm_model_id, $system_message, $prompt, 1024);
         print_object($results);
