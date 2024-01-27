@@ -170,21 +170,13 @@ class edit_bot_form extends \moodleform
             'local_cria'
         );
 
-        if (has_capability('local/cria:view_advanced_bot_options', $context)) {
-            // Bot system message form element
-            $mform->addElement(
-                'textarea',
-                'bot_system_message',
-                get_string('bot_system_message', 'local_cria')
-            );
 
-        } else {
-            // Add hiddedn element to store the bot system message
-            $mform->addElement(
-                'hidden',
-                'bot_system_message'
-            );
-        }
+        // Bot system message form element
+        $mform->addElement(
+            'textarea',
+            'bot_system_message',
+            get_string('bot_system_message', 'local_cria')
+        );
         $mform->setType(
             'bot_system_message',
             PARAM_TEXT
@@ -515,27 +507,29 @@ class edit_bot_form extends \moodleform
         );
 
         // System reserved form element
-        // Html element as a header for Bot personality
-        $mform->addElement(
-            'html',
-            '<h3>' . get_string('advanced_settings', 'local_cria') . '</h3><hr>'
-        );
-        $mform->addElement(
-            'selectyesno',
-            'system_reserved',
-            get_string('system_reserved', 'local_cria')
-        );
+        if (has_capability('local/cria:view_advanced_bot_options', $context)) {
+            // Html element as a header for Bot personality
+            $mform->addElement(
+                'html',
+                '<h3>' . get_string('advanced_settings', 'local_cria') . '</h3><hr>'
+            );
+            $mform->addElement(
+                'selectyesno',
+                'system_reserved',
+                get_string('system_reserved', 'local_cria')
+            );
 
-        // Plugin path
-        $mform->addElement(
-            'text',
-            'plugin_path',
-            get_string('plugin_path', 'local_cria')
-        );
-        $mform->setType(
-            'plugin_path',
-            PARAM_TEXT
-        );
+            // Plugin path
+            $mform->addElement(
+                'text',
+                'plugin_path',
+                get_string('plugin_path', 'local_cria')
+            );
+            $mform->setType(
+                'plugin_path',
+                PARAM_TEXT
+            );
+        }
 
 
         // Html element as a header for prompts
