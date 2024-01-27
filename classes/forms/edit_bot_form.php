@@ -491,7 +491,7 @@ class edit_bot_form extends \moodleform
         );
 
         // Add multi select element for child_bots
-        $child_bots =$mform->addElement(
+        $child_bots = $mform->addElement(
             'select',
             'child_bots',
             get_string('child_bots', 'local_cria'),
@@ -515,29 +515,27 @@ class edit_bot_form extends \moodleform
         );
 
         // System reserved form element
-        if (has_capability('local/cria:view_advanced_bot_options', $context)) {
-            // Html element as a header for Bot personality
-            $mform->addElement(
-                'html',
-                '<h3>' . get_string('advanced_settings', 'local_cria') . '</h3><hr>'
-            );
-            $mform->addElement(
-                'selectyesno',
-                'system_reserved',
-                get_string('system_reserved', 'local_cria')
-            );
+        // Html element as a header for Bot personality
+        $mform->addElement(
+            'html',
+            '<h3>' . get_string('advanced_settings', 'local_cria') . '</h3><hr>'
+        );
+        $mform->addElement(
+            'selectyesno',
+            'system_reserved',
+            get_string('system_reserved', 'local_cria')
+        );
 
-            // Plugin path
-            $mform->addElement(
-                'text',
-                'plugin_path',
-                get_string('plugin_path', 'local_cria')
-            );
-            $mform->setType(
-                'plugin_path',
-                PARAM_TEXT
-            );
-        }
+        // Plugin path
+        $mform->addElement(
+            'text',
+            'plugin_path',
+            get_string('plugin_path', 'local_cria')
+        );
+        $mform->setType(
+            'plugin_path',
+            PARAM_TEXT
+        );
 
 
         // Html element as a header for prompts
