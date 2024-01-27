@@ -88,7 +88,8 @@ class intents
                 $r->active = false;
             }
             // Get related questions
-            $related_questions = $DB->get_records('local_cria_question', ['intent_id' => $r->id]);
+            $INTENT = new intent($r->id);
+            $related_questions = $INTENT->get_questions();
             // format questions;
             $languages = [];
             $i = 0;

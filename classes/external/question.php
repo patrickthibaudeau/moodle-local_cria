@@ -252,8 +252,13 @@ class local_cria_external_question extends external_api {
         // Update record
         $DB->update_record('local_cria_question_example', $params);
         // Set publised to 0 for question
-        $DB->set_field('local_cria_question', 'published', 0, ['id' => $question_example->questionid]);
-
+        $question_params = [
+            'id' => $question_example->questionid,
+            'published' => 0,
+            'timemodified' => time(),
+            'usermodified' => $USER->id
+        ];
+        $DB->update_record('local_cria_question', $question_params);
        return true;
     }
 

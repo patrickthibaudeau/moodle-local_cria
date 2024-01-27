@@ -50,6 +50,7 @@ class intent_questions implements \renderable, \templatable
             'intent_name' => $INTENT->get_name(),
             'questions' => $INTENT->get_questions(),
         ];
+
         return $data;
     }
 
