@@ -71,7 +71,7 @@ class local_cria_external_gpt extends external_api
     public static function response($bot_id, $chat_id, $prompt, $content, $filters)
     {
         global $CFG, $USER, $DB, $PAGE;
-        require_once($CFG->dirroot . '/local/cria/classes/Michelf/MarkdownExtra.inc.php');
+        require_once($CFG->dirroot . '/local/cria/classes/Michelf/Markdown.inc.php');
         //Parameter validation
         $params = self::validate_parameters(self::response_parameters(), array(
                 'bot_id' => $bot_id,
@@ -131,15 +131,15 @@ class local_cria_external_gpt extends external_api
             // Check if the context type is a question
             if (empty($result->reply->context)) {
                 $content = nl2br(htmlspecialchars($result->reply->content->content));
-                $content = gpt::make_email($content);
-                $content = gpt::make_link($content);
-                $file_name = "No reply cmessage";
+//                $content = gpt::make_email($content);
+//                $content = gpt::make_link($content);
+                $file_name = "LLM Generated";
             } else if ($result->reply->context->context_type == "QUESTION") {
                 // Return llm_reply or DB reply
                 if ($result->reply->context->node->node->metadata->llm_reply == true) {
                     $content = nl2br(htmlspecialchars($result->reply->content->content));
-                    $content = gpt::make_email($content);
-                    $content = gpt::make_link($content);
+//                    $content = gpt::make_email($content);
+//                    $content = gpt::make_link($content);
                 } else {
                     include_once($CFG->dirroot . '/lib/filelib.php');
                     $context = \context_system::instance();
@@ -157,12 +157,12 @@ class local_cria_external_gpt extends external_api
                 $file_name = $result->reply->context->node->node->metadata->file_name;
             } else {
                 $content = nl2br(htmlspecialchars($result->reply->content->content));
-                $content = gpt::make_email($content);
-                $content = gpt::make_link($content);
+//                $content = gpt::make_email($content);
+//                $content = gpt::make_link($content);
                 $file_name = $result->reply->context->nodes[0]->node->metadata->file_name;
             }
             // Parse content with Markdown
-            $content = \Michelf\MarkdownExtra::defaultTransform($content);
+            $content = \Michelf\Markdown::defaultTransform($content);
             // Build message object
             $message = new \stdClass();
             $message->message = $content;

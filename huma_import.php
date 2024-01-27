@@ -66,30 +66,47 @@ function create_intent($key, $bot_id, $data)
 
 function create_questions($intent_id, $key, $data)
 {
-    global $DB;
+    global $DB, $USER;
     $INTENT = new \local_cria\intent($intent_id);
     $questions = $data->$key;
-    $i = 0;
+
+
     $params = [];
-    foreach ($questions as $question) {
-        $params[$i]['value'] = $question->examples[0];
-        $params[$i]['answer'] = $question->answer;
-        $params[$i]['lang'] = 'en';
-        $params[$i]['intent_id'] = $intent_id;
-        $params[$i]['usermodified'] = 2;
-        $params[$i]['generate_answer'] = 0;
-        $params[$i]['timemodified'] = time();
-        $params[$i]['timecreated'] = time();
-        $params[$i]['id'] = $DB->insert_record('local_cria_question', $params[$i]);
+//    foreach ($questions as $question) {
+//        $params[$i]['value'] = $question->examples[0];
+//        $params[$i]['answer'] = $question->answer;
+//        $params[$i]['lang'] = 'en';
+//        $params[$i]['intent_id'] = $intent_id;
+//        $params[$i]['usermodified'] = 2;
+//        $params[$i]['generate_answer'] = 0;
+//        $params[$i]['timemodified'] = time();
+//        $params[$i]['timecreated'] = time();
+//        $params[$i]['id'] = $DB->insert_record('local_cria_question', $params[$i]);
+//
+//        // Update record adding the question id to the parent_id
+//        $params[$i]['parent_id'] = $params[$i]['id'];
+//        $DB->update_record('local_cria_question', $params[$i]);
+//        create_examples($params[$i]['id'], $questions);
+//        $i++;
+//    }
+
+
+        $params['value'] = $questions[0]->examples[0];
+        $params['answer'] = $questions[0]->answer;
+        $params['lang'] = 'en';
+        $params['intent_id'] = $intent_id;
+        $params['usermodified'] = $USER->id;
+        $params['generate_answer'] = 0;
+        $params['timemodified'] = time();
+        $params['timecreated'] = time();
+        $params['id'] = $DB->insert_record('local_cria_question', $params);
 
         // Update record adding the question id to the parent_id
-        $params[$i]['parent_id'] = $params[$i]['id'];
-        $DB->update_record('local_cria_question', $params[$i]);
-        create_examples($params[$i]['id'], $questions);
-        create_examples($i, $questions);
+        $params['parent_id'] = $params['id'];
 
-        $i++;
-    }
+        $DB->update_record('local_cria_question', $params);
+        create_examples($params['id'], $questions);
+
 }
 
 function create_examples($question_id, $examples)
