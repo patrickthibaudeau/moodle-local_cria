@@ -37,8 +37,7 @@
                 aria-controls="new-category"
                 aria-selected="false">
                 <i class="bi bi-plus-circle"></i>
-                </a
-                href="edit_intent.php?bot_id={{bot_id}}">
+                </a>
             </li>
         </ul>
         <div class="tab-content" id="cria-content-tab">
@@ -54,9 +53,12 @@
                                         <h3 class="float-left">{{#str}}documents, local_cria{{/str}}</h3>
                                     </div>
                                     <div class="col">
-                                        <a href="edit_content.php?intent_id={{id}}" class="btn btn-outline-primary
-                                        float-right">
-                                        {{#str}}add_document, local_cria{{/str}}
+                                        <a href="edit_content.php?intent_id={{id}}" class="btn btn-link btn-lg
+                                        float-right"
+                                        title="{{#str}}add, local_cria{{/str}}"
+                                        >
+                                        <i class="bi bi-plus-circle"></i>
+
                                         </a>
                                     </div>
                                 </h3>
@@ -74,13 +76,15 @@
                                                 <td>{{name}}</td>
                                                 <td>
                                                     <a href="edit_content.php?id={{id}}&intent_id={{intent_id}}"
-                                                    class="btn
-                                                    btn-outline-primary">
-                                                    {{#str}}update, local_cria{{/str}}
+                                                    class="btn btn-link BTN-LG"
+                                                    title="{{#str}}update, local_cria{{/str}}"
+                                                    >
+                                                    <i class="bi bi-pencil"></i>
                                                     </a>
-                                                    <button class="btn btn-outline-danger delete-content"
+                                                    <button class="btn btn-link btn-lg text-danger delete-content"
+                                                            title="{{#str}}delete, local_cria{{/str}}"
                                                             data-id="{{id}}">
-                                                        {{#str}}delete, local_cria{{/str}}
+                                                        <i class="bi bi-x-circle"></i>
                                                     </button>
                                                 </td>
                                             </tr>
@@ -99,18 +103,43 @@
                                     </div>
                                     <div class="col">
                                         <button type="button"
-                                                class="btn btn-outline-primary ml-2 float-right publish-questions"
+                                                class="btn btn-link btn-lg float-right
+                                                delete-all-questions text-danger"
+                                                data-intent_id="{{id}}"
+                                                title="{{#str}}delete_all, local_cria{{/str}}"
+                                                >
+                                            <i class="bi bi-x-circle"></i>
+                                        </button>
+                                        <a href="{{config.wwwroot}}/local/cria/export_questions.php?intent_id={{id}}"
+                                        class="btn btn-link btn-lg float-right"
+                                        title="{{#str}}export_questions, local_cria{{/str}}"
                                         >
-                                            {{#str}}publish_questions, local_cria{{/str}}
+                                        <i class="bi bi-download"></i>
+                                        </a>
+
+                                        <a href="{{config.wwwroot}}/local/cria/import_questions.php?intent_id={{id}}"
+                                                class="btn btn-link btn-lg float-right"
+                                                title="{{#str}}import_questions, local_cria{{/str}}"
+                                                >
+                                            <i class="bi bi-upload"></i>
+                                        </a>
+
+                                        <button type="button"
+                                                class="btn btn-link btn-lg ml-2 float-right publish-questions"
+                                                title="{{#str}}publish_questions, local_cria{{/str}}"
+                                        >
+                                            <i class="bi bi-cloud-arrow-up"></i>
                                         </button>
                                         <a href="edit_question.php?intent_id={{id}}"
-                                        class="btn btn-outline-primary float-right">
-                                        {{#str}}add_question, local_cria{{/str}}
+                                        class="btn btn-link btn-lg float-right"
+                                        title="{{#str}}add, local_cria{{/str}}"
+                                        >
+                                        <i class="bi bi-plus-circle"></i>
                                         </a>
                                     </div>
                                 </h3>
                                 <div class="card-body">
-                                    <table id="cria-questions-table" class="table table-striped">
+                                    <table id="cria-questions-table" class="table table-striped table-responsive">
                                         <thead>
                                         <tr>
                                             <th><a
@@ -125,7 +154,7 @@
                                             </a>
                                             </th>
                                             <th>{{#str}}question, local_cria{{/str}}</th>
-                                            <th>{{#str}}actions, local_cria{{/str}}</th>
+                                            <th style="width: 30%;">{{#str}}actions, local_cria{{/str}}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -140,24 +169,27 @@
                                                 </td>
 
                                                 <td>{{value}}</td>
-                                                <td>
+                                                <td style="width: 30%;">
                                                     <a href="edit_question.php?id={{id}}&intent_id={{intent_id}}"
-                                                    class="btn btn-outline-primary">
-                                                    {{#str}}update, local_cria{{/str}}
+                                                    class="btn btn-link btn-lg"
+                                                    title="{{#str}}update, local_cria{{/str}}"
+                                                    >
+                                                    <i class="bi bi-pencil"></i>
                                                     </a>
                                                     {{#show_linked}}
                                                         <button
                                                                 type="button"
-                                                                class="btn btn-outline-primary"
+                                                                class="btn link btn-lg"
                                                                 title="{{link_text}}"
 
                                                         >
                                                             <i class="bi bi-link-45deg"></i>
                                                         </button>
                                                     {{/show_linked}}
-                                                    <button class="btn btn-outline-danger delete-question"
+                                                    <button class="btn btn-link btn-lg text-danger delete-question"
+                                                            title="{{#str}}delete, local_cria{{/str}}"
                                                             data-id="{{id}}">
-                                                        {{#str}}delete, local_cria{{/str}}
+                                                        <i class="bi bi-x-circle"></i>
                                                     </button>
                                                 </td>
                                             </tr>

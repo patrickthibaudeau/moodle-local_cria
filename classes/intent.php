@@ -196,30 +196,8 @@ class intent extends crud
     {
         global $DB, $USER;
 
-        $BOT = new bot($this->bot_id);
-        $params = json_decode($BOT->get_bot_parameters_json());
-
-        $question = $DB->get_record('local_cria_question', ['id' => $question_id]);
-        $system_message = 'You are a bot that writes example questions based on a question provided';
-        $prompt = '[question]' . $question->value . '[/question]';
-        $prompt .= '[instructions]Write 5 rephrased example questions based on the content in [question]. ' .
-            'Return each question in the following JSON format. [{"question": your answer},{"question": your answer}][/instructions]';
-
-
-        $results = criadex::query($params->llm_model_id, $system_message, $prompt, 1024);
-        // Add to logs
-        $this->insert_log_record($results, $prompt);
-
-        $messages = json_decode($results->agent_response->chat_response->message->content);
-        foreach ($messages as $example) {
-            $data = new \stdClass();
-            $data->questionid = $question->id;
-            $data->value = $example->question;
-            $data->usermodified = $USER->id;
-            $data->timemodified = time();
-            $data->timecreated = time();
-            $DB->insert_record('local_cria_question_example', $data);
-        }
+        $QUESTION = new question($question_id);
+        $QUESTION->create_example_questions($this->id, $question_id);
     }
 
     /**
@@ -231,18 +209,9 @@ class intent extends crud
      */
     public function translate_question($question_text, $language)
     {
-        global $DB, $USER;
-
-        $BOT = new bot($this->bot_id);
-        $params = json_decode($BOT->get_bot_parameters_json());
-        $system_message = 'You are a bot that translates questions';
-        $prompt = '[question]' . $question_text . '[/question]';
-        $prompt .= '[instructions]Translate content in [question] to  ' . $language . ' Only return the transalted question, nothing else.[/instructions]';
-        $results = criadex::query($params->llm_model_id, $system_message, $prompt, 1024);
-        // Add to logs
-        $this->insert_log_record($results, $prompt);
-
-        return $results->response->message->content;
+        $QUESTION = new question();
+        $results = $QUESTION->translate_question($this->id, $question_text, $language);
+        return $results;
     }
 
     /**
@@ -397,24 +366,8 @@ class intent extends crud
      */
     public function get_questions(): mixed
     {
-        global $DB;
-        if ($questions = $DB->get_records('local_cria_question', ['intent_id' => $this->id], 'id')) {
-            foreach ($questions as $question) {
-                // Get unindexed (unpublished) examples
-                $question_examples = $DB->get_records(
-                    'local_cria_question_example',
-                    [
-                        'questionid' => $question->id,
-                        'indexed' => 0
-                    ],
-                    'id');
-                if ($question_examples) {
-                    $question->published = false;
-                }
-            }
-            return array_values($questions);
-        }
-        return false;
+       $QUESTIONS = new questions($this->id);
+         return $QUESTIONS->get_questions();
     }
 
     /**

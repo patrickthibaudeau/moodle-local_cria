@@ -1,6 +1,7 @@
 <?php
 $string['about'] = 'About';
 $string['actions'] = 'Actions';
+$string['add'] = 'Add';
 $string['add_bot'] = 'Create new bot';
 $string['add_content'] = 'Add content';
 $string['add_document'] = 'Add document';
@@ -64,12 +65,14 @@ $string['conversation_styles'] = 'Conversation styles';
 $string['create_example_questions'] = 'Have AI create 5 example questions?';
 $string['create_meeting_notes'] = 'MinutesMaster';
 $string['create_meeting_notes_help'] = 'Use this tool to create meeting notes based on a transcription';
+$string['cria_suite'] = 'Cria Suite';
 $string['default_user_prompt'] = 'Default user prompt';
 $string['default_user_prompt_help'] = 'If your but has a default prompt, enter it here. If the requires user prompt ' .
     ' above is set to Yes, this prompt will prepended to the user propmt. Note it is not visible on the page.';
 $string['deployment_name'] = 'Deployment name';
 $string['deployment_name_help'] = 'The model deployment name in Azure';
 $string['delete'] = 'Delete';
+$string['delete_all'] = 'Delete all';
 $string['delete_entity_help'] = 'Are you sure you want to delete this entity?';
 $string['delete_keyword_help'] = 'Are you sure you want to delete this keyword?';
 $string['description'] = 'Description';
@@ -94,7 +97,7 @@ $string['examples'] = 'Examples';
 $string['existing_bots'] = 'Existing bots';
 $string['existing_bot_models'] = 'Existing models';
 $string['existing_bot_types'] = 'Existing bot types';
-$string['cria_suite'] = 'Cria Suite';
+$string['export_questions'] = 'Export questions';
 $string['faculties'] = 'Faculties';
 $string['faculties_help'] = 'One line per faculty. Each line must be in the following format:<br>' .
     '<b>Faculty acronymn</b> pipe (|) <b>Faculty name</b> <br><br>' .
@@ -115,6 +118,7 @@ $string['gpt_cost'] = 'GPT cost?';
 $string['gpt_cost_help'] = 'Cost of GPT based per 1000 tokens';
 $string['groups'] = 'Groups';
 $string['icon_url'] = 'Icon URL';
+$string['import_questions'] = 'Import questions';
 $string['index_context'] = 'Index context';
 $string['indexing_server_api_key'] = 'Indexing server API Key';
 $string['indexing_server_api_key_help'] = 'Enter the API key for the indexing server';

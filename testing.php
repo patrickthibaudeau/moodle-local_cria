@@ -35,12 +35,19 @@ $prompt = optional_param('prompt', '', PARAM_TEXT);
 //**********************
 echo $OUTPUT->header();
 
-$bot_id = 85;
+$bot_id = 98;
 $prompt = "Who teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
 
-$INTENT = new \local_cria\intent(2);
-$INTENT->create_example_questions(11);
+$document_list = criabot::question_list($BOT->get_bot_name());
+//print_object($document_list);
+$documents = $document_list->document_names;
+//print_object($documents);
+foreach ($documents as $key => $document_name) {
+    echo $document_name . '<br>';
+}
+//$INTENT = new \local_cria\intent(2);
+//$INTENT->create_example_questions(11);
 //$BOT->delete_record();
 
 //$session = criabot::chat_start();

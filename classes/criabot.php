@@ -248,6 +248,26 @@ class criabot
         );
     }
 
+    /**
+     * List questions
+     * @param $bot_name String SHould be bot_id-intent_id
+     * @return mixed
+     * @throws \local_cria\dml_exception
+     */
+    public static function question_list($bot_name) {
+        // Get Config
+        $config = get_config('local_cria');
+
+        // Create model
+        return gpt::_make_call(
+            $config->criabot_url,
+            $config->criadex_api_key,
+            [],
+            '/bots/'. $bot_name  . '/questions/list',
+            'GET'
+        );
+    }
+
     /******** Bot Chats ********/
     /**
      * Start chat session

@@ -8,6 +8,7 @@ export const init = () => {
     edit_intent();
     select_deselect_questions();
     publish_questions();
+    delete_all_questions();
 };
 
 
@@ -102,8 +103,6 @@ function select_deselect_questions() {
 function publish_questions() {
     $('.publish-questions').off();
     $('.publish-questions').click(function () {
-        let button = $(this);
-        button.text('Publishing question(s)...');
         $('input:checkbox.question-select:checked').each(function () {
             let input = $(this);
             var publish_questions = ajax.call([{
@@ -114,7 +113,6 @@ function publish_questions() {
             }]);
             publish_questions[0].done(function ($result) {
                 if ($result == true) {
-                    button.text('Publish question(s)');
                     input.remove();
                 } else {
                     alert($result);
@@ -124,5 +122,37 @@ function publish_questions() {
                 alert('An error occured, the question could not be published.');
             });
         });
+    });
+}
+
+function delete_all_questions() {
+    $('.delete-all-questions').off();
+    $('.delete-all-questions').click(function () {
+        let intent_id = $(this).data('intent_id');
+        notification.confirm('Delete',
+            'Are you sure you want to delete all questions for this category? The questions and all examples cannot be recovered.',
+            'Delete',
+            M.util.get_string('cancel', 'local_cria'), function () {
+                $(this).html = '<div class="spinner-border text-danger" role="status">\n' +
+                    '  <span class="sr-only">Loading...</span>\n' +
+                    '</div>';
+                //Delete all records
+                var delete_all_questions = ajax.call([{
+                    methodname: 'cria_question_delete_all',
+                    args: {
+                        "intent_id": intent_id
+                    }
+                }]);
+                delete_all_questions[0].done(function ($result) {
+                    if ($result == 200) {
+                        location.reload();
+                    } else {
+                        alert('An error occured, the questions could not be deleted.');
+                    }
+                }).fail(function (e) {
+                    console.log(e);
+                    alert('An error occured, the questions could not be deleted.');
+                });
+            });
     });
 }

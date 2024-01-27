@@ -15,6 +15,7 @@
 
 use local_cria\intent;
 use local_cria\criabot;
+use local_cria\questions;
 
 /**
  * External Web Service Template
@@ -374,5 +375,53 @@ class local_cria_external_question extends external_api {
     public static function insert_example_returns()
     {
         return new external_value(PARAM_INT, 'Return new record id');
+    }
+
+    /*************************Delete all questions*************************/
+    /**
+     * Returns description of method parameters
+     * @return external_function_parameters
+     */
+    public static function delete_all_parameters() {
+        return new external_function_parameters(
+            array(
+                'intent_id' => new external_value(PARAM_INT, 'Intent id', false, 0)
+            )
+        );
+    }
+
+    /**
+     * @param $intent_id Int
+     * @return true
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws restricted_context_exception
+     */
+    public static function delete_all($intent_id) {
+        global $CFG, $USER, $DB, $PAGE;
+
+        //Parameter validation
+        $params = self::validate_parameters(self::delete_all_parameters(), array(
+                'intent_id' => $intent_id
+            )
+        );
+
+        //Context validation
+        //OPTIONAL but in most web service it should present
+        $context = \context_system::instance();
+        self::validate_context($context);
+
+        $QUESTIONS = new questions($intent_id);
+        $status = $QUESTIONS->delete_all();
+
+        return 200;
+    }
+
+    /**
+     * Returns description of method result value
+     * @return external_description
+     */
+    public static function delete_all_returns() {
+        return new external_value(PARAM_INT, 'return code');
     }
 }

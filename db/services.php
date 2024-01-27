@@ -162,6 +162,15 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_question_delete_all' => array(
+        'classname' => 'local_cria_external_question',
+        'methodname' => 'delete_all',
+        'classpath' => 'local/cria/classes/external/question.php',
+        'description' => 'Deletes all questions for an intent',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
     'cria_question_publish' => array(
         'classname' => 'local_cria_external_question',
         'methodname' => 'publish',
