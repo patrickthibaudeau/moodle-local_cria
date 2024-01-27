@@ -13,6 +13,7 @@ use local_cria\criabot;
 use local_cria\criaembed;
 use local_cria\gpt;
 use local_cria\intent;
+use local_cria\questions;
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
@@ -39,13 +40,13 @@ $bot_id = 98;
 $prompt = "Who teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
 
-$document_list = criabot::question_list($BOT->get_bot_name());
-//print_object($document_list);
-$documents = $document_list->document_names;
-//print_object($documents);
-foreach ($documents as $key => $document_name) {
-    echo $document_name . '<br>';
-}
+
+
+$QUESTIONS = new \local_cria\questions(36);
+
+print_object($QUESTIONS->export_data());
+
+
 //$INTENT = new \local_cria\intent(2);
 //$INTENT->create_example_questions(11);
 //$BOT->delete_record();
