@@ -170,8 +170,12 @@ class import
         $current_name = '';
         for ($i = 1; $i < count($rows) - 1; $i++) {
             if (trim($rows[$i][$name]) != $current_name) {
+                $x = 0; // Used to avoid importing examples when no answer is available
+                // Do not create a quesiton if answer is empty
+                if (empty(trim($rows[$i][$answer]))) {
+                    continue;
+                }
                 // Create question
-                if (!empty(trim($rows[$i][$answer]))) {
                     $params = [
                         'intent_id' => $intent_id,
                         'name' => str_replace('_', ' ', trim($rows[$i][$name])),
@@ -189,10 +193,10 @@ class import
                     }
                     $question_id = $DB->insert_record('local_cria_question', $params);
                     $DB->set_field('local_cria_question', 'parent_id', $question_id, ['id' => $question_id]);
-                }
+                    $x++;
             } else {
-                if (!empty(trim($rows[$i][$answer]))) {
                     // Create example
+                    if ($x != 0) {
                     $param_example = [
                         'questionid' => $question_id,
                         'value' => trim($rows[$i][$example]),
@@ -202,6 +206,7 @@ class import
                     ];
                     $DB->insert_record('local_cria_question_example', $param_example);
                 }
+
             }
             $current_name = trim($rows[$i][$name]);
         }
