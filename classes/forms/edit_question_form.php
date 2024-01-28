@@ -73,7 +73,26 @@ class edit_question_form extends \moodleform
                 $html
             );
         }
+
         // Add name element to form
+        $mform->addElement(
+            'text',
+            'name',
+            get_string('name', 'local_cria')
+        );
+        $mform->setType(
+            'name',
+            PARAM_TEXT
+        );
+        $mform->addRule(
+            'name',
+            get_string('required'),
+            'required',
+            null,
+            'client'
+        );
+
+        // Add value element to form
         $mform->addElement(
             'textarea',
             'value',

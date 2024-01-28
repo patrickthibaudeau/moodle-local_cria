@@ -56,7 +56,7 @@ class questions
             }
             return array_values($questions);
         }
-        return false;
+        return [];
     }
 
     /**
@@ -114,8 +114,14 @@ class questions
                 $keywords = [];
             }
             $keywords = implode('|', $keywords);
+            // Must set a name
+            if (empty($question->name)) {
+                $name = $i;
+            } else {
+                $name = $question->name;
+            }
             $params = new \stdClass();
-            $params->parent = $i;
+            $params->name = $name;
             $params->examples = $examples;
             $params->answer = $question->answer;
             $params->keywords = $keywords;
@@ -160,7 +166,7 @@ class questions
         // Loop through all questions
         foreach ($questions as $question) {
             // Set parent
-            $sheet->setCellValue('A' . $row, $question->parent);
+            $sheet->setCellValue('A' . $row, $question->name);
             // Set answer
             $sheet->setCellValue('C' . $row, $question->answer);
             // Set keywords

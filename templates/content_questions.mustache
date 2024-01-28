@@ -37,19 +37,19 @@
                 </a>
             </div>
 
-            <a href="{{config.wwwroot}}/local/cria/import_questions.php?intent_id={{id}}"
+            <a href="{{config.wwwroot}}/local/cria/import/index.php?intent_id={{id}}"
             class="btn btn-link btn-lg float-right"
             title="{{#str}}import_questions, local_cria{{/str}}"
             >
             <i class="bi bi-upload"></i>
             </a>
 
-            <button type="button"
+            <a type="button"
                     class="btn btn-link btn-lg ml-2 float-right publish-questions"
                     title="{{#str}}publish_questions, local_cria{{/str}}"
             >
                 <i class="bi bi-cloud-arrow-up"></i>
-            </button>
+            </a>
             <a href="edit_question.php?intent_id={{id}}"
             class="btn btn-link btn-lg float-right"
             title="{{#str}}add, local_cria{{/str}}"
@@ -88,7 +88,7 @@
                         {{/published}}
                     </td>
 
-                    <td>{{value}}</td>
+                    <td>{{name}}</td>
                     <td style="width: 30%;">
                         <a href="edit_question.php?id={{id}}&intent_id={{intent_id}}"
                         class="btn btn-link btn-lg"

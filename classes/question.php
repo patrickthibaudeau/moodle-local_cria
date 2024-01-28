@@ -42,6 +42,12 @@ class question extends crud
      *
      * @var string
      */
+    private $name;
+
+    /**
+     *
+     * @var string
+     */
     private $value;
 
     /**
@@ -148,6 +154,7 @@ class question extends crud
         $this->intent_id = $result->intent_id ?? 0;
         $this->parent_id = $result->parent_id ?? 0;
         $this->document_name = $result->document_name ?? '';
+        $this->name = $result->name ?? '';
         $this->value = $result->value ?? '';
         $this->answer = $result->answer ?? '';
         $this->keywords = $result->keywords ?? '';
@@ -199,6 +206,14 @@ class question extends crud
     public function get_document_name(): string
     {
         return $this->document_name;
+    }
+
+    /**
+     * @return name - varchar (255)
+     */
+    public function get_name(): string
+    {
+        return $this->name;
     }
 
     /**

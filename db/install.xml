@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/cria/db" VERSION="20240126" COMMENT="XMLDB file for Moodle local/cria"
+<XMLDB PATH="local/cria/db" VERSION="20240127" COMMENT="XMLDB file for Moodle local/cria"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -231,6 +231,7 @@
         <FIELD NAME="intent_id" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="parent_id" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Stores id of linked question. Important for language versions"/>
         <FIELD NAME="document_name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="From CriaBot. Required to update/delete question in CriaBot"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="value" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="answer" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="The answer for the question"/>
         <FIELD NAME="keywords" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Holds keyword ids in JSON format"/>
