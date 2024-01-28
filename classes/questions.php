@@ -181,7 +181,7 @@ class questions
                 if ($key == 0) {
                     continue;
                 }
-                $sheet->setCellValue('A' . $row, $question->parent);
+                $sheet->setCellValue('A' . $row, $question->name);
                 $sheet->setCellValue('B' . $row, $example);
                 $row++;
             }
