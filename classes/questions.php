@@ -158,7 +158,7 @@ class questions
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         // Set fields
-        $fields = ['parent', 'examples', 'answer', 'keywords', 'lang'];
+        $fields = ['name', 'examples', 'answer', 'keywords', 'lang'];
         // Set row one columns
         $sheet->fromArray($fields, NULL, 'A1');
         // Start at row 2
