@@ -53,11 +53,13 @@
 <div class="row mt-2">
     <div class="col">
         <div class="card">
+            {{#is_siteadmin}}
             <h3 class="card-header">
                     <a href="edit_bot.php" class="btn btn-outline-primary float-right">
                         {{#str}}add_bot, local_cria{{/str}}
                     </a>
             </h3>
+            {{/is_siteadmin}}
             <div class="card-body">
                 <table class="table table-striped">
                     <thead>
