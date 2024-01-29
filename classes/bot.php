@@ -556,6 +556,15 @@ class bot extends crud
         return $this->embed_enabled;
     }
 
+    public function get_embed_enabled_bool(): bool
+    {
+        if ($this->embed_enabled == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * @return string
      */
