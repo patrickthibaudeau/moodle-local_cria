@@ -91,7 +91,7 @@ if ($mform->is_cancelled()) {
         $id,
         [
             'subdirs' => 0,
-            'maxbytes' => 0,
+            'maxbytes' => 1000000,
             'maxfiles' => 1
         ]
     );
