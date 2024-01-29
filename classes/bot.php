@@ -110,6 +110,18 @@ class bot extends crud
 
     /**
      *
+     * @var int
+     */
+    private $embed_enabled;
+
+    /**
+     *
+     * @var string
+     */
+    private $embed_postion;
+
+    /**
+     *
      * @var string
      */
     private $theme_color;
@@ -285,6 +297,8 @@ class bot extends crud
         $this->no_context_message = $result->no_context_message ?? '';
         $this->no_context_use_message = $result->no_context_use_message ?? 0;
         $this->no_context_llm_guess = $result->no_context_llm_guess ?? 0;
+        $this->embed_enabled = $result->embed_enabled ?? 0;
+        $this->embed_postion = $result->embed_postion ?? '';
         $this->child_bots = $result->child_bots ?? '';
         $this->available_child = $result->available_child ?? 0;
         $this->fine_tuning = $result->fine_tuning ?? 0;
@@ -532,6 +546,22 @@ class bot extends crud
     public function get_subtitle(): string
     {
         return $this->subtitle;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_embed_enabled(): int
+    {
+        return $this->embed_enabled;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_embed_position(): string
+    {
+        return $this->embed_postion;
     }
 
     /**

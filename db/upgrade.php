@@ -1188,5 +1188,29 @@ function xmldb_local_cria_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024012704, 'local', 'cria');
     }
 
+    if ($oldversion < 2024012801) {
+
+        // Define field embed_enabled to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('embed_enabled', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'icon_url');
+
+        // Conditionally launch add field embed_enabled.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field embed_position to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('embed_position', XMLDB_TYPE_CHAR, '2', null, null, null, 'BR', 'embed_enabled');
+
+        // Conditionally launch add field embed_position.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2024012801, 'local', 'cria');
+    }
+
     return true;
 }

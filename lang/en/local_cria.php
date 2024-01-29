@@ -334,3 +334,13 @@ $string['rubric_help'] = 'Paste your rubric here. The rubric format must be the 
 $string['assignment'] = 'Assignment';
 $string['assignment_help'] = 'Paste the student assignment here. Maximum 3000 words';
 
+// Embed
+$string['embed_enabled'] = 'Default open';
+$string['embed_enabled_help'] = 'Select Yes if you want the chatbot to be open by default.';
+$string['embed_position'] = 'Bot position on page';
+$string['embed_position_help'] = 'Select the position of the bot on the page';
+$string['bottom_left'] = 'Bottom left';
+$string['bottom_right'] = 'Bottom right';
+$string['top_left'] = 'Top left';
+$string['top_right'] = 'Top right';
+

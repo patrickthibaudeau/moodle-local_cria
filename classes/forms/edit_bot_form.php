@@ -667,6 +667,47 @@ class edit_bot_form extends \moodleform
             PARAM_TEXT
         );
 
+        // Add embed_enabled element
+        $mform->addElement(
+            'selectyesno',
+            'embed_enabled',
+            get_string('embed_enabled', 'local_cria')
+        );
+        $mform->setType(
+            'embed_enabled',
+            PARAM_INT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'embed_enabled',
+            'embed_enabled',
+            'local_cria'
+        );
+
+        $positions = [
+            'TL' => get_string('top_left', 'local_cria'),
+            'TR' => get_string('top_right', 'local_cria'),
+            'BL' => get_string('bottom_left', 'local_cria'),
+            'BR' => get_string('bottom_right', 'local_cria'),
+        ];
+        // Add embed_position element
+        $mform->addElement(
+            'select',
+            'embed_position',
+            get_string('embed_position', 'local_cria'),
+            $positions
+        );
+        $mform->setType(
+            'embed_position',
+            PARAM_TEXT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'embed_position',
+            'embed_position',
+            'local_cria'
+        );
+
 
         $this->add_action_buttons();
         $this->set_data($formdata);
