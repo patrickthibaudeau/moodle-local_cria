@@ -79,6 +79,7 @@ class criaembed
             'botIconUrl' => $BOT->get_icon_url(),
             "botEmbedTheme" => $BOT->get_theme_color(),
         ];
+        file_put_contents('/var/wwww/moodledata/temp/criaembed.json', json_encode($data));
         // Create model
         return gpt::_make_call(
             $config->criaembed_url,
