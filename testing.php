@@ -14,7 +14,6 @@ use local_cria\criaembed;
 use local_cria\gpt;
 use local_cria\intent;
 use local_cria\questions;
-use local_cria\import;
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
@@ -41,7 +40,6 @@ $bot_id = 98;
 $prompt = "Who teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
 
-$IMPORT = new import('/var/www/html/local/cria/output1.json');
 
 
 //$INTENT = new \local_cria\intent(2);
