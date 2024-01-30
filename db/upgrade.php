@@ -1204,14 +1204,23 @@ function xmldb_local_cria_upgrade($oldversion)
     }
 
     if ($oldversion < 2024012802) {
-        $DB->execute("UPDATE {local_cria_bot} SET embed_postion = '2'");
+        // Define field embed_position to be dropped from local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('embed_position');
 
-        // Changing type of field embed_position on table local_cria_bot to int.
+        // Conditionally launch drop field embed_position.
+        if ($dbman->field_exists($table, $field)) {
+            $dbman->drop_field($table, $field);
+        }
+
+        // Define field embed_position to be added to local_cria_bot.
         $table = new xmldb_table('local_cria_bot');
         $field = new xmldb_field('embed_position', XMLDB_TYPE_INTEGER, '1', null, null, null, '2', 'embed_enabled');
 
-        // Launch change of type for field embed_position.
-        $dbman->change_field_type($table, $field);
+        // Conditionally launch add field embed_position.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
 
         // Cria savepoint reached.
         upgrade_plugin_savepoint(true, 2024012802, 'local', 'cria');
