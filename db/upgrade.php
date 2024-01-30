@@ -1204,7 +1204,7 @@ function xmldb_local_cria_upgrade($oldversion)
     }
 
     if ($oldversion < 2024012802) {
-        $DB->execute("UPDATE {local_cria_bot} SET embed_postion = 1");
+        $DB->execute("UPDATE {local_cria_bot} SET embed_postion = '2'");
 
         // Changing type of field embed_position on table local_cria_bot to int.
         $table = new xmldb_table('local_cria_bot');
