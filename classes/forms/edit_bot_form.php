@@ -685,10 +685,10 @@ class edit_bot_form extends \moodleform
         );
 
         $positions = [
-            'TL' => get_string('top_left', 'local_cria'),
-            'TR' => get_string('top_right', 'local_cria'),
-            'BL' => get_string('bottom_left', 'local_cria'),
-            'BR' => get_string('bottom_right', 'local_cria'),
+            1 => get_string('bottom_left', 'local_cria'),
+            2 => get_string('bottom_right', 'local_cria'),
+            3 => get_string('top_right', 'local_cria'),
+            4 => get_string('top_left', 'local_cria'),
         ];
         // Add embed_position element
         $mform->addElement(
@@ -699,7 +699,7 @@ class edit_bot_form extends \moodleform
         );
         $mform->setType(
             'embed_position',
-            PARAM_TEXT
+            PARAM_INT
         );
         // Add help button
         $mform->addHelpButton(

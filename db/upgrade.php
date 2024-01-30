@@ -1212,5 +1212,19 @@ function xmldb_local_cria_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024012801, 'local', 'cria');
     }
 
+    if ($oldversion < 2024012802) {
+
+        // Changing type of field embed_position on table local_cria_bot to int.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('embed_position', XMLDB_TYPE_INTEGER, '1', null, null, null, '2', 'embed_enabled');
+
+        // Launch change of type for field embed_position.
+        $dbman->change_field_type($table, $field);
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2024012802, 'local', 'cria');
+    }
+
+
     return true;
 }

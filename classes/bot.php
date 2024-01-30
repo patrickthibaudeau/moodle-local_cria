@@ -116,7 +116,7 @@ class bot extends crud
 
     /**
      *
-     * @var string
+     * @var int
      */
     private $embed_postion;
 
@@ -298,7 +298,7 @@ class bot extends crud
         $this->no_context_use_message = $result->no_context_use_message ?? 0;
         $this->no_context_llm_guess = $result->no_context_llm_guess ?? 0;
         $this->embed_enabled = $result->embed_enabled ?? 0;
-        $this->embed_postion = $result->embed_postion ?? '';
+        $this->embed_postion = $result->embed_postion ?? 2;
         $this->child_bots = $result->child_bots ?? '';
         $this->available_child = $result->available_child ?? 0;
         $this->fine_tuning = $result->fine_tuning ?? 0;
@@ -556,6 +556,9 @@ class bot extends crud
         return $this->embed_enabled;
     }
 
+    /**
+     * @return bool
+     */
     public function get_embed_enabled_bool(): bool
     {
         if ($this->embed_enabled == 1) {
@@ -568,7 +571,7 @@ class bot extends crud
     /**
      * @return string
      */
-    public function get_embed_position(): string
+    public function get_embed_position(): int
     {
         return $this->embed_postion;
     }
