@@ -130,16 +130,12 @@ class local_cria_external_gpt extends external_api
             $token_usage = $result->total_usage;
             // Check if the context type is a question
             if (empty($result->reply->context)) {
-                $content = nl2br(htmlspecialchars($result->reply->content->content));
-//                $content = gpt::make_email($content);
-//                $content = gpt::make_link($content);
+                $content = nl2br($result->reply->content->content);
                 $file_name = "LLM Generated";
             } else if ($result->reply->context->context_type == "QUESTION") {
                 // Return llm_reply or DB reply
                 if ($result->reply->context->node->node->metadata->llm_reply == true) {
-                    $content = nl2br(htmlspecialchars($result->reply->content->content));
-//                    $content = gpt::make_email($content);
-//                    $content = gpt::make_link($content);
+                    $content = nl2br($result->reply->content->content);
                 } else {
                     include_once($CFG->dirroot . '/lib/filelib.php');
                     $context = \context_system::instance();
@@ -152,17 +148,20 @@ class local_cria_external_gpt extends external_api
                         'local_cria',
                         'answer',
                         $question->id);
-                    $content = format_text($content, FORMAT_HTML, base::getEditorOptions($context), $context);
+                    $content = format_text($content, FORMAT_PLAIN, base::getEditorOptions($context), $context);
                 }
                 $file_name = $result->reply->context->node->node->metadata->file_name;
             } else {
-                $content = nl2br(htmlspecialchars($result->reply->content->content));
-//                $content = gpt::make_email($content);
-//                $content = gpt::make_link($content);
+                $content = nl2br($result->reply->content->content);
                 $file_name = $result->reply->context->nodes[0]->node->metadata->file_name;
             }
             // Parse content with Markdown
+
             $content = \Michelf\Markdown::defaultTransform($content);
+            // Convert html entities into html code
+            $content = html_entity_decode($content);
+            // Replace href and add traget blank
+            $content = str_replace('href=', 'target="_blank" href=', $content);
             // Build message object
             $message = new \stdClass();
             $message->message = $content;
