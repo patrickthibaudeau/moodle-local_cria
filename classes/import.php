@@ -54,6 +54,7 @@ class import
     {
         return $this->file_type;
     }
+
     /**
      * Returns an array of all columns in the first row of the work sheet
      * @return array
@@ -131,7 +132,6 @@ class import
     public function questions_excel($intent_id, $columns, $rows)
     {
         global $CFG, $DB, $USER;
-
         // Make sure the columns exist
         if (!in_array('name', $columns)) {
             redirect($CFG->wwwroot . '/local/cria/import/index.php?intent_id=' . $intent_id . '&err=name');
@@ -174,7 +174,7 @@ class import
         }
 
         $current_name = '';
-        for ($i = 1; $i < count($rows) - 1; $i++) {
+        for ($i = 1; $i < count($rows); $i++) {
             if (trim($rows[$i][$name]) != $current_name) {
                 $x = 0; // Used to avoid importing examples when no answer is available
                 // Do not create a quesiton if answer is empty
@@ -182,31 +182,32 @@ class import
                     continue;
                 }
                 // Create question
-                    $params = [
-                        'intent_id' => $intent_id,
-                        'name' => str_replace('_', ' ', trim($rows[$i][$name])),
-                        'value' => trim($rows[$i][$example]),
-                        'answer' => trim($rows[$i][$answer]),
-                        'timecreated' => time(),
-                        'timemodified' => time(),
-                        'usermodified' => $USER->id
-                    ];
-                    if ($keywords) {
-                        $params['keywords'] = trim($rows[$i][$keywords]);
-                    }
-                    if ($lang) {
-                        $params['lang'] = trim($rows[$i][$lang]);
-                    }
-                    $question_id = $DB->insert_record('local_cria_question', $params);
-                    $DB->set_field('local_cria_question', 'parent_id', $question_id, ['id' => $question_id]);
-                    // If generate_examples is set to 1, then we will generate examples with LLM
-                    if ($generate_examples == 1) {
-                        $INTENT->generate_example_questions($question_id);
-                    }
-                    $x++;
+                $params = [
+                    'intent_id' => $intent_id,
+                    'name' => str_replace('_', ' ', trim($rows[$i][$name])),
+                    'value' => trim($rows[$i][$example]),
+                    'answer' => trim($rows[$i][$answer]),
+                    'timecreated' => time(),
+                    'timemodified' => time(),
+                    'usermodified' => $USER->id
+                ];
+                if ($keywords) {
+                    $params['keywords'] = trim($rows[$i][$keywords]);
+                }
+                if ($lang) {
+                    $params['lang'] = trim($rows[$i][$lang]);
+                }
+
+                $question_id = $DB->insert_record('local_cria_question', $params);
+                $DB->set_field('local_cria_question', 'parent_id', $question_id, ['id' => $question_id]);
+                // If generate_examples is set to 1, then we will generate examples with LLM
+                if (trim($rows[$i][$generate_examples] == 1)) {
+                    $INTENT->generate_example_questions($question_id);
+                }
+                $x++;
             } else {
-                    // Create example
-                    if ($x != 0) {
+                // Create example
+                if ($x != 0) {
                     $param_example = [
                         'questionid' => $question_id,
                         'value' => trim($rows[$i][$example]),
@@ -224,7 +225,8 @@ class import
         return true;
     }
 
-    public function questions_json($intent_id, $questions) {
+    public function questions_json($intent_id, $questions)
+    {
         global $DB, $USER;
         // Set the intent
         $INTENT = new intent($intent_id);
