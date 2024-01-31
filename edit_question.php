@@ -80,7 +80,7 @@ if ($mform->is_cancelled()) {
     }
     if ($data->create_example_questions == true) {
         $INTENT = new intent($data->intent_id);
-        $INTENT->create_example_questions($data->id);
+        $INTENT->generate_example_questions($data->id);
     }
 
     //save editor text

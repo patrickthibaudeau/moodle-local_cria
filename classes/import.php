@@ -143,6 +143,9 @@ class import
             redirect($CFG->wwwroot . '/local/cria/import/index.php?intent_id=' . $intent_id . '&err=answer');
         }
 
+        // set intent
+        $INTENT = new intent($intent_id);
+
         // Set the proper column key
         $keywords = false;
         $lang = false;
@@ -163,6 +166,9 @@ class import
                     break;
                 case 'lang':
                     $lang = $key;
+                    break;
+                case 'generate_examples':
+                    $generate_examples = $key;
                     break;
             }
         }
@@ -193,6 +199,10 @@ class import
                     }
                     $question_id = $DB->insert_record('local_cria_question', $params);
                     $DB->set_field('local_cria_question', 'parent_id', $question_id, ['id' => $question_id]);
+                    // If generate_examples is set to 1, then we will generate examples with LLM
+                    if ($generate_examples == 1) {
+                        $INTENT->generate_example_questions($question_id);
+                    }
                     $x++;
             } else {
                     // Create example
@@ -216,6 +226,8 @@ class import
 
     public function questions_json($intent_id, $questions) {
         global $DB, $USER;
+        // Set the intent
+        $INTENT = new intent($intent_id);
         $params = [];
         foreach ($questions as $question) {
             $params[$i]['name'] = $question->name;
@@ -232,7 +244,11 @@ class import
             // Update record adding the question id to the parent_id
             $params[$i]['parent_id'] = $params[$i]['id'];
             $DB->update_record('local_cria_question', $params[$i]);
-            $this->create_examples($params[$i]['id'], $questions);
+            if (count($question->examples) > 1) {
+                $this->create_examples($params[$i]['id'], $question->examples);
+            } else {
+                $INTENT->generate_example_questions($params[$i]['id']);
+            }
             $i++;
         }
     }

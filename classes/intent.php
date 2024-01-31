@@ -192,12 +192,12 @@ class intent extends crud
      * @return void
      * @throws \dml_exception
      */
-    public function create_example_questions($question_id)
+    public function generate_example_questions($question_id)
     {
         global $DB, $USER;
 
         $QUESTION = new question($question_id);
-        $QUESTION->create_example_questions($this->id, $question_id);
+        $QUESTION->generate_example_questions($this->id, $question_id);
     }
 
     /**

@@ -310,7 +310,7 @@ class question extends crud
      * @return void
      * @throws \dml_exception
      */
-    public function create_example_questions($intent_id, $question_id)
+    public function generate_example_questions($intent_id, $question_id)
     {
         global $DB, $USER;
         $INTENT = new intent($intent_id);
