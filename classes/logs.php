@@ -97,7 +97,8 @@ class logs
                     {user} u On u.id = cl.userid Inner Join
                     {local_cria_bot} b On b.id = cl.bot_id
                 WHERE 
-                    bot_id = ? ";
+                    bot_id = ? 
+                ORDER BY cl.timecreated DESC";
 
         $params = [
             'bot_id' => $bot_id
