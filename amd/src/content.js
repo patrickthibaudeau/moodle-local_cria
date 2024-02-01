@@ -133,9 +133,6 @@ function delete_all_questions() {
             'Are you sure you want to delete all questions for this category? The questions and all examples cannot be recovered.',
             'Delete',
             M.util.get_string('cancel', 'local_cria'), function () {
-                $(this).html = '<div class="spinner-border text-danger" role="status">\n' +
-                    '  <span class="sr-only">Loading...</span>\n' +
-                    '</div>';
                 //Delete all records
                 var delete_all_questions = ajax.call([{
                     methodname: 'cria_question_delete_all',
