@@ -124,7 +124,7 @@ class local_cria_external_gpt extends external_api
             $prompt = $BOT->get_user_prompt() . ' ' . $prompt;
         }
 
-        if ($chat_id != 0) {
+        if ($chat_id != 'none') {
             $result = criabot::chat_send($chat_id, $bot_name, $prompt, $filters);
             // Get token usage
             $token_usage = $result->total_usage;
