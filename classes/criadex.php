@@ -117,7 +117,7 @@ class criadex
                 ]
             ]
         ];
-print_object(json_encode($data));
+
         // Update model
         return gpt::_make_call(
             $config->criadex_url,

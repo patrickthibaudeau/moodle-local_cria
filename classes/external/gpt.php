@@ -222,7 +222,7 @@ class local_cria_external_gpt extends external_api
             'cost' => new external_value(PARAM_FLOAT, 'Cost of GTP call', true),
             'file_name' => new external_value(PARAM_TEXT, 'File name from which response was generated', true),
             'message' => new external_value(PARAM_RAW, 'ID Number', true),
-            'stacktrace' => new external_value(PARAM_RAW, 'Stacktrace data', true)
+            'stacktrace' => new external_value(PARAM_RAW, 'Stacktrace data', false)
         );
         return new external_single_structure($fields);
     }
