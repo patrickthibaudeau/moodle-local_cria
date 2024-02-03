@@ -47,7 +47,7 @@ class local_cria_external_gpt extends external_api
         return new external_function_parameters(
             array(
                 'bot_id' => new external_value(PARAM_INT, 'ID of the bot being used', false, 0),
-                'chat_id' => new external_value(PARAM_RAW, 'Chat ID from indexing server', false, 0),
+                'chat_id' => new external_value(PARAM_RAW, 'Chat ID from indexing server', false, 'none'),
                 'prompt' => new external_value(PARAM_RAW, 'Question asked by user', false, ''),
                 'content' => new external_value(PARAM_RAW, 'User content', false, ''),
                 'filters' => new external_value(PARAM_RAW,
@@ -92,7 +92,7 @@ class local_cria_external_gpt extends external_api
             $filters = json_decode($filters);
         }
         // Does this bot use criabot server?
-        if ($BOT->use_bot_server() && $chat_id != 0) {
+        if ($BOT->use_bot_server() && $chat_id != 'none') {
             // Find out how many intents the bot has
             // If more than one then make a call to criadex to get the best intent (child bot) to use
             if ($BOT->get_number_of_intents() > 1) {
