@@ -40,7 +40,8 @@ $bot_id = 98;
 $prompt = "Who teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
 
-
+$result = local_cria_external_gpt::response(84, 'none', 'Where is York University Located?', '', '');
+print_object($result);
 
 //$INTENT = new \local_cria\intent(2);
 //$INTENT->create_example_questions(11);

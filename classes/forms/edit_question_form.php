@@ -232,7 +232,24 @@ class edit_question_form extends \moodleform
             );
         }
 
-        $this->add_action_buttons();
+        $buttonarray=array();
+        $buttonarray[] = $mform->createElement(
+            'submit',
+            'submitbutton',
+            get_string('savechanges')
+        );
+        $buttonarray[] = $mform->createElement(
+            'cancel',
+            'cancel',
+            get_string('return', 'local_cria')
+        );
+        $mform->addGroup(
+            $buttonarray,
+            'buttonar',
+            '',
+            ' ',
+            false
+        );
         $this->set_data($formdata);
     }
 
