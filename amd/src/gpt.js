@@ -27,6 +27,10 @@ function get_response() {
         var content =
             $('#cria-test-input').val();
         var chat_id = $('#cria-chat-id').val();
+        // COnvert chat_id to string
+        if (chat_id == 0) {
+            chat_id = 'none';
+        }
         $("#submit-question").hide();
         $("#starting-process").show();
         //Delete the record
