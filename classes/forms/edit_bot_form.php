@@ -145,31 +145,37 @@ class edit_bot_form extends \moodleform
             '<h3>' . get_string('bot_personality', 'local_cria') . '</h3><hr>'
         );
         // Bot type form element
-        $mform->addElement(
-            'select',
-            'bot_type',
-            get_string('bot_type', 'local_cria'),
-            bots::get_bot_types()
-        );
+        if (is_siteadmin()) {
+            $mform->addElement(
+                'select',
+                'bot_type',
+                get_string('bot_type', 'local_cria'),
+                bots::get_bot_types()
+            );
 
+            // Add rule required for bot type
+            $mform->addRule(
+                'bot_type',
+                get_string('required'),
+                'required',
+                null,
+                'client'
+            );
+            $mform->addHelpButton(
+                'bot_type',
+                'bot_type',
+                'local_cria'
+            );
+        } else {
+            $mform->addElement(
+                'hidden',
+                'bot_type'
+            );
+        }
         $mform->setType(
             'bot_type',
             PARAM_INT
         );
-        // Add rule required for bot type
-        $mform->addRule(
-            'bot_type',
-            get_string('required'),
-            'required',
-            null,
-            'client'
-        );
-        $mform->addHelpButton(
-            'bot_type',
-            'bot_type',
-            'local_cria'
-        );
-
 
         // Bot system message form element
         $mform->addElement(
@@ -235,62 +241,80 @@ class edit_bot_form extends \moodleform
             'local_cria'
         );
 
-        // Model id form element
-        $mform->addElement(
-            'select', 'model_id',
-            get_string('chatbot_framework', 'local_cria'),
-            $MODELS->get_select_array()
-        );
+        if (is_siteadmin()) {
+            // Model id form element
+            $mform->addElement(
+                'select', 'model_id',
+                get_string('chatbot_framework', 'local_cria'),
+                $MODELS->get_select_array()
+            );
+
+            // Add rule required for model id
+            $mform->addRule(
+                'model_id',
+                get_string('required'),
+                'required',
+                null,
+                'client'
+            );
+
+            // Bot type form element
+            $mform->addElement(
+                'select',
+                'embedding_id',
+                get_string('bot_content_training_framework', 'local_cria'),
+                $MODELS->get_select_array(true)
+            );
+
+            // Add rule required for embedding id
+            $mform->addRule(
+                'embedding_id',
+                get_string('required'),
+                'required',
+                null,
+                'client'
+            );
+        } else {
+            $mform->addElement(
+                'hidden',
+                'model_id'
+            );
+            $mform->addElement(
+                'hidden',
+                'embedding_id'
+            );
+        }
+
         $mform->setType(
             'model_id',
             PARAM_INT
         );
-        // Add rule required for model id
-        $mform->addRule(
-            'model_id',
-            get_string('required'),
-            'required',
-            null,
-            'client'
-        );
 
-        // Bot type form element
-        $mform->addElement(
-            'select',
-            'embedding_id',
-            get_string('bot_content_training_framework', 'local_cria'),
-            $MODELS->get_select_array(true)
-        );
         $mform->setType(
             'embedding_id',
             PARAM_INT
         );
 
-        // Add rule required for embedding id
-        $mform->addRule(
-            'embedding_id',
-            get_string('required'),
-            'required',
-            null,
-            'client'
-        );
 
-        // Add fine_tuning element
-        $mform->addElement(
-            'selectyesno',
-            'fine_tuning',
-            get_string('fine_tuning', 'local_cria')
-        );
-        $mform->setType(
-            'fine_tuning',
-            PARAM_INT
-        );
-        // Add help button
-        $mform->addHelpButton(
-            'fine_tuning',
-            'fine_tuning',
-            'local_cria'
-        );
+        if (is_siteadmin()) {
+            // Add fine_tuning element
+            $mform->addElement(
+                'selectyesno',
+                'fine_tuning',
+                get_string('fine_tuning', 'local_cria')
+            );
+            $mform->setType(
+                'fine_tuning',
+                PARAM_INT
+            );
+            // Add help button
+            $mform->addHelpButton(
+                'fine_tuning',
+                'fine_tuning',
+                'local_cria'
+            );
+        }
+
 
         // Display default param buttons
         if ($formdata->model_id) {
@@ -329,157 +353,194 @@ class edit_bot_form extends \moodleform
 
 
 //        if (has_capability('local/cria:view_advanced_bot_options', $context)) {
-        // Max tokens form element
-        $mform->addElement(
-            'text',
-            'max_tokens',
-            get_string('max_tokens', 'local_cria'),
-            ['style' => 'width: 100px;']
-        );
+        if (is_siteadmin()) {
+            // Max tokens form element
+            $mform->addElement(
+                'text',
+                'max_tokens',
+                get_string('max_tokens', 'local_cria'),
+                ['style' => 'width: 100px;']
+            );
+
+            // Add help button
+            $mform->addHelpButton(
+                'max_tokens',
+                'max_tokens',
+                'local_cria'
+            );
+            // Hide element unless fine_tuning is set to 1
+            $mform->hideIf(
+                'max_tokens',
+                'fine_tuning',
+                'eq',
+                0
+            );
+
+            // temperature form element
+            $mform->addElement(
+                'text',
+                'temperature',
+                get_string('temperature', 'local_cria'),
+                ['style' => 'width: 100px;']
+            );
+
+            // Add help button
+            $mform->addHelpButton(
+                'temperature',
+                'temperature',
+                'local_cria'
+            );
+            // Hide element unless fine_tuning is set to 1
+            $mform->hideIf(
+                'temperature',
+                'fine_tuning',
+                'eq',
+                0
+            );
+
+            // top_p form element
+            $mform->addElement(
+                'text',
+                'top_p',
+                get_string('top_p', 'local_cria'),
+                ['style' => 'width: 100px;']
+            );
+
+            // Add help button
+            $mform->addHelpButton(
+                'top_p',
+                'top_p',
+                'local_cria'
+            );
+
+            // Hide element unless fine_tuning is set to 1
+            $mform->hideIf(
+                'top_p',
+                'fine_tuning',
+                'eq',
+                0
+            );
+
+            // top_k form element
+            $mform->addElement(
+                'text',
+                'top_k',
+                get_string('top_k', 'local_cria'),
+                ['style' => 'width: 100px;']
+            );
+
+            // Add help button
+            $mform->addHelpButton(
+                'top_k',
+                'top_k',
+                'local_cria'
+            );
+            // Hide element unless fine_tuning is set to 1
+            $mform->hideIf(
+                'top_k',
+                'fine_tuning',
+                'eq',
+                0
+            );
+
+            // Minimum relevance form element
+            $mform->addElement(
+                'text',
+                'min_relevance',
+                get_string('min_relevance', 'local_cria'),
+                ['style' => 'width: 100px;']
+            );
+
+            // Add help button
+            $mform->addHelpButton(
+                'min_relevance',
+                'min_relevance',
+                'local_cria'
+            );
+            // Hide element unless fine_tuning is set to 1
+            $mform->hideIf(
+                'min_relevance',
+                'fine_tuning',
+                'eq',
+                0
+            );
+
+            // Max context form element
+            $mform->addElement(
+                'text',
+                'max_context',
+                get_string('max_context', 'local_cria'),
+                ['style' => 'width: 100px;']
+            );
+
+            // Add help button
+            $mform->addHelpButton(
+                'max_context',
+                'max_context',
+                'local_cria'
+            );
+            // Hide element unless fine_tuning is set to 1
+            $mform->hideIf(
+                'max_context',
+                'fine_tuning',
+                'eq',
+                0
+            );
+        } else {
+            $mform->addElement(
+                'hidden',
+                'max_tokens'
+            );
+            $mform->addElement(
+                'hidden',
+                'temperature'
+            );
+            $mform->addElement(
+                'hidden',
+                'top_p'
+            );
+            $mform->addElement(
+                'hidden',
+                'top_k'
+            );
+            $mform->addElement(
+                'hidden',
+                'min_relevance'
+            );
+            $mform->addElement(
+                'hidden',
+                'max_context'
+            );
+        }
+
         $mform->setType(
-            'max_tokens',
+            'max_context',
             PARAM_INT
         );
-        // Add help button
-        $mform->addHelpButton(
-            'max_tokens',
-            'max_tokens',
-            'local_cria'
-        );
-        // Hide element unless fine_tuning is set to 1
-        $mform->hideIf(
-            'max_tokens',
-            'fine_tuning',
-            'eq',
-            0
+
+        $mform->setType(
+            'min_relevance',
+            PARAM_FLOAT
         );
 
-        // temperature form element
-        $mform->addElement(
-            'text',
-            'temperature',
-            get_string('temperature', 'local_cria'),
-            ['style' => 'width: 100px;']
+        $mform->setType(
+            'top_k',
+            PARAM_INT
         );
+
+        $mform->setType(
+            'top_p',
+            PARAM_FLOAT
+        );
+
         $mform->setType(
             'temperature',
             PARAM_FLOAT
         );
-        // Add help button
-        $mform->addHelpButton(
-            'temperature',
-            'temperature',
-            'local_cria'
-        );
-        // Hide element unless fine_tuning is set to 1
-        $mform->hideIf(
-            'temperature',
-            'fine_tuning',
-            'eq',
-            0
-        );
 
-        // top_p form element
-        $mform->addElement(
-            'text',
-            'top_p',
-            get_string('top_p', 'local_cria'),
-            ['style' => 'width: 100px;']
-        );
         $mform->setType(
-            'top_p',
-            PARAM_FLOAT
-        );
-        // Add help button
-        $mform->addHelpButton(
-            'top_p',
-            'top_p',
-            'local_cria'
-        );
-        $mform->setType(
-            'top_p',
-            PARAM_FLOAT);
-        // Hide element unless fine_tuning is set to 1
-        $mform->hideIf(
-            'top_p',
-            'fine_tuning',
-            'eq',
-            0
-        );
-
-        // top_k form element
-        $mform->addElement(
-            'text',
-            'top_k',
-            get_string('top_k', 'local_cria'),
-            ['style' => 'width: 100px;']
-        );
-        $mform->setType(
-            'top_k',
+            'max_tokens',
             PARAM_INT
-        );
-        // Add help button
-        $mform->addHelpButton(
-            'top_k',
-            'top_k',
-            'local_cria'
-        );
-        // Hide element unless fine_tuning is set to 1
-        $mform->hideIf(
-            'top_k',
-            'fine_tuning',
-            'eq',
-            0
-        );
-
-        // Minimum relevance form element
-        $mform->addElement(
-            'text',
-            'min_relevance',
-            get_string('min_relevance', 'local_cria'),
-            ['style' => 'width: 100px;']
-        );
-        $mform->setType(
-            'min_relevance',
-            PARAM_FLOAT
-        );
-        // Add help button
-        $mform->addHelpButton(
-            'min_relevance',
-            'min_relevance',
-            'local_cria'
-        );
-        // Hide element unless fine_tuning is set to 1
-        $mform->hideIf(
-            'min_relevance',
-            'fine_tuning',
-            'eq',
-            0
-        );
-
-        // Max context form element
-        $mform->addElement(
-            'text',
-            'max_context',
-            get_string('max_context', 'local_cria'),
-            ['style' => 'width: 100px;']
-        );
-        $mform->setType(
-            'max_context',
-            PARAM_INT
-        );
-        // Add help button
-        $mform->addHelpButton(
-            'max_context',
-            'max_context',
-            'local_cria'
-        );
-        // Hide element unless fine_tuning is set to 1
-        $mform->hideIf(
-            'max_context',
-            'fine_tuning',
-            'eq',
-            0
         );
 
         // Add multi select element for child_bots
@@ -544,20 +605,28 @@ class edit_bot_form extends \moodleform
             'local_cria'
         );
 
-        // Requires content prompt form element
-        $mform->addElement(
-            'selectyesno',
-            'requires_content_prompt',
-            get_string('requires_content_prompt', 'local_cria')
-        );
+        if (is_siteadmin()) {
+            // Requires content prompt form element
+            $mform->addElement(
+                'selectyesno',
+                'requires_content_prompt',
+                get_string('requires_content_prompt', 'local_cria')
+            );
+
+            $mform->addHelpButton(
+                'requires_content_prompt',
+                'requires_content_prompt',
+                'local_cria'
+            );
+        } else {
+            $mform->addElement(
+                'hidden',
+                'requires_content_prompt'
+            );
+        }
         $mform->setType(
             'requires_content_prompt',
             PARAM_INT
-        );
-        $mform->addHelpButton(
-            'requires_content_prompt',
-            'requires_content_prompt',
-            'local_cria'
         );
 
         // Requires user prompt form element
@@ -592,12 +661,19 @@ class edit_bot_form extends \moodleform
             'local_cria'
         );
 
-        // Publish form element
-        $mform->addElement(
-            'selectyesno',
-            'publish',
-            get_string('publish', 'local_cria')
-        );
+        if (is_siteadmin()) {
+            // Publish form element
+            $mform->addElement(
+                'selectyesno',
+                'publish',
+                get_string('publish', 'local_cria')
+            );
+        } else {
+            $mform->addElement(
+                'hidden',
+                'publish'
+            );
+        }
         $mform->setType(
             'publish',
             PARAM_INT
