@@ -131,6 +131,7 @@ class gpt
             $total_tokens = 0;
             $summary = [];
             $i = 0;
+//            file_put_contents('/var/www/moodledata/temp/chunk_text.json', json_encode($chunk_text, JSON_PRETTY_PRINT));
             // Loop through the chunks and send them to the API
             foreach ($chunk_text as $i => $chunk) {
                 // Add the previous response's tail as the context for the current chunk
@@ -139,7 +140,7 @@ class gpt
                     $chunk = $context . $chunk;
                 }
                 // Use grounding context
-                $full_prompt =  $chunk . "\n" . $prompt;
+                $full_prompt =  $chunk . "\nq: " . $prompt;
                 // Use Criadex to make the call
                 $result = criadex::query(
                     $params->llm_model_id,
