@@ -40,9 +40,14 @@ $bot_id = 98;
 $prompt = "Who teaches the course?";
 $BOT = new \local_cria\bot($bot_id);
 
-$result = local_cria_external_gpt::response(84, 'none', 'Where is York University Located?', '', '');
-print_object($result);
+$system_message = 'You are a business writer who writes RFPs for clients.';
+$full_prompt = 'Learning Management System Moodle Partner Secure network
+With the context provided, generate an RFP for York University.
+Based on the content above, write an RFP for York University';
 
+
+$result = criadex::query(1, $system_message, $full_prompt, 14384, 0.1, 0.1);
+print_object($result);
 //$INTENT = new \local_cria\intent(2);
 //$INTENT->create_example_questions(11);
 //$BOT->delete_record();

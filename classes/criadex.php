@@ -114,10 +114,13 @@ class criadex
                 [
                     'role' => 'user',
                     'content' => $prompt
-                ]
+                ],
+                [
+                    'role' => 'system',
+                    'content' => $system_message
+                ],
             ]
         ];
-
         // Update model
         return gpt::_make_call(
             $config->criadex_url,

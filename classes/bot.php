@@ -696,8 +696,6 @@ class bot extends crud
             }
 
             return $default_intent;
-        } else {
-            $this->update_bot_on_bot_server(0);
         }
 
         return true;

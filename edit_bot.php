@@ -70,10 +70,13 @@ if ($mform->is_cancelled()) {
         $data->description = $data->description_editor['text'];
         $BOT->update_record($data);
         // Unset existing bot object
+
         unset($BOT);
         // Create new bot object so that new parmaeters can be used.
         $UPDATED_BOT = new bot($data->id);
-        $UPDATED_BOT->update_bot_on_bot_server($UPDATED_BOT->get_default_intent_id());
+        if ($UPDATED_BOT->use_bot_server()) {
+            $UPDATED_BOT->update_bot_on_bot_server($UPDATED_BOT->get_default_intent_id());
+        }
     } else {
         $data->description = $data->description_editor['text'];
         $BOT = new bot();

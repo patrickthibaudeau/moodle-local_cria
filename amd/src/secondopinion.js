@@ -41,7 +41,7 @@ function process_notes() {
                 methodname: 'cria_get_gpt_response',
                 args: {
                     bot_id: bot_id,
-                    chat_id: 0,
+                    chat_id: 'none',
                     prompt: prompt,
                     content: content
                 }

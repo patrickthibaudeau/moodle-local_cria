@@ -83,7 +83,6 @@ class criaembed
             "botEmbedDefaultEnabled" => $BOT->get_embed_enabled_bool(),
             "botEmbedPosition" => $BOT->get_embed_position(),
         ];
-        file_put_contents('/var/wwww/moodledata/temp/criaembed.json', json_encode($data));
         // Create model
         return gpt::_make_call(
             $config->criaembed_url,

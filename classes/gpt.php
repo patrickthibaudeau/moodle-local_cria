@@ -117,7 +117,6 @@ class gpt
         $system_message = $BOT->get_bot_system_message();
         // Get crai paramaeters
         $params = json_decode($BOT->get_bot_parameters_json());
-
         $user_content = $content;
         // Remove all lines and replace with space. AKA lower token count
 //        $user_content = preg_replace('/\s+/', ' ', trim($user_content));
