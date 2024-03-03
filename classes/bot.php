@@ -248,6 +248,21 @@ class bot extends crud
     private $subtitle;
 
     /**
+     * @var int
+     */
+    private $top_n;
+
+    /**
+     * @var float
+     */
+    private $min_k;
+
+    /**
+     * @var int
+     */
+    private $rerank_model_id;
+
+    /**
      *
      *
      */
@@ -292,6 +307,9 @@ class bot extends crud
         $this->temperature = $result->temperature ?? 0;
         $this->top_p = $result->top_p ?? 0;
         $this->top_k = $result->top_k ?? 0;
+        $this->top_n = $result->top_n ?? 0;
+        $this->min_k = $result->min_k ?? 0;
+        $this->rerank_model_id = $result->rerank_model_id ?? 0;
         $this->minimum_relevance = $result->minimum_relevance ?? 0;
         $this->max_context = $result->max_context ?? 0;
         $this->no_context_message = $result->no_context_message ?? '';
@@ -440,6 +458,30 @@ class bot extends crud
     public function get_top_k(): float
     {
         return $this->top_k;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_top_n(): int
+    {
+        return $this->top_n;
+    }
+
+    /**
+     * @return float
+     */
+    public function get_min_k(): float
+    {
+        return $this->min_k;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_rerank_model_id(): int
+    {
+        return $this->rerank_model_id;
     }
 
     /**
@@ -610,19 +652,23 @@ class bot extends crud
     {
         $MODEL = new \local_cria\model($this->model_id);
         $EMBEDDING_MODEL = new \local_cria\model($this->embedding_id);
+        $RERANK_MODEL = new \local_cria\model($this->rerank_model_id);
         $params = '{' .
-            '"max_tokens": ' . $this->get_max_tokens() . ',' .
+            '"max_reply_tokens": ' . $this->get_max_tokens() . ',' .
             '"temperature": ' . $this->get_temperature() . ',' .
             '"top_p": ' . $this->get_top_p() . ',' .
             '"top_k": ' . $this->get_top_k() . ',' .
-            '"min_relevance": ' . $this->get_minimum_relevance() . ',' .
-            '"max_context": ' . $this->get_max_context() . ',' .
+            '"top_n": ' . $this->get_top_n() . ',' .
+            '"min_n": ' . $this->get_minimum_relevance() . ',' .
+            '"min_k": ' . $this->get_min_k() . ',' .
+            '"max_input_tokens": ' . $this->get_max_context() . ',' .
             '"no_context_message": "' . str_replace('"', '\"', $this->get_no_context_message()) . '",' .
             '"no_context_use_message": ' . $this->get_no_context_use_message() . ',' .
             '"no_context_llm_guess": ' . $this->get_no_context_llm_guess() . ',' .
             '"system_message": "' . str_replace('"', '\"', $this->get_bot_system_message()) . '",' .
             '"llm_model_id": ' . $MODEL->get_criadex_model_id() . ',' .
-            '"embedding_model_id": ' . $EMBEDDING_MODEL->get_criadex_model_id() .
+            '"embedding_model_id": ' . $EMBEDDING_MODEL->get_criadex_model_id() . ',' .
+            '"rerank_model_id": ' . $RERANK_MODEL->get_criadex_model_id() .
             '}';
         return $params;
     }

@@ -81,6 +81,14 @@ if ($hassiteconfig) {
         0, PARAM_INT, 10
     ));
 
+    // Cohere api key
+    $settings->add( new admin_setting_configpasswordunmask(
+        'local_cria/cohere_api_key',
+        get_string('cohere_api_key', 'local_cria'),
+        get_string('cohere_api_key_help', 'local_cria'),
+        '', PARAM_TEXT, 255
+    ));
+
     // MinutesMaster id
     $settings->add( new admin_setting_configtext(
         'local_cria/minutes_master',

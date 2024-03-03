@@ -1,8 +1,8 @@
 <?php
 
 require_once("../../../../config.php");
-
-require_once($CFG->dirroot . "/local/cria/providers/ms-azure-openai/model_form.php");
+global $CFG;
+require_once($CFG->dirroot . "/local/cria/providers/cohere/model_form.php");
 
 use local_cria\base;
 use local_cria\model;
@@ -28,12 +28,12 @@ if ($id) {
     $formdata->api_model = $values->api_model;
 } else {
     $formdata = new stdClass();
-    $provider = $DB->get_record('local_cria_providers', ['idnumber' => 'ms-azure-openai']);
+    $provider = $DB->get_record('local_cria_providers', ['idnumber' => 'cohere']);
     $formdata->provider_id = $provider->id;
 }
 
 
-$mform = new \local_cria\ms_azure_openai_model_form(null, array('formdata' => $formdata));
+$mform = new \local_cria\cohere_model_form(null, array('formdata' => $formdata));
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
     redirect($CFG->wwwroot . '/local/cria/bot_models.php');
@@ -60,7 +60,7 @@ if ($mform->is_cancelled()) {
         $id = $data->id;
         $params = $DB->get_record('local_cria_models', ['id' => $id]);
         // Update model on CriaDex
-        $results = criadex::update_model($params->criadex_model_id, $data->value, 'azure');
+        $results = criadex::update_model($params->criadex_model_id, $data->value, 'cohere');
         if ($results->status == '200') {
             redirect($CFG->wwwroot . '/local/cria/bot_models.php');
         } else {
@@ -73,7 +73,7 @@ if ($mform->is_cancelled()) {
         $data->timecreated = time();
         $id  = $DB->insert_record('local_cria_models', $data);
         // Create model on CriaDex
-        $results = criadex::create_model($data->value, 'azure');
+        $results = criadex::create_model($data->value, 'cohere');
         if ($results->status == '200') {
             $params = new stdClass();
             $params->id = $id;

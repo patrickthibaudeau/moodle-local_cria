@@ -54,6 +54,8 @@ $string['child_bots_help'] = 'Select the bots you want to make available to this
 $string['chunk_limit'] = 'Number of words per chunk';
 $string['chunk_limit_help'] = 'OpenAI works on chunks of text. This setting defines the number of words per chunk.<br>
 For GPT-3.5-turbo 16k, the maximum number of words per chunk is 12000.';
+$string['cohere_api_key'] = 'Cohere API key';
+$string['cohere_api_key_help'] = 'Cohere API key Required for ranking & reranking to work. Without this key, you will never be able to prevent the AI from generating answers.';
 $string['column_name_must_exist'] = 'Column <b>${a}</b> missing. It must exist in the file you are importing.';
 $string['compare_text_bot_id'] = 'Compare text bot id';
 $string['compare_text_bot_id_help'] = 'Enter the bot id to use for the compare text requirement when using non-indexed bots.';
@@ -188,6 +190,7 @@ $string['requires_content_prompt_help'] = 'Select Yes if you want a text area to
 $string['requires_user_prompt'] = 'Requires user prompt';
 $string['requires_user_prompt_help'] = 'Select Yes if you want a text area to enter a user prompt. If you select No,' .
     ' make sure you set a default user prompt below.';
+$string['rerank_model_id'] = 'Rerank model';
 $string['response'] = 'Response';
 $string['response_length'] = 'Response length';
 $string['retrieved_from'] = 'Retrieved from';
@@ -235,11 +238,13 @@ $string['max_tokens_help'] = 'The maximum number of tokens to generate. Maximum 
     ' When selecting a Chatbot framework, the maximum number of tokens will be displayed.' .
     ' You should avoid using the maximum number of tokens as this will increase the cost.' .
     ' The answers may also be too long. If you find they are too long, reduce the maximun tokens.';
+$string['min_k'] = 'Min K';
 $string['temperature'] = 'Temperature';
 $string['temperature_help'] = 'The higher the temperature, the crazier the text. Recommend experimenting with values between 0.1 and 1.2.';
 $string['top_p'] = 'Top P';
 $string['top_p_help'] = 'An alternative to "Top K" sampling, this will stop the completion when the cumulative probability of the tokens generated exceeds the value.';
 $string['top_k'] = 'Top K';
+$string['top_n'] = 'Top N';
 $string['top_k_help'] = 'An alternative to sampling with temperature, called "nucleus sampling", where the model considers the results of the tokens with top_k probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.';
 $string['min_relevance'] = 'Minimum relevance';
 $string['min_relevance_help'] = 'The minimum relevance of the response. The higher the number, the more relevant the response will be.';

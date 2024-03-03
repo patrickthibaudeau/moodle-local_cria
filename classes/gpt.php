@@ -118,6 +118,7 @@ class gpt
         // Get crai paramaeters
         $params = json_decode($BOT->get_bot_parameters_json());
         $user_content = $content;
+
         // Remove all lines and replace with space. AKA lower token count
 //        $user_content = preg_replace('/\s+/', ' ', trim($user_content));
 //        if there is user content, split into chunks
@@ -131,7 +132,7 @@ class gpt
             $total_tokens = 0;
             $summary = [];
             $i = 0;
-//            file_put_contents('/var/www/moodledata/temp/chunk_text.json', json_encode($chunk_text, JSON_PRETTY_PRINT));
+            // Save the chunks to a file for debugging
             // Loop through the chunks and send them to the API
             foreach ($chunk_text as $i => $chunk) {
                 // Add the previous response's tail as the context for the current chunk
@@ -140,13 +141,18 @@ class gpt
                     $chunk = $context . $chunk;
                 }
                 // Use grounding context
-                $full_prompt =  $chunk . "\nq: " . $prompt;
+                if ($i == 0) {
+                    $full_prompt = $chunk . "\nq: " . $prompt;
+                } else {
+                    $full_prompt = 'Build off the previous call. Do not start over. '. $chunk . "\nq: " . $prompt;
+                }
+
                 // Use Criadex to make the call
                 $result = criadex::query(
                     $params->llm_model_id,
                     $params->system_message,
                     $full_prompt,
-                    $params->max_tokens,
+                    $params->max_reply_tokens,
                     $params->temperature,
                     $params->top_p
                     );
@@ -172,7 +178,7 @@ class gpt
                     $params->llm_model_id,
                     'You compare text. You only answer with a single boolean. You return the boolean that appears more often.',
                     $content_prompt,
-                    $params->max_tokens,
+                    $params->max_reply_tokens,
                     $params->temperature,
                     $params->top_p
                 );
@@ -192,11 +198,12 @@ class gpt
                 $summaries = implode('', $summary);
             }
         } else {
+            // Use Criadex to make the call
             $result = criadex::query(
                 $params->llm_model_id,
                 $params->system_message,
                 $prompt,
-                $params->max_tokens,
+                $params->max_reply_tokens,
                 $params->temperature,
                 $params->top_p
             );

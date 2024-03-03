@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/cria/db" VERSION="20240129" COMMENT="XMLDB file for Moodle local/cria"
+<XMLDB PATH="local/cria/db" VERSION="20240228" COMMENT="XMLDB file for Moodle local/cria"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -9,6 +9,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="model_id" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="embedding_id" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="rerank_model_id" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="bot_api_key" TYPE="char" LENGTH="100" NOTNULL="false" SEQUENCE="false" COMMENT="bot API key returned from criabot"/>
         <FIELD NAME="system_reserved" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="plugin_path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
@@ -25,6 +26,8 @@
         <FIELD NAME="temperature" TYPE="number" LENGTH="2" NOTNULL="false" DEFAULT="0.3" SEQUENCE="false" DECIMALS="1" COMMENT="Controls bot creativity. Higher numbers (0.7) will make the bot more creative. Lower numbers, more deterministic and focused"/>
         <FIELD NAME="top_p" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="2" SEQUENCE="false" COMMENT="top-p sampling involves selecting the next word in a sequence from the top-p probability mass"/>
         <FIELD NAME="top_k" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="10" SEQUENCE="false" COMMENT="Sample from the k most likely next tokens at each step. Lower k focuses on higher probability tokens."/>
+        <FIELD NAME="min_k" TYPE="number" LENGTH="2" NOTNULL="false" DEFAULT="0.8" SEQUENCE="false" DECIMALS="1" COMMENT="minimum  vector score"/>
+        <FIELD NAME="top_n" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="3" SEQUENCE="false" COMMENT="Rerank top n"/>
         <FIELD NAME="min_relevance" TYPE="number" LENGTH="2" NOTNULL="false" DEFAULT="0.9" SEQUENCE="false" DECIMALS="1"/>
         <FIELD NAME="max_context" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="2000" SEQUENCE="false"/>
         <FIELD NAME="no_context_message" TYPE="text" NOTNULL="false" SEQUENCE="false"/>

@@ -127,7 +127,7 @@ class local_cria_external_gpt extends external_api
         if ($chat_id != 'none') {
             $result = criabot::chat_send($chat_id, $bot_name, $prompt, $filters);
             // Get token usage
-            $token_usage = $result->total_usage;
+            $token_usage = $result->reply->total_usage;
             // Check if the context type is a question
             if (empty($result->reply->context)) {
                 $content = nl2br($result->reply->content->content);

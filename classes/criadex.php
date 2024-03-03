@@ -6,12 +6,13 @@ use local_cria\gpt;
 
 class criadex
 {
+
     /**
      * @param $data
-     * @return mixed
-     * @throws dml_exception
+     * @param string $type azure,cohere
+     * @return void
      */
-    public static function create_model($data)
+    public static function create_model($data, $type = 'azure')
     {
         // Get Config
         $config = get_config('local_cria');
@@ -20,7 +21,7 @@ class criadex
             $config->criadex_url,
             $config->criadex_api_key,
             $data,
-            '/azure/models/create',
+            '/models/' . $type . '/create',
             'POST'
         );
     }
@@ -28,9 +29,10 @@ class criadex
     /**
      * @param $model_id
      * @param $data
+     * @param string $type azure,cohere
      * @return void
      */
-    public static function update_model($model_id, $data)
+    public static function update_model($model_id, $data, $type = 'azure')
     {
         // Get config
         $config = get_config('local_cria');
@@ -39,7 +41,7 @@ class criadex
             $config->criadex_url,
             $config->criadex_api_key,
             $data,
-            '/azure/models/' . $model_id . '/update',
+            '/models/' . $type . '/' . $model_id . '/update',
             'PATCH'
         );
     }
@@ -48,7 +50,7 @@ class criadex
      * @param $model_id
      * @return void
      */
-    public static function delete_model($model_id)
+    public static function delete_model($model_id, $type = 'azure')
     {
         // Get config
         $config = get_config('local_cria');
@@ -57,7 +59,7 @@ class criadex
             $config->criadex_url,
             $config->criadex_api_key,
             [],
-            '/azure/models/' . $model_id . '/delete',
+            '/models/' . $type . '/' . $model_id . '/delete',
             'DELETE'
         );
     }
@@ -66,7 +68,7 @@ class criadex
      * @param $model_id
      * @return void
      */
-    public static function about_model($model_id)
+    public static function about_model($model_id, $type = 'azure')
     {
         // Get config
         $config = get_config('local_cria');
@@ -74,7 +76,7 @@ class criadex
         return gpt::_make_call(
             $config->criadex_url,
             $config->criadex_api_key,
-            [], '/azure/models/' . $model_id . '/about',
+            [], '/models/' . $type . '/' . $model_id . '/about',
             'GET'
         );
     }
@@ -95,7 +97,8 @@ class criadex
         $prompt,
         $max_tokens = 512,
         $temperature = 0.1,
-        $top_p = 0.1
+        $top_p = 0.1,
+        $provider = 'azure'
     )
     {
         // Get config
@@ -103,7 +106,7 @@ class criadex
 
         // Build data object
         $data = [
-            'max_tokens' => $max_tokens,
+            'max_reply_tokens' => $max_tokens,
             'temperature' => $temperature,
             'top_p' => $top_p,
             'history' => [
@@ -118,15 +121,16 @@ class criadex
                 [
                     'role' => 'system',
                     'content' => $system_message
-                ],
+                ]
             ]
         ];
+
         // Update model
         return gpt::_make_call(
             $config->criadex_url,
             $config->criadex_api_key,
             json_encode($data),
-            '/azure/models/' . $model_id . '/agents/chat',
+            '/models/' . $provider . '/' . $model_id . '/agents/chat',
             'POST'
         );
     }

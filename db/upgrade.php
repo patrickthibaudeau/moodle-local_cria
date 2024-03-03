@@ -1226,6 +1226,39 @@ function xmldb_local_cria_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024012802, 'local', 'cria');
     }
 
+    if ($oldversion < 2024022801) {
+
+        // Define field rerank_model_id to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('rerank_model_id', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'embedding_id');
+
+        // Conditionally launch add field rerank_model_id.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field top_n to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('top_n', XMLDB_TYPE_INTEGER, '2', null, null, null, '3', 'top_k');
+
+        // Conditionally launch add field top_n.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Define field min_k to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('min_k', XMLDB_TYPE_NUMBER, '2, 1', null, null, null, '0.8', 'top_k');
+
+        // Conditionally launch add field min_k.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2024022801, 'local', 'cria');
+    }
+
 
     return true;
 }

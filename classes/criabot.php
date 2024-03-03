@@ -58,7 +58,7 @@ class criabot
             $config->criabot_url,
             $config->criadex_api_key,
             $data,
-            '/bots/'. $bot_name  . '/manage/params',
+            '/bots/'. $bot_name  . '/manage/update',
             'PATCH'
         );
     }

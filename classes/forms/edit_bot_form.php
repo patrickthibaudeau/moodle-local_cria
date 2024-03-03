@@ -274,6 +274,22 @@ class edit_bot_form extends \moodleform
                 null,
                 'client'
             );
+
+            // Add rerank model is
+            $mform->addElement(
+                'select',
+                'rerank_model_id',
+                get_string('rerank_model_id', 'local_cria'),
+                $MODELS->get_select_array(false, true)
+            );
+            // Add rule required for rerank model id
+            $mform->addRule(
+                'rerank_model_id',
+                get_string('required'),
+                'required',
+                null,
+                'client'
+            );
         } else {
             $mform->addElement(
                 'hidden',
@@ -282,6 +298,10 @@ class edit_bot_form extends \moodleform
             $mform->addElement(
                 'hidden',
                 'embedding_id'
+            );
+            $mform->addElement(
+                'hidden',
+                'rerank_model_id'
             );
         }
 
@@ -292,6 +312,11 @@ class edit_bot_form extends \moodleform
 
         $mform->setType(
             'embedding_id',
+            PARAM_INT
+        );
+
+        $mform->setType(
+            'rerank_model_id',
             PARAM_INT
         );
 
@@ -438,6 +463,46 @@ class edit_bot_form extends \moodleform
             // Hide element unless fine_tuning is set to 1
             $mform->hideIf(
                 'top_k',
+                'fine_tuning',
+                'eq',
+                0
+            );
+
+            // add element for top_n
+            $mform->addElement(
+                'text',
+                'top_n',
+                get_string('top_n', 'local_cria'),
+                ['style' => 'width: 100px;']
+            );
+            // Set type
+            $mform->setType(
+                'top_n',
+                PARAM_INT
+            );
+            // Hide element unless fine_tuning is set to 1
+            $mform->hideIf(
+                'top_n',
+                'fine_tuning',
+                'eq',
+                0
+            );
+
+            // Add elemnet for min_k
+            $mform->addElement(
+                'text',
+                'min_k',
+                get_string('min_k', 'local_cria'),
+                ['style' => 'width: 100px;']
+            );
+            // Set type
+            $mform->setType(
+                'min_k',
+                PARAM_FLOAT
+            );
+            // Hide element unless fine_tuning is set to 1
+            $mform->hideIf(
+                'min_k',
                 'fine_tuning',
                 'eq',
                 0

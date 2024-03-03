@@ -64,14 +64,18 @@ class models {
 	  * Defaults used key = record id, value = name 
 	  * Modify as required. 
 	 */
-	public function get_select_array($embedding = false) {
+	public function get_select_array($embedding = false, $rerank = false) {
         global $DB;
 	    $array = [
 	        '' => get_string('select', 'local_cria')
 	      ];
 
-        if ($embedding) {
+        if ($embedding && !$rerank) {
            $results =  $DB->get_records('local_cria_models', ['is_embedding' => 1], 'name ASC');
+        } else if (!$embedding && $rerank) {
+            //  Get cohere provider id
+            $provider = $DB->get_record('local_cria_providers', ['idnumber' => 'cohere']);
+            $results = $DB->get_records('local_cria_models', ['provider_id' => $provider->id], 'name ASC');
         } else {
             $results = $DB->get_records('local_cria_models', ['is_embedding' => 0], 'name ASC');
         }
