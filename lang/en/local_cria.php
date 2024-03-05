@@ -108,6 +108,7 @@ $string['faculties_help'] = 'One line per faculty. Each line must be in the foll
     'ED|Faculty of Education';
 $string['faculty'] = 'Faculty';
 $string['file'] = 'File';
+$string['files'] = 'Files';
 $string['fine_tuning'] = 'Fine-tuning';
 $string['fine_tuning_help'] = 'Fine-tuning will provide you with extra parameters to fine-tune your model. It will also' .
     ' allow you to separate your content into categories making your bot more precise and accurate.' .

@@ -43,13 +43,15 @@ if ($id) {
     $formdata->icon_url = $draftitemid;
 } else {
     $formdata = new stdClass();
+    $formdata->id = $id;
     $formdata->model_id = false;
     $formdata->requires_user_prompt = 1;
     $formdata->requires_content_prompt = 1;
     $formdata->temperature = 0.9;
     $formdata->top_p = 0.1;
     $formdata->top_k = 10;
-    $formdata->min_k = 0.5;
+    $formdata->top_n = 3;
+    $formdata->min_k = 0.8;
     $formdata->min_relevance = 0.8; //min_n
     $formdata->theme_color = '#e31837';
     $formdata->max_context = 1024; //max_input_tokens
@@ -79,12 +81,14 @@ if ($mform->is_cancelled()) {
         if ($UPDATED_BOT->use_bot_server()) {
             $UPDATED_BOT->update_bot_on_bot_server($UPDATED_BOT->get_default_intent_id());
         }
+        redirect($CFG->wwwroot . '/local/cria/' . $return . '.php?bot_id=' . $data->id);
     } else {
         $data->description = $data->description_editor['text'];
         $BOT = new bot();
         $id = $BOT->insert_record($data);
         // Unset existing bot object
         unset($bot);
+        redirect($CFG->wwwroot . '/local/cria/edit_bot.php?bot_id=' . $id);
     }
 
     file_save_draft_area_files(
@@ -100,8 +104,6 @@ if ($mform->is_cancelled()) {
             'maxfiles' => 1
         ]
     );
-
-    redirect($CFG->wwwroot . '/local/cria/' . $return . '.php?bot_id=' . $data->id);
 } else {
     $mform->set_data($mform);
 }

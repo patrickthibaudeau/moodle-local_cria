@@ -128,7 +128,6 @@ class intents
             }
             $r->documents = array_values($DB->get_records('local_cria_files', ['intent_id' => $r->id]));
             $r->questions = array_values($related_questions);
-
         }
 
         return array_values($results);

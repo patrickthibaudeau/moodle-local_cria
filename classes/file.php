@@ -43,6 +43,13 @@ class file extends crud
     private $content;
 
     /**
+     *
+     * @var string
+     */
+    private $file_type;
+
+
+    /**
      * @@var String
      */
     private $lang;
@@ -125,6 +132,7 @@ class file extends crud
         $this->intent_id = $result->intent_id ?? 0;
         $this->name = $result->name ?? '';
         $this->content = $result->content ?? '';
+        $this->file_type = $result->file_type ?? '';
         $this->lang = $result->lang ?? '';
         $this->faculty = $result->faculty ?? '';
         $this->program = $result->program ?? '';
@@ -174,6 +182,14 @@ class file extends crud
     public function get_content(): string
     {
         return $this->content;
+    }
+
+    /**
+     * @return file_type - varchar (255)
+     */
+    public function get_file_type(): string
+    {
+        return $this->file_type;
     }
 
     /**
@@ -239,6 +255,44 @@ class file extends crud
     public function get_timemodified(): int
     {
         return $this->timemodified;
+    }
+
+    /**
+     * @param $mime_type
+     * @return string file_type
+     */
+    public function get_file_type_from_mime_type($mime_type): string
+    {
+        switch($mime_type) {
+            case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                $file_type = 'docx';
+                break;
+            case 'application/pdf':
+                $file_type = 'pdf';
+                break;
+            case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+                $file_type = 'xlsx';
+                break;
+            case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
+                $file_type = 'pptx';
+                break;
+            case 'text/plain':
+                $file_type = 'txt';
+                break;
+            case 'text/rtf':
+                $file_type = 'rtf';
+                break;
+            case 'text/html':
+                $file_type = 'html';
+                break;
+            case 'image/png':
+                $file_type = 'png';
+                break;
+            case 'image/jpeg':
+                $file_type = 'jpeg';
+                break;
+        }
+        return $file_type;
     }
 
     /**
@@ -337,9 +391,21 @@ class file extends crud
     public function delete_record(): bool
     {
         global $DB;
+        $context = \context_system::instance();
         // Delete on criabot server
         $result = criabot::document_delete($this->get_bot_name(), $this->get_name());
         if($result->status == '200') {
+            // Delete area on moodle file system
+            $fs = get_file_storage();
+            $file = $fs->get_file(
+                $context->id,
+                'local_cria',
+                'content',
+                $this->get_intent_id(),
+                '/',
+                $this->get_name()
+            );
+            $file->delete();
             // Delete on local database
             return $DB->delete_records($this->table, array('id' => $this->get_id()));
         } else {

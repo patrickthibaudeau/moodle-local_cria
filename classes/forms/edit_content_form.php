@@ -2,7 +2,6 @@
 
 namespace local_cria;
 
-
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/lib/formslib.php');
@@ -13,7 +12,7 @@ class edit_content_form extends \moodleform
 
     protected function definition()
     {
-        global $DB, $OUTPUT;
+        global $CFG, $OUTPUT;
 
         $formdata = $this->_customdata['formdata'];
         // Create form object
@@ -65,21 +64,43 @@ class edit_content_form extends \moodleform
             get_string('add_content', 'local_cria')
         );
 
-        $filepickerOptions = [
-            'maxbytes' => 130000000,
-            'accepted_types' => ['docx', 'pdf']
+        $file_options = [
+            'maxbytes' => $CFG->maxbytes,
+            'accepted_types' => [
+                '.docx', '.pdf',  '.txt',
+                '.png', '.jpeg', '.jpg', '.html', '.htm', '.md'
+            ]
         ];
-        $mform->addElement(
-            'filepicker',
-            'importedFile', get_string('file', 'local_cria'),
-            null,
-            $filepickerOptions
-        );
-        $mform->addRule(
-            'importedFile',
-            get_string('error_importfile', 'local_cria'),
-            'required'
-        );
+        if ($formdata->id) {
+            $mform->addElement(
+                'filepicker',
+                'importedFile', get_string('file', 'local_cria'),
+                null,
+                $file_options
+            );
+            $mform->addRule(
+                'importedFile',
+                get_string('error_importfile', 'local_cria'),
+                'required'
+            );
+        } else {
+            // Add filemanger element
+            $mform->addElement(
+                'filemanager',
+                'importedFile',
+                get_string('files', 'local_cria'),
+                null,
+                $file_options
+            );
+            // Required rule
+            $mform->addRule(
+                'importedFile',
+                get_string('error_importfile', 'local_cria'),
+                'required'
+            );
+        }
+
+
 
         // Keywords multiselect element
         $keywords = $mform->addElement(

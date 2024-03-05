@@ -25,6 +25,17 @@ abstract class crud
      **/
     private $id;
 
+    //*** Constants ***//
+    const FILE_TYPE_DOCX = 'docx';
+    const FILE_TYPE_PDF = 'pdf';
+    const FILE_TYPE_XLSX = 'xlsx';
+    const FILE_TYPE_PPTX = 'pptx';
+    const FILE_TYPE_TXT = 'txt';
+    const FILE_TYPE_RTF = 'rtf';
+    const FILE_TYPE_HTML = 'html';
+    const FILE_TYPE_PNG = 'png';
+    const FILE_TYPE_JPEG = 'jpeg';
+
     /**
      * Get record
      *

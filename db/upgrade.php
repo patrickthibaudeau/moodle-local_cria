@@ -1259,6 +1259,19 @@ function xmldb_local_cria_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024022801, 'local', 'cria');
     }
 
+    if ($oldversion < 2024030300) {
 
+        // Define field file_type to be added to local_cria_files.
+        $table = new xmldb_table('local_cria_files');
+        $field = new xmldb_field('file_type', XMLDB_TYPE_CHAR, '100', null, null, null, 'docx', 'name');
+
+        // Conditionally launch add field file_type.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2024030300, 'local', 'cria');
+    }
     return true;
 }

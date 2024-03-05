@@ -155,13 +155,15 @@ class criabot
         $data = [
             'document_name' => $file_name
         ];
+        // To accept spaces in the file name
+        $params = http_build_query($data);
 
         // delete document
         return gpt::_make_call(
             $config->criabot_url ,
             $config->criadex_api_key,
             '',
-            '/bots/'. $bot_name  . '/documents/delete/?document_name=' . $file_name,
+            '/bots/'. $bot_name  . '/documents/delete/?' . $params,
             'DELETE'
         );
     }
