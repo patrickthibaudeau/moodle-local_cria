@@ -310,7 +310,7 @@ class bot extends crud
         $this->top_n = $result->top_n ?? 0;
         $this->min_k = $result->min_k ?? 0;
         $this->rerank_model_id = $result->rerank_model_id ?? 0;
-        $this->minimum_relevance = $result->minimum_relevance ?? 0;
+        $this->min_relevance = $result->min_relevance ?? 0;
         $this->max_context = $result->max_context ?? 0;
         $this->no_context_message = $result->no_context_message ?? '';
         $this->no_context_use_message = $result->no_context_use_message ?? 0;
@@ -489,7 +489,7 @@ class bot extends crud
      */
     public function get_minimum_relevance(): float
     {
-        return $this->minimum_relevance;
+        return $this->min_relevance;
     }
 
     /**

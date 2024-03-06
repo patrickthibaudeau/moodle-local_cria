@@ -589,7 +589,7 @@ class edit_bot_form extends \moodleform
         );
 
         $mform->setType(
-            'top_k',
+            'min_rel',
             PARAM_INT
         );
 

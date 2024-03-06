@@ -45,7 +45,7 @@ if ($id) {
     $formdata = new stdClass();
     $formdata->id = $id;
     $formdata->model_id = false;
-    $formdata->requires_user_prompt = 1;
+    $formdata->requires_user_prompt = 0;
     $formdata->requires_content_prompt = 1;
     $formdata->temperature = 0.9;
     $formdata->top_p = 0.1;
@@ -54,6 +54,7 @@ if ($id) {
     $formdata->min_k = 0.8;
     $formdata->min_relevance = 0.8; //min_n
     $formdata->theme_color = '#e31837';
+    $formdata->fine_tuning = true;
     $formdata->max_context = 1024; //max_input_tokens
     $formdata->no_context_use_message = 1;
     $formdata->no_context_llm_guess = 0;
