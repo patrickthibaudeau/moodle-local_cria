@@ -185,7 +185,7 @@ class local_cria_external_gpt extends external_api
                 $token_usage->completion_tokens,
                 $token_usage->total_tokens,
                 $message->cost,
-                json_encode($result->reply->context)
+                json_encode($result, JSON_PRETTY_PRINT)
             );
         } else {
             $message = gpt::get_response($bot_id, $prompt, $content, false);
