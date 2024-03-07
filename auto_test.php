@@ -50,9 +50,6 @@ foreach ($tests as $test) {
     $data[$i]['question'] = $test->question;
     $data[$i]['response'] = $response['message'];
     $data[$i]['answer'] = $test->answer;
-    if ($i > 2) {
-        break;
-    }
     ob_flush();
     flush();
     $i++;
