@@ -29,6 +29,12 @@
             {{#str}}test_bot, local_cria{{/str}}
             </a>
         {{/test_bot_page}}
+        {{#has_auto_test}}
+            <a href="{{config.wwwroot}}/local/cria/auto_test.php?bot_id={{bot_id}}" class="btn btn-outline-primary
+            mr-1">
+            {{#str}}auto_test, local_cria{{/str}}
+            </a>
+        {{/has_auto_test}}
         {{^bot_logs_page}}
             <a href="{{config.wwwroot}}/local/cria/bot_logs.php?bot_id={{bot_id}}" class="btn btn-outline-primary
             mr-1">

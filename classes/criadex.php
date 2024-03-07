@@ -117,10 +117,6 @@ class criadex
                 [
                     'role' => 'user',
                     'content' => $prompt
-                ],
-                [
-                    'role' => 'system',
-                    'content' => $system_message
                 ]
             ]
         ];

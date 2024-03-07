@@ -66,6 +66,7 @@ class test_bot implements \renderable, \templatable
             'user_prompt' => $BOT->get_user_prompt(),
             'requires_content_prompt' => $BOT->get_requires_content_prompt(),
             'requires_user_prompt' => $BOT->get_requires_user_prompt(),
+            'has_auto_test' => $BOT->get_has_auto_test_questions(),
             'test_bot_page' => true,
             'return_url' => 'test_bot',
             'debug' => $debug,

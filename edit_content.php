@@ -48,8 +48,7 @@ if ($mform->is_cancelled()) {
     if (isset($data->keywords)) {
         $keywords = json_encode($data->keywords);
     }
-    unset($data->keywords);
-    $FILE = new file();
+
     // get intent
     $INTENT = new \local_cria\intent($data->intent_id);
     $bot_name = $INTENT->get_bot_name();
@@ -78,63 +77,16 @@ if ($mform->is_cancelled()) {
 
     // If id, then simple upload the file using file picker
     if ($data->id) {
-        // Get record
-        $file_record = $DB->get_record('local_cria_files', ['id' => $data->id]);
-        $file_name = $file_record->name;
+        $FILE = new file($id);
 
-        $file_content = $mform->get_file_content('importedFile');
+        $data->path = $path;
+        $data->file_content = $mform->get_file_content('importedFile');
 
-// Set the file path with filename
-        $file_path = $path . '/' . $file_name;
-// save the file
-        file_put_contents($file_path, $file_content);
-// Save file to moodle file system
-        $fs = get_file_storage();
-        $file_info = [
-            'contextid' => $context->id,
-            'component' => 'local_cria',
-            'filearea' => 'content',
-            'itemid' => $data->intent_id,
-            'filepath' => '/',
-            'filename' => $file_name
-        ];
-        // First delete the existing file
-        $file = $fs->get_file(
-            $context->id,
-            'local_cria',
-            'content',
-            $data->intent_id,
-            '/',
-            $file_name
-        );
-        if ($file) {
-            $file->delete();
-        }
-        $fs->create_file_from_pathname($file_info, $file_path);
-// Get newly created file
-        $file = $fs->get_file(
-            $context->id,
-            'local_cria',
-            'content',
-            $data->intent_id,
-            '/',
-            $file_name
-        );
-
-
-// Copy to temp area
-        $file->copy_content_to($file_path);
-
-        // Update file on indexing server
-        $upload = $FILE->upload_files_to_indexing_server($bot_name, $file_path, $file_name, true);
-// Delete the file from the server
-        unlink($file_path);
-        if ($upload->status != 200) {
-            \core\notification::error('Error uploading file to indexing server: ' . $upload->message);
-        }
+        $FILE->update_record($data);
         // Redirect to content page
         redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $data->bot_id . '&intent_id=' . $data->intent_id);
     } else {
+        $FILE = new file();
         // Save all files to the server
         // Then add each individual file to the database
         file_save_draft_area_files(

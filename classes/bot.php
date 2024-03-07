@@ -487,7 +487,7 @@ class bot extends crud
     /**
      * @return float
      */
-    public function get_minimum_relevance(): float
+    public function get_min_n(): float
     {
         return $this->min_relevance;
     }
@@ -659,7 +659,7 @@ class bot extends crud
             '"top_p": ' . $this->get_top_p() . ',' .
             '"top_k": ' . $this->get_top_k() . ',' .
             '"top_n": ' . $this->get_top_n() . ',' .
-            '"min_n": ' . $this->get_minimum_relevance() . ',' .
+            '"min_n": ' . $this->get_min_n() . ',' .
             '"min_k": ' . $this->get_min_k() . ',' .
             '"max_input_tokens": ' . $this->get_max_context() . ',' .
             '"no_context_message": "' . str_replace('"', '\"', $this->get_no_context_message()) . '",' .
@@ -671,6 +671,15 @@ class bot extends crud
             '"rerank_model_id": ' . $RERANK_MODEL->get_criadex_model_id() .
             '}';
         return $params;
+    }
+
+    /**
+     * @return int
+     * @throws \dml_exception
+     */
+    public function get_has_auto_test_questions() {
+        global $DB;
+        return $DB->count_records('local_cria_qa', ['bot_id' => $this->id]);
     }
 
     /**
