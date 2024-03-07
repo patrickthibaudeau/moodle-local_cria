@@ -21,7 +21,7 @@ $session_data = json_decode($_SESSION['data-' . $bot_id]);
 $data = [];
 foreach ($session_data as $row) {
     $answer = str_replace("\r\n", " ", $row->answer);
-    $answer = str_replace('\u2022', " ", $answer);
+    $answer = str_replace('\\u2022', " ", $answer);
     $data[] = [
         'Question' => $row->question,
         'Response'=> strip_tags($row->response),
