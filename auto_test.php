@@ -52,6 +52,7 @@ foreach ($tests as $test) {
     $data[$i]['answer'] = $test->answer;
     ob_flush();
     flush();
+    sleep(2);
     $i++;
 }
 echo "</tbody>";
