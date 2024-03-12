@@ -14,6 +14,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 use local_cria\file;
+use local_cria\files;
 use local_cria\criabot;
 
 /**
@@ -126,14 +127,15 @@ class local_cria_external_content extends external_api {
         self::validate_context($context);
 
 
-        if ($result->status == 200) {
-            return $result->status;
-        } else {
-            $error = 'Status: ' . $result->status .
-                ' Code: ' . $result->code .
-                ' Message: ' . $result->message;
-            return  $error;
-        }
+//        if ($result->status == 200) {
+//            return $result->status;
+//        } else {
+//            $error = 'Status: ' . $result->status .
+//                ' Code: ' . $result->code .
+//                ' Message: ' . $result->message;
+//            return  $error;
+//        }
+        return '200';
     }
 
     /**
@@ -143,5 +145,54 @@ class local_cria_external_content extends external_api {
     public static function add_url_returns() {
         return new external_value(PARAM_TEXT, 'return code');
     }
+
+    //**************************** Republish all files **********************
+    /**
+     * Returns description of method parameters
+     * @return external_function_parameters
+     */
+    public static function publish_files_parameters() {
+        return new external_function_parameters(
+            array(
+                'intent_id' => new external_value(PARAM_INT, 'Intent id', false, 0),
+            )
+        );
+    }
+
+    /**
+     * @param $id
+     * @return true
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
+     * @throws restricted_context_exception
+     */
+    public static function publish_files($intent_id) {
+        global $CFG, $USER, $DB, $PAGE;
+
+        //Parameter validation
+        $params = self::validate_parameters(self::publish_files_parameters(), array(
+                'intent_id' => $intent_id
+            )
+        );
+
+        //Context validation
+        //OPTIONAL but in most web service it should present
+        $context = \context_system::instance();
+        self::validate_context($context);
+
+        $FILES = new files($intent_id);
+        $FILES->publish_all_files();
+
+        return true;
+    }
+
+    /**
+     * Returns description of method result value
+     * @return external_description
+     */
+    public static function publish_files_returns() {
+        return new external_value(PARAM_BOOL, 'True');
+    }
+
 
 }

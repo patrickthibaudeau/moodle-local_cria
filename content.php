@@ -19,6 +19,7 @@ $BOT = new \local_cria\bot($bot_id);
     $context
 );
 
+$PAGE->requires->css('/local/cria/css/content.css');
 $PAGE->requires->js_call_amd('local_cria/content', 'init');
 
 // Add secondary navigation

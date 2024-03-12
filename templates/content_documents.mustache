@@ -10,10 +10,15 @@
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="edit_content.php?intent_id={{id}}" title="{{#str}}upload_files, local_cria{{/str}}">{{#str}}upload_files, local_cria{{/str}}</a>
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#urlModal" title="{{#str}}web_page, local_cria{{/str}}">{{#str}}web_page, local_cria{{/str}}</a>
+<!--                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#urlModal" title="{{#str}}web_page, local_cria{{/str}}">{{#str}}web_page, local_cria{{/str}}</a>-->
                 </div>
             </div>
             </a>
+            <button id="cria-publish-all-files" class="btn btn-outline-primary float-right mr-1"
+                    data-intent_id="{{id}}"
+                    title="{{#str}}publish_all, local_cria{{/str}}">
+                <i class="bi bi-cloud-upload"></i>
+            </button>
         </div>
     </h3>
     <div class="card-body">

@@ -9,6 +9,24 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
+    'cria_content_add_url' => array(
+        'classname' => 'local_cria_external_content',
+        'methodname' => 'add_url',
+        'classpath' => 'local/cria/classes/external/content.php',
+        'description' => 'Add Web Page',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
+    'cria_content_publish_files' => array(
+        'classname' => 'local_cria_external_content',
+        'methodname' => 'publish_files',
+        'classpath' => 'local/cria/classes/external/content.php',
+        'description' => 'Vectorize all files to indexing server',
+        'type' => 'write',
+        'capabilities' => '',
+        'ajax' => true
+    ),
     'cria_bot_delete' => array(
         'classname' => 'local_cria_external_bot',
         'methodname' => 'delete',

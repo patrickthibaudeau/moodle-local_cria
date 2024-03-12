@@ -9,6 +9,7 @@ export const init = () => {
     select_deselect_questions();
     publish_questions();
     delete_all_questions();
+    publish_all_documents();
 };
 
 
@@ -151,5 +152,28 @@ function delete_all_questions() {
                     alert('An error occured, the questions could not be deleted.');
                 });
             });
+    });
+}
+
+
+function publish_all_documents() {
+    $('#cria-publish-all-files').click(function () {
+        $(this).html('');
+        $(this).html('<i class="bi bi-arrow-repeat gly-spin"></i>');
+        var intent_id = $(this).data('intent_id');
+        console.log(intent_id);
+        var publish_files = ajax.call([{
+            methodname: 'cria_content_publish_files',
+            args: {
+                intent_id: intent_id
+            }
+        }]);
+        publish_files[0].done(function ($result) {
+            $('#cria-publish-all-files').html('<i class="bi bi-cloud-upload"></i>');
+        }).fail(function (e) {
+            console.log(e);
+            alert('An error occured, the question could not be published.');
+        });
+
     });
 }

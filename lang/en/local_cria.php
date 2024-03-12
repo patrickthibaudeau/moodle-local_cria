@@ -30,11 +30,17 @@ $string['azure_key'] = 'Azure Key';
 $string['azure_key_help'] = 'Use one of the two keys available for the OpenAI service in Azure';
 $string['bot'] = 'Bot';
 $string['bot_already_exists'] = 'A bot with this id already exists.';
+$string['bot_api_key'] = 'API Key';
+$string['bot_api_key_instructions'] = 'The API Key and bot name is meant to be used with CriaBot directly. This is only needed if you want to build your own AI integration into another software application.' .
+ ' If you need an API Key for Cria, which allows direct calls to LLMs, please reach out to the administrator. If you want to embed this bot on a web page, click on the "Share" button for this bot on the dashboard, and copy the embed code.' .
+ ' <br><br><b>DO NOT MODIFY THESE VALUES. YOU WILL BREAK YOUR EXISTING BOT!</b>';
+$string['bot_api_key_help'] = 'The API Key is meant to be used with CriaBot Directly and not Cria itself. If you need an API Key for Cria, please reachout to the administrator.';
 $string['bot_configuration'] = 'BotCraft';
 $string['bot_configuration_help'] = 'Easily create a bot by providing your own documentation and system messages.';
 $string['bot_configurations'] = 'Bot configurations';
 $string['bot_model'] = 'Model';
 $string['bot_models'] = 'Models';
+$string['bot_name'] = 'Bot name (Used with CriaBot)';
 $string['bot_personality'] = 'Bot personality';
 $string['bot_type'] = 'Bot type';
 $string['bot_types'] = 'Bot types';
@@ -80,8 +86,10 @@ $string['delete_all'] = 'Delete all';
 $string['delete_entity_help'] = 'Are you sure you want to delete this entity?';
 $string['delete_keyword_help'] = 'Are you sure you want to delete this keyword?';
 $string['description'] = 'Description';
+$string['development'] = 'Development';
 $string['display_settings'] = 'Display setttings';
 $string['documents'] = 'Documents';
+$string['download'] = 'Download';
 $string['edit'] = 'Edit';
 $string['edit_bot'] = 'Edit bot';
 $string['edit_content'] = 'Edit content';
@@ -114,6 +122,7 @@ $string['fine_tuning'] = 'Fine-tuning';
 $string['fine_tuning_help'] = 'Fine-tuning will provide you with extra parameters to fine-tune your model. It will also' .
     ' allow you to separate your content into categories making your bot more precise and accurate.' .
     ' This is an advanced feature and should only be used if you know what you are doing.';
+$string['for_developers'] = 'For developers';
 $string['generate_answer'] = 'Let AI generate an answer based on your answer above?';
 $string['generate_answer_help'] = 'If yes, the AI will generate an answer based on the answer you provided above.'
 . ' If no, the answer above will be provided. NOTE: if you are using images, maps, videos or other media, you should always select no.';
@@ -183,6 +192,7 @@ $string['provider'] = 'Provider';
 $string['provider_image'] = 'Provider image';
 $string['providers'] = 'Providers';
 $string['publish'] = 'Publish';
+$string['publish_all'] = 'Publish all files';
 $string['publish_questions'] = 'Publish questions';
 $string['question'] = 'Question';
 $string['questions'] = 'Questions';
