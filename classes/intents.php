@@ -126,7 +126,30 @@ class intents
                     $rq->link_text = 'Translation of question: ' . $linked_question->value;
                 }
             }
-            $r->documents = array_values($DB->get_records('local_cria_files', ['intent_id' => $r->id]));
+            // Get rlated documents and format theme for display
+            $files = $DB->get_records('local_cria_files', ['intent_id' => $r->id], 'name');
+            $documents = [];
+            $i =0;
+            $context = \context_system::instance();
+            foreach ($files as $file) {
+                // Get file URL
+                $url = \moodle_url::make_pluginfile_url(
+                    $context->id,
+                    'local_cria',
+                    'content',
+                    $r->id,
+                    '/',
+                    $file->name,
+                    true
+                );
+
+                $documents[$i]['id'] = $file->id;
+                $documents[$i]['name'] = $file->name;
+                $documents[$i]['file_type'] = $file->file_type;
+                $documents[$i]['file_url'] = $url;
+                $i++;
+            }
+            $r->documents = $documents;
             $r->questions = array_values($related_questions);
         }
 

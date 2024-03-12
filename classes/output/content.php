@@ -53,11 +53,15 @@ class content implements \renderable, \templatable
         if ($this->active_intent_id == 0) {
             $this->active_intent_id = $BOT->get_default_intent_id();
         }
+
+        $context = \context_system::instance();
+
         $INTENTS = new intents($this->bot_id);
         $intents = array_values($INTENTS->get_records_with_related_data($this->active_intent_id));
 
         $data = [
             'bot_id' => $this->bot_id,
+            'context_id' => $context->id,
             'intents' => $intents,
             'use_fine_tuning' => $BOT->get_fine_tuning(),
             'content_page' => true,
