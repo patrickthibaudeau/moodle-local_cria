@@ -387,7 +387,6 @@ class intent extends crud
             'local_cria_question_example',
             [
                 'questionid' => $question_id,
-                'indexed' => 0
             ],
             'id'
         );
