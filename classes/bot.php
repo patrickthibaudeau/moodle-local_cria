@@ -290,7 +290,6 @@ class bot extends crud
         $this->system_reserved = $result->system_reserved ?? 0;
         $this->plugin_path = $result->plugin_path ?? '';
         $this->model_id = $result->model_id ?? 0;
-        $this->bot_api_key = $result->bot_api_key ?? '';
         $this->publish = $result->publish ?? 0;
         $this->has_user_prompt = $result->has_user_prompt ?? 0;
         $this->requires_content_prompt = $result->requires_content_prompt ?? 0;
@@ -371,7 +370,10 @@ class bot extends crud
      */
     public function get_bot_api_key(): string
     {
-        return $this->bot_api_key;
+        global $DB;
+        // Get default intent for this bot
+        $default_intent = $DB->get_record('local_cria_intents', ['bot_id' => $this->id, 'is_default' => 1]);
+        return $default_intent->bot_api_key ?? '';
     }
 
     /**
@@ -628,7 +630,7 @@ class bot extends crud
 // Returns an array of `stored_file` instances.
         $files = $fs->get_area_files($contextid, 'local_cria', 'bot_icon', $this->id);
         foreach ($files as $file) {
-            if ($file->get_filename() != '.') {
+            if ($file->get_filename() != '.' && $file->get_filename() != '') {
                 $moodle_url = \moodle_url::make_pluginfile_url(
                     $file->get_contextid(),
                     $file->get_component(),
@@ -637,7 +639,7 @@ class bot extends crud
                     $file->get_filepath(),
                     $file->get_filename()
                 );
-                return $moodle_url->out();
+                return $moodle_url;
             }
         }
         return '';
