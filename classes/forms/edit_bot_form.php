@@ -453,6 +453,11 @@ class edit_bot_form extends \moodleform
                 get_string('top_k', 'local_cria'),
                 ['style' => 'width: 100px;']
             );
+            // Set type
+            $mform->setType(
+                'top_k',
+                PARAM_INT
+            );
 
             // Add help button
             $mform->addHelpButton(
@@ -849,10 +854,60 @@ class edit_bot_form extends \moodleform
             'local_cria'
         );
 
+        // Add a header for development
+        $mform->addElement(
+            'html',
+            '<h3>' . get_string('for_developers', 'local_cria') . '</h3><hr>'
+        );
+
+        // Add HTML alert instructions about the bot API key and bot name
+        $mform->addElement(
+            'html',
+            '<div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">Important</h4>
+                <p>'
+            . get_string('bot_api_key_instructions', 'local_cria')
+            . ' </p>
+            </div>'
+        );
+
+        $mform->addElement(
+            'passwordunmask',
+            'bot_api_key',
+            get_string('bot_api_key', 'local_cria')
+        );
+        $mform->setType(
+            'bot_api_key',
+            PARAM_TEXT
+        );
+
+
+
+        // Add help button
+        $mform->addHelpButton(
+            'bot_api_key',
+            'bot_api_key',
+            'local_cria'
+        );
+
+        // Add bot name element
+        $mform->addElement(
+            'text',
+            'bot_name',
+            get_string('bot_name', 'local_cria')
+        );
+        $mform->setType(
+            'bot_name',
+            PARAM_TEXT
+        );
+
+
 
         $this->add_action_buttons();
         $this->set_data($formdata);
     }
+
+
 
     // Perform some extra moodle validation
     public function validation($data, $files)

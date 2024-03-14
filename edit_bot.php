@@ -26,6 +26,8 @@ if ($id) {
     $formdata->welcome_message_editor['text'] = $formdata->welcome_message;
     $formdata->bot_max_tokens = $BOT->get_model_max_tokens();
     $formdata->child_bots = json_decode($formdata->child_bots);
+    $formdata->bot_api_key = $BOT->get_bot_api_key();
+    $formdata->bot_name = $BOT->get_bot_name();
     $draftitemid = file_get_submitted_draft_itemid('icon_url');
     file_prepare_draft_area(
     // The $draftitemid is the target location.
@@ -69,6 +71,10 @@ if ($mform->is_cancelled()) {
 } else if ($data = $mform->get_data()) {
     $return = $data->return;
     unset($data->return);
+    // unset bot_api_key and bot_name
+    unset($data->bot_api_key);
+    unset($data->bot_name);
+
     if ($data->id) {
         $id = $data->id;
         $BOT = new bot($data->id);
@@ -82,14 +88,12 @@ if ($mform->is_cancelled()) {
         if ($UPDATED_BOT->use_bot_server()) {
             $UPDATED_BOT->update_bot_on_bot_server($UPDATED_BOT->get_default_intent_id());
         }
-        redirect($CFG->wwwroot . '/local/cria/' . $return . '.php?bot_id=' . $data->id);
     } else {
         $data->description = $data->description_editor['text'];
         $BOT = new bot();
         $id = $BOT->insert_record($data);
         // Unset existing bot object
         unset($bot);
-        redirect($CFG->wwwroot . '/local/cria/edit_bot.php?bot_id=' . $id);
     }
 
     file_save_draft_area_files(
@@ -105,6 +109,12 @@ if ($mform->is_cancelled()) {
             'maxfiles' => 1
         ]
     );
+
+    if ($data->id) {
+        redirect($CFG->wwwroot . '/local/cria/' . $return . '.php?bot_id=' . $data->id);
+    } else {
+        redirect($CFG->wwwroot . '/local/cria/edit_bot.php?bot_id=' . $id);
+    }
 } else {
     $mform->set_data($mform);
 }

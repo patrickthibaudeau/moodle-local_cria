@@ -1066,7 +1066,7 @@ class bot extends crud
             $bot_name = $this->id . '-' . $intent_id;
         }
         // Bot names are fomratted as bot_id-intent_id
-        criabot::bot_create($bot_name, $this->get_bot_parameters_json());
+        return criabot::bot_create($bot_name, $this->get_bot_parameters_json());
     }
 
     /**
@@ -1084,7 +1084,7 @@ class bot extends crud
         }
         $bot_exists = criabot::bot_about($bot_name);
         $update = false;
-        if ($bot_exists->status == 404 && $intent_id != 0) {
+        if ($bot_exists->status == 404 && $intent_id == 0) {
             //Create intent
             $INTENT = new intent();
             $data = new \stdClass();
@@ -1094,9 +1094,9 @@ class bot extends crud
             $data->description = 'General intent for bot.';
             $data->published = 1;
             $intent_id = $INTENT->insert_record($data);
-        } elseif ($bot_exists->status == 404 && $intent_id == 0) {
+        } elseif ($bot_exists->status == 404 && $intent_id != 0) {
             // Create bot
-            $result = $this->create_bot_on_bot_server(0);
+            $result = $this->create_bot_on_bot_server($intent_id);
         } else {
             $result = criabot::bot_update($bot_name, $this->get_bot_parameters_json());
             $update = true;
