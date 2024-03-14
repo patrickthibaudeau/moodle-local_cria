@@ -18,9 +18,11 @@ if (!$date_range) {
 \local_cria\base::page(new moodle_url('/local/cria/bot_logs.php',['id' => $bot_id]), get_string('pluginname', 'local_cria'), '', $context);
 
 $PAGE->requires->jquery();
-$PAGE->requires->css(new moodle_url('/local/cria/js/daterangepicker/daterangepicker.js'));
+$PAGE->requires->css(new moodle_url('/local/cria/js/daterangepicker/daterangepicker.css'));
+$PAGE->requires->css(new moodle_url('https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-2.0.2/b-3.0.1/b-html5-3.0.1/datatables.min.css'));
 $PAGE->requires->js(new moodle_url('/local/cria/js/daterangepicker/moment.min.js'));
 $PAGE->requires->js(new moodle_url('/local/cria/js/daterangepicker/daterangepicker.js'));
+$PAGE->requires->js(new moodle_url('https://cdn.datatables.net/v/bs4/jszip-3.10.1/dt-2.0.2/b-3.0.1/b-html5-3.0.1/datatables.min.js'));
 $PAGE->requires->js(new moodle_url('/local/cria/js/bot_logs.js'));
 //**************** ******
 //*** DISPLAY HEADER ***
