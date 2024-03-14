@@ -26,9 +26,10 @@ class bot_logs implements \renderable, \templatable
      */
     private $bot_id;
 
-    public function __construct($bot_id)
+    public function __construct($bot_id, $date_range)
     {
         $this->bot_id = $bot_id;
+        $this->date_range = $date_range;
     }
 
     /**
@@ -47,10 +48,12 @@ class bot_logs implements \renderable, \templatable
         $data = [
             'bot_id' => $this->bot_id,
             'name' => $BOT->get_name(),
-            'logs' => logs::get_logs($this->bot_id),
-            'total_usage_cost' => logs::get_total_usage_cost($this->bot_id),
-            'bot_logs_page' => true
+            'logs' => logs::get_logs($this->bot_id, $this->date_range),
+            'total_usage_cost' => logs::get_total_usage_cost($this->bot_id, 'CAD', $this->date_range),
+            'bot_logs_page' => true,
+            'date_range' => $this->date_range
         ];
+
         return $data;
     }
 
