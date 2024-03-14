@@ -70,9 +70,18 @@ class logs
      * @param int $bot_id
      * @return array
      */
-    public static function get_logs($bot_id)
+    public static function get_logs($bot_id, $date_range = null)
     {
         global $DB, $USER;
+
+        if ($date_range) {
+            $date_range = explode(' - ', $date_range);
+            $start_date = strtotime($date_range[0] . ' 00:00:00');
+            $end_date = strtotime($date_range[1] . ' 23:59:59');
+        } else {
+            $start_date = strtotime('first day of this month');
+            $end_date = strtotime('last day of this month');
+        }
 
         $sql = "Select
                     cl.id,
@@ -97,9 +106,12 @@ class logs
                     {user} u On u.id = cl.userid Inner Join
                     {local_cria_bot} b On b.id = cl.bot_id
                 WHERE 
+                    cl.timecreated BETWEEN ? AND ? AND
                     bot_id = ?";
 
         $params = [
+            'start_date' => $start_date,
+            'end_date' => $end_date,
             'bot_id' => $bot_id
         ];
 
@@ -109,7 +121,7 @@ class logs
 //            $params['userid'] = $USER->id;
 //        }
 
-        $sql .= " ORDER BY b.timecreated DESC";
+        $sql .= " ORDER BY cl.timecreated DESC";
 
         $logs = $DB->get_records_sql($sql, $params);
         return array_values($logs);
@@ -121,18 +133,30 @@ class logs
      * @param int $bot_id
      * @return array
      */
-    public static function get_total_usage_cost($bot_id, $currency = 'CAD')
+    public static function get_total_usage_cost($bot_id, $currency = 'CAD', $date_range = null)
     {
         global $DB;
+
+        if ($date_range) {
+            $date_range = explode(' - ', $date_range);
+            $start_date = strtotime($date_range[0] . ' 00:00:00');
+            $end_date = strtotime($date_range[1] . ' 23:59:59');
+        } else {
+            $start_date = strtotime('first day of this month');
+            $end_date = strtotime('last day of this month');
+        }
+
         $sql = "SELECT 
                     SUM(cost) as total_cost
                 FROM 
                     {local_cria_logs}
                 WHERE
+                    timecreated BETWEEN ? AND ? AND
                     bot_id = ?";
-        $logs = $DB->get_records_sql($sql, [$bot_id]);
+        $logs = $DB->get_records_sql($sql, [$start_date, $end_date, $bot_id]);
         $fmt = new \NumberFormatter('en_CA', \NumberFormatter::CURRENCY);
         $value = $fmt->formatCurrency(array_values($logs)[0]->total_cost, $currency);
+
         return $value;
     }
 

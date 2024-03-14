@@ -76,6 +76,7 @@ $string['create_example_questions'] = 'Have AI create 5 example questions?';
 $string['create_meeting_notes'] = 'MinutesMaster';
 $string['create_meeting_notes_help'] = 'Use this tool to create meeting notes based on a transcription';
 $string['cria_suite'] = 'Cria Suite';
+$string['date_range'] = 'Date range';
 $string['default_user_prompt'] = 'Default user prompt';
 $string['default_user_prompt_help'] = 'If your but has a default prompt, enter it here. If the requires user prompt ' .
     ' above is set to Yes, this prompt will prepended to the user propmt. Note it is not visible on the page.';
