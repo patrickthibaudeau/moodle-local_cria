@@ -172,7 +172,7 @@ class local_cria_external_gpt extends external_api
             $message->file_name = $file_name;
             $file_name_for_logs = 'file name: ' . $file_name . "<br>\n";
 
-            $message->stacktrace = json_encode($result, JSON_PRETTY_PRINT);
+            $message->stacktrace = json_encode($result);
             $message->cost = gpt::_get_cost($bot_id, $token_usage->prompt_tokens, $token_usage->completion_tokens);
 
 
@@ -185,7 +185,7 @@ class local_cria_external_gpt extends external_api
                 $token_usage->completion_tokens,
                 $token_usage->total_tokens,
                 $message->cost,
-                json_encode($result, JSON_PRETTY_PRINT)
+                json_encode($result)
             );
         } else {
             $message = gpt::get_response($bot_id, $prompt, $content, false);
