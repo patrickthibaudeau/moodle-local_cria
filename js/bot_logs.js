@@ -15,7 +15,8 @@ $(document).ready(function () {
             'excelHtml5',
         ],
         theme: 'bootstrap4',
-
+        order: [[11, 'desc']],
+        "lengthMenu": [[10, 25, 50, 100, 500, -1], [10, 25, 50, 100, 500, 'All']],
     });
 
     // Add some top spacing
