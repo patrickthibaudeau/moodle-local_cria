@@ -50,6 +50,11 @@ class bot extends crud
     private $publish;
 
     /**
+     * @var string
+     */
+    private $email;
+
+    /**
      *
      * @var int
      */
@@ -296,6 +301,7 @@ class bot extends crud
         $this->requires_user_prompt = $result->requires_user_prompt ?? 0;
         $this->user_prompt = $result->user_prompt ?? '';
         $this->embedding_id = $result->embedding_id ?? 0;
+        $this->email = $result->email ?? '';
         $this->bot_system_message = $result->bot_system_message ?? '';
         $this->welcome_message = $result->welcome_message ?? '';
         $this->theme_color = $result->theme_color ?? '';
@@ -355,6 +361,14 @@ class bot extends crud
     public function get_bot_type(): int
     {
         return $this->bot_type;
+    }
+
+    /**
+     * @return email - varchar (255)
+     */
+    public function get_email(): string
+    {
+        return $this->email;
     }
 
     /**
@@ -679,7 +693,8 @@ class bot extends crud
      * @return int
      * @throws \dml_exception
      */
-    public function get_has_auto_test_questions() {
+    public function get_has_auto_test_questions()
+    {
         global $DB;
         return $DB->count_records('local_cria_qa', ['bot_id' => $this->id]);
     }
@@ -1161,7 +1176,7 @@ class bot extends crud
             $intents = $this->get_all_intents();
             // Let's get all files for the intent and delete them
             // Once files are deleted, delete the intent/bot
-            foreach($intents as $intent) {
+            foreach ($intents as $intent) {
                 $INTENT = new intent($intent->id);
                 $files = $INTENT->get_files();
                 foreach ($files as $file) {
@@ -1175,6 +1190,52 @@ class bot extends crud
 
         }
         return $DB->delete_records($this->table, array('id' => $this->get_id()));
+    }
+
+    /**
+     * Send an email to the bot owner
+     * @param $prompt
+     * @return string
+     * @throws \dml_exception
+     */
+    public function send_no_context_email($prompt = '', $answer = '')
+    {
+        global $DB;
+        if (!empty($this->get_email())) {
+            // Get emails
+            $emails = explode(';', $this->get_email());
+            // Get a user object
+            $user = $DB->get_record('user', ['id' => 1]);
+            // Loop through and send the message
+            foreach ($emails as $email) {
+                // Replace user object with new values
+                $user->id = 99999999999;
+                $user->email = $email;
+                $user->username = $email;
+                $user->firstname = '';
+                $user->lastname = '';
+                $user->firstnamephonetic = '';
+                $user->lastnamephonetic = '';
+                $user->middlename = '';
+                $user->auth = 'manual';
+                $user->language = 'en';
+                $user->idnumber = '';
+                $user->suspended = 0;
+                // Prepare subject and message
+                $subject = get_string('no_context_subject', 'local_cria');
+                $message = get_string('no_context_email_message', 'local_cria',
+                    ['bot_name' => $this->get_name(), 'prompt' => $prompt]
+                );
+                // IF this bot uses llm guess then add to the message
+                if ($this->get_no_context_llm_guess()) {
+                    $message .= get_string('no_context_email_message_llm_guess', 'local_cria',
+                        ['answer' => strip_tags($answer)]
+                    );
+                }
+
+                email_to_user($user, null, $subject, $message);
+            }
+        }
     }
 
 }

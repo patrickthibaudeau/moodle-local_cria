@@ -224,6 +224,23 @@ class edit_bot_form extends \moodleform
             0
         );
 
+        // Add email form element
+        $mform->addElement(
+            'text',
+            'email',
+            get_string('no_context_email', 'local_cria')
+        );
+        $mform->setType(
+            'email',
+            PARAM_TEXT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'email',
+            'no_context_email',
+            'local_cria'
+        );
+
         // No context llm guess element
         $mform->addElement(
             'selectyesno',

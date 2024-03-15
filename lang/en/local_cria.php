@@ -167,10 +167,16 @@ $string['model_name'] = 'Model name';
 $string['name'] = 'Name';
 $string['new_category'] = 'New category';
 $string['new_role'] = 'New role';
+$string['no_context_email_message'] = '<p>The bot {$a->bot_name} was unable to return an answer for question: {$a->prompt}.</p>';
+$string['no_context_email_message_llm_guess'] = '<p>However, because the LLM guess feature is enabled, it did return '
+ . 'this answer:</p><p>{$a->answer}</p>';
 $string['no_context_message'] = 'No results message';
+$string['no_context_subject'] = 'No results returned by bot';
 $string['no_context_use_message'] = 'Use no context message';
 $string['no_context_use_message_help'] = 'Select Yes if you want to use the no context message. If you select No, ' .
     ' the bot will always return a reply. Note: This could lead to hallucinations and false information.';
+$string['no_context_email'] = 'No context notification email';
+$string['no_context_email_help'] = 'Enter the email address to receive notifications when the bot has no reply (context).';
 $string['no_context_llm_guess'] = 'Use LLM guess';
 $string['no_context_llm_guess_help'] = 'Select Yes if you want the bot to guess at an answer.';
 $string['paste_text'] = 'Paste your text here';

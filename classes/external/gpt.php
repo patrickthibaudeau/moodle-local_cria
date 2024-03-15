@@ -132,6 +132,7 @@ class local_cria_external_gpt extends external_api
             if (empty($result->reply->context)) {
                 $content = nl2br($result->reply->content->content);
                 $file_name = "LLM Generated";
+                $BOT->send_no_context_email($prompt, $content);
             } else if ($result->reply->context->context_type == "QUESTION") {
                 // Return llm_reply or DB reply
                 if ($result->reply->context->node->node->metadata->llm_reply == true) {
