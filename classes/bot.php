@@ -117,6 +117,12 @@ class bot extends crud
      *
      * @var int
      */
+    private $botwatermark;
+
+    /**
+     *
+     * @var int
+     */
     private $embed_enabled;
 
     /**
@@ -321,6 +327,7 @@ class bot extends crud
         $this->no_context_use_message = $result->no_context_use_message ?? 0;
         $this->no_context_llm_guess = $result->no_context_llm_guess ?? 0;
         $this->embed_enabled = $result->embed_enabled ?? 0;
+        $this->botwatermark = $result->botwatermark ?? 0;
         $this->embed_postion = $result->embed_postion ?? 2;
         $this->child_bots = $result->child_bots ?? '';
         $this->available_child = $result->available_child ?? 0;
@@ -623,6 +630,18 @@ class bot extends crud
             return true;
         } else {
             return null;
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function get_bot_watermark(): int
+    {
+        if ($this->botwatermark == 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 

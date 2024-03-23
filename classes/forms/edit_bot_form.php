@@ -871,6 +871,23 @@ class edit_bot_form extends \moodleform
             'local_cria'
         );
 
+        // add selectyesno element for botwatermark
+        $mform->addElement(
+            'selectyesno',
+            'botwatermark',
+            get_string('bot_watermark', 'local_cria')
+        );
+        $mform->setType(
+            'bot_watermark',
+            PARAM_INT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'botwatermark',
+            'bot_watermark',
+            'local_cria'
+        );
+
         // Add a header for development
         $mform->addElement(
             'html',

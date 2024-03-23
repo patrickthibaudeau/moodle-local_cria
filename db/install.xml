@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/cria/db" VERSION="20240303" COMMENT="XMLDB file for Moodle local/cria"
+<XMLDB PATH="local/cria/db" VERSION="20240323" COMMENT="XMLDB file for Moodle local/cria"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -19,6 +19,7 @@
         <FIELD NAME="bot_type" TYPE="int" LENGTH="2" NOTNULL="false" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="requires_content_prompt" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="1" SEQUENCE="false"/>
         <FIELD NAME="requires_user_prompt" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="1" SEQUENCE="false"/>
+        <FIELD NAME="email" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="has_user_prompt" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Does this bot have a default user prompt?"/>
         <FIELD NAME="user_prompt" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="publish" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
@@ -42,6 +43,7 @@
         <FIELD NAME="subtitle" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false" COMMENT="Used with EMBED server"/>
         <FIELD NAME="welcome_message" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="icon_url" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <FIELD NAME="botwatermark" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="embed_enabled" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Whether the bot is open or closed on page opening"/>
         <FIELD NAME="embed_position" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="2" SEQUENCE="false" COMMENT="Embed bot position: BL=1, BR=2, TR=3, TL=4"/>
         <FIELD NAME="theme_color" TYPE="char" LENGTH="7" NOTNULL="false" DEFAULT="#e31837" SEQUENCE="false" COMMENT="Hex color values only"/>

@@ -1289,5 +1289,20 @@ function xmldb_local_cria_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024031400, 'local', 'cria');
     }
 
+    if ($oldversion < 2024032300) {
+
+        // Define field botwatermark to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('botwatermark', XMLDB_TYPE_INTEGER, '1', null, null, null, '0', 'icon_url');
+
+        // Conditionally launch add field botwatermark.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2024032300, 'local', 'cria');
+    }
+
     return true;
 }
