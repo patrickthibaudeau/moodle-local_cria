@@ -308,32 +308,56 @@ class gpt
     public static function get_response($bot_id, $prompt, $content = '', $use_bot_server = false): object
     {
         $BOT = new bot($bot_id);
+        $full_prompt = '';
         if ($BOT->get_user_prompt()) {
-            $prompt = $BOT->get_user_prompt();
+            $full_prompt .= $BOT->get_user_prompt();
         }
-        // Build the message
-        $data = self::_build_message($bot_id, $prompt, $content);
-        $message = $data->message;
+
+        if (!empty($content)) {
+            $full_prompt .= $content . ' ' . $prompt;
+        } else {
+            $full_prompt .= $prompt;
+        }
+
+        $params = json_decode($BOT->get_bot_parameters_json());
+
+        // Use Criadex to make the call
+        $results = criadex::query(
+            $params->llm_model_id,
+            $params->system_message,
+            $full_prompt,
+            $params->max_reply_tokens,
+            $params->temperature,
+            $params->top_p
+        );
+
+        $summaries = $results->agent_response->chat_response->message->content;
+
+        // Add the number of tokens used for the prompt to the total tokens
+        $prompt_tokens = $results->agent_response->usage[0]->prompt_tokens;
+        $completion_tokens = $results->agent_response->usage[0]->completion_tokens;
+        $total_tokens = $results->agent_response->usage[0]->total_tokens;
+
+        $data = new \stdClass();
+        // Get the cost of the call
+        $cost = self::_get_cost($bot_id, $prompt_tokens, $completion_tokens);
+        // Add to logs
+        logs::insert($bot_id, $prompt, $summaries, $prompt_tokens, $completion_tokens, $total_tokens, $cost);
+
+        $data->prompt_tokens = $prompt_tokens;
+        $data->completion_tokens = $completion_tokens;
+        $data->total_tokens = $total_tokens;
+        $data->cost = $cost;
+        $data->message = $summaries;
 
         // Format the message
-        if (isset($message)) {
-            $message = nl2br(htmlspecialchars($message));
+        if (isset($data->message)) {
+            $message = nl2br(htmlspecialchars($data->message));
             $message = self::make_link($message);
             $message = self::make_email($message);
         }
 
         $data->message = $message;
-
-        // Enter log into database
-//        logs::insert(
-//            $bot_id,
-//            $prompt,
-//            $data->message,
-//            $data->prompt_tokens,
-//            $data->completion_tokens,
-//            $data->total_tokens,
-//            $data->cost,
-//            '');
 
         return $data;
     }
@@ -345,27 +369,23 @@ class gpt
      * @return string
      * @throws \dml_exception
      */
-    public static function compare_text($response, $answer): string
+    public static function compare_text($response, $answer): \stdClass
     {
         $content_prompt = '';
-        $sentences = "Text 1: " . $response . "\n\nText 2: " . $answer;
-        $content_prompt .= $sentences;
-        "Question: Please answer with a boolean only to the following question. In the two texts provided above, do the two texts mean the same thing?\n";
-        $messages = [
-            'messages' => [
-                [
-                    'role' => 'system',
-                    'content' => 'You compare text. You only answer with a single boolean. You return the boolean that appears more often.'
-                ],
-                [
-                    'role' => 'user',
-                    'content' => $content_prompt
-                ]
-            ]
-        ];
+        $sentences = "---\nText 1: " . $response . "\n\nText 2: " . $answer . "\n---\n";
+        $content_prompt .= $sentences . "q: Question: Please answer with a boolean only to the following question. 
+        In the two texts provided above, do the two texts mean the same thing?\n";
 
-        $comparison_result = self::_make_call(json_encode($messages));
-        return $comparison_result->choices[0]->message->content;
+
+        $comparison_result = criadex::query(
+            1,
+            'You compare text. You only answer with a single boolean. You return the boolean that appears more often.',
+            $content_prompt,
+            4000,
+            0.1,
+            1
+        );
+        return $comparison_result;
     }
 
 
