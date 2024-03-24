@@ -645,6 +645,15 @@ class bot extends crud
         }
     }
 
+    public function get_bot_watermark_string_bool(): string
+    {
+        if ($this->botwatermark == 1) {
+            return 'true';
+        } else {
+            return 'false';
+        }
+    }
+
     /**
      * @return string
      */
