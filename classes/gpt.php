@@ -342,7 +342,7 @@ class gpt
         // Get the cost of the call
         $cost = self::_get_cost($bot_id, $prompt_tokens, $completion_tokens);
         // Add to logs
-        logs::insert($bot_id, $prompt, $summaries, $prompt_tokens, $completion_tokens, $total_tokens, $cost);
+        logs::insert($bot_id, $full_prompt, $summaries, $prompt_tokens, $completion_tokens, $total_tokens, $cost);
 
         $data->prompt_tokens = $prompt_tokens;
         $data->completion_tokens = $completion_tokens;
