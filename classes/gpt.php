@@ -350,15 +350,6 @@ class gpt
         $data->cost = $cost;
         $data->message = $summaries;
 
-        // Format the message
-        if (isset($data->message)) {
-            $message = nl2br(htmlspecialchars($data->message));
-            $message = self::make_link($message);
-            $message = self::make_email($message);
-        }
-
-        $data->message = $message;
-
         return $data;
     }
 
