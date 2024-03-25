@@ -334,9 +334,9 @@ class gpt
         $summaries = $results->agent_response->chat_response->message->content;
 
         // Add the number of tokens used for the prompt to the total tokens
-        $prompt_tokens = $results->agent_response->usage[0]->prompt_tokens;
-        $completion_tokens = $results->agent_response->usage[0]->completion_tokens;
-        $total_tokens = $results->agent_response->usage[0]->total_tokens;
+        $prompt_tokens = $results->agent_response->raw->usage->prompt_tokens;
+        $completion_tokens = $results->agent_response->raw->usage->completion_tokens;
+        $total_tokens = $results->agent_response->raw->usage->total_tokens;
 
         $data = new \stdClass();
         // Get the cost of the call

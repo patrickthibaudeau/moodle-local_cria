@@ -15,10 +15,9 @@ $(document).ready(function () {
             'excelHtml5',
         ],
         theme: 'bootstrap4',
-        order: [[11, 'desc']],
+        order: [],
         "lengthMenu": [[50, 100, 500, -1], [50, 100, 500, 'All']],
     });
-
     // Add some top spacing
     $('.dataTables_length').css('margin-top', '.5rem');
 
