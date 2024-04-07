@@ -1304,5 +1304,20 @@ function xmldb_local_cria_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2024032300, 'local', 'cria');
     }
 
+    if ($oldversion < 2024040400) {
+
+        // Define field botlocale to be added to local_cria_bot.
+        $table = new xmldb_table('local_cria_bot');
+        $field = new xmldb_field('bot_locale', XMLDB_TYPE_CHAR, '10', null, null, null, 'en-US', 'theme_color');
+
+        // Conditionally launch add field botlocale.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Cria savepoint reached.
+        upgrade_plugin_savepoint(true, 2024040400, 'local', 'cria');
+    }
+
     return true;
 }

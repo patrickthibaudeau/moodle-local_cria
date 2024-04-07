@@ -30,7 +30,8 @@ class criaembed
             "botEmbedTheme" => $BOT->get_theme_color(),
             "botEmbedDefaultEnabled" => $BOT->get_embed_enabled_bool(),
             "botEmbedPosition" => $BOT->get_embed_position(),
-            "botWatermark" => $BOT->get_bot_watermark_string_bool()
+            "botWatermark" => $BOT->get_bot_watermark_string_bool(),
+            "botLocale" => $BOT->get_bot_locale()
         ];
         // Create model
         return gpt::_make_call(
@@ -83,7 +84,8 @@ class criaembed
             "botEmbedTheme" => $BOT->get_theme_color(),
             "botEmbedDefaultEnabled" => $BOT->get_embed_enabled_bool(),
             "botEmbedPosition" => $BOT->get_embed_position(),
-            "botWatermark" => $BOT->get_bot_watermark_string_bool()
+            "botWatermark" => $BOT->get_bot_watermark_string_bool(),
+            "botLocale" => $BOT->get_bot_locale()
         ];
         // Create model
         return gpt::_make_call(

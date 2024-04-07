@@ -888,6 +888,29 @@ class edit_bot_form extends \moodleform
             'local_cria'
         );
 
+        $locales = [
+            'en-US' => 'English',
+            'fr-CA' => 'Français',
+        ];
+
+        // Add select element for bot_locale
+        $mform->addElement(
+            'select',
+            'bot_locale',
+            get_string('bot_locale', 'local_cria'),
+            $locales
+        );
+        $mform->setType(
+            'bot_locale',
+            PARAM_TEXT
+        );
+        // Add help button
+        $mform->addHelpButton(
+            'bot_locale',
+            'bot_locale',
+            'local_cria'
+        );
+
         // Add a header for development
         $mform->addElement(
             'html',

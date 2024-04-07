@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<XMLDB PATH="local/cria/db" VERSION="20240323" COMMENT="XMLDB file for Moodle local/cria"
+<XMLDB PATH="local/cria/db" VERSION="20240404" COMMENT="XMLDB file for Moodle local/cria"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
@@ -47,6 +47,7 @@
         <FIELD NAME="embed_enabled" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="0" SEQUENCE="false" COMMENT="Whether the bot is open or closed on page opening"/>
         <FIELD NAME="embed_position" TYPE="int" LENGTH="1" NOTNULL="false" DEFAULT="2" SEQUENCE="false" COMMENT="Embed bot position: BL=1, BR=2, TR=3, TL=4"/>
         <FIELD NAME="theme_color" TYPE="char" LENGTH="7" NOTNULL="false" DEFAULT="#e31837" SEQUENCE="false" COMMENT="Hex color values only"/>
+        <FIELD NAME="bot_locale" TYPE="char" LENGTH="10" NOTNULL="false" DEFAULT="en-US" SEQUENCE="false"/>
         <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
