@@ -66,7 +66,7 @@ class local_cria_external_cria extends external_api
         $cria_config = [];
         $cria_config[0]['bot_server_api_key'] = $config->bot_server_api_key;
         $cria_config[0]['bot_server_url'] = $config->bot_server_url;
-        $cria_config[0]['embedding_server_url'] = $config->embedding_server_url;
+        $cria_config[0]['embedding_server_url'] = $config->criaembed_url;
         return $cria_config;
     }
 

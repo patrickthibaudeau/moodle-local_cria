@@ -28,14 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 if ($hassiteconfig) {
     $settings = new admin_settingpage('local_cria_settings', new lang_string('pluginname', 'local_cria'));
 
-    // Max chunks
-    $settings->add( new admin_setting_configtext(
-        'local_cria/max_chunks',
-        get_string('chunk_limit', 'local_cria'),
-        get_string('chunk_limit_help', 'local_cria'),
-        65000, PARAM_INT, 6
-    ));
-
     //Bot Server
     $settings->add( new admin_setting_configtext(
         'local_cria/criabot_url',
@@ -58,13 +50,6 @@ if ($hassiteconfig) {
         '', PARAM_TEXT, 255
     ));
 
-    $settings->add( new admin_setting_configpasswordunmask(
-        'local_cria/criadex_api_key',
-        get_string('criadex_api_key', 'local_cria'),
-        get_string('criadex_api_key_help', 'local_cria'),
-        '', PARAM_TEXT, 255
-    ));
-
     $settings->add( new admin_setting_configtext(
         'local_cria/criaembed_url',
         get_string('criaembed_url', 'local_cria'),
@@ -72,20 +57,11 @@ if ($hassiteconfig) {
         '', PARAM_TEXT, 255
     ));
 
-
-    //Embedding Server
-    $settings->add( new admin_setting_configtext(
-        'local_cria/embedding_server_url',
-        get_string('embedding_server_url', 'local_cria'),
-        get_string('embedding_server_url_help', 'local_cria'),
+    $settings->add( new admin_setting_configpasswordunmask(
+        'local_cria/criadex_api_key',
+        get_string('criadex_api_key', 'local_cria'),
+        get_string('criadex_api_key_help', 'local_cria'),
         '', PARAM_TEXT, 255
-    ));
-
-    $settings->add( new admin_setting_configtext(
-        'local_cria/compare_text',
-        get_string('compare_text_bot_id', 'local_cria'),
-        get_string('compare_text_bot_id_help', 'local_cria'),
-        0, PARAM_INT, 10
     ));
 
     // Cohere api key
@@ -104,57 +80,6 @@ if ($hassiteconfig) {
         get_string('convertapi_api_key_help', 'local_cria'),
         '', PARAM_TEXT, 255
     ));
-
-    // MinutesMaster id
-    $settings->add( new admin_setting_configtext(
-        'local_cria/minutes_master',
-        get_string('minutes_master_id', 'local_cria'),
-        get_string('minutes_master_id_help', 'local_cria'),
-        '', PARAM_INT, 10
-    ));
-
-    // Translate id
-    $settings->add( new admin_setting_configtext(
-        'local_cria/translate',
-        get_string('translate_id', 'local_cria'),
-        get_string('translate_id_help', 'local_cria'),
-        '', PARAM_INT, 10
-    ));
-
-    // Second Opinion id
-    $settings->add( new admin_setting_configtext(
-        'local_cria/secondopinion',
-        get_string('secondopinion_id', 'local_cria'),
-        get_string('secondopinion_id_help', 'local_cria'),
-        '', PARAM_INT, 10
-    ));
-
-    // Supported languages
-    $settings->add( new admin_setting_configtextarea(
-        'local_cria/languages',
-        get_string('languages', 'local_cria'),
-        get_string('languages_help', 'local_cria'),
-        '', PARAM_TEXT, 255
-    ));
-
-    // Faculties
-    $settings->add( new admin_setting_configtextarea(
-        'local_cria/faculties',
-        get_string('faculties', 'local_cria'),
-        get_string('faculties_help', 'local_cria'),
-        '', PARAM_TEXT, 255
-    ));
-
-    // Programs
-    $settings->add( new admin_setting_configtextarea(
-        'local_cria/programs',
-        get_string('programs', 'local_cria'),
-        get_string('programs_help', 'local_cria'),
-        '', PARAM_TEXT, 255
-    ));
-
-
-
 
     $ADMIN->add('localplugins', $settings);
 
