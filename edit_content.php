@@ -22,11 +22,13 @@ $intent_id = required_param('intent_id', PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
 
 $INTENT = new intent($intent_id);
+$BOT = new bot($INTENT->get_bot_id());
 
 if ($id != 0) {
     $formdata = $DB->get_record('local_cria_files', array('id' => $id));
     $formdata->bot_id = $INTENT->get_bot_id();
     $formdata->keywords = json_decode($formdata->keywords);
+    $formdata->parsingstrategy = $BOT->get_parse_strategy();;
 } else {
     $formdata = new stdClass();
 // Set bot id in formdata
@@ -36,6 +38,7 @@ if ($id != 0) {
     $formdata->lang = $INTENT->get_lang();
     $formdata->faculty = $INTENT->get_faculty();
     $formdata->program = $INTENT->get_program();
+    $formdata->parsingstrategy = $BOT->get_parse_strategy();;
 }
 
 // Create form
@@ -211,8 +214,14 @@ if ($mform->is_cancelled()) {
             $PARSER = new criaparse();
             $INTENT = new intent($data->intent_id);
             $BOT = new bot($INTENT->get_bot_id());
+
+            $parsing_strategy = $BOT->get_parse_strategy();
+            // If $BOT->get_parse_strategy() is not equal to $data->parsingstrategy, then update $parsing_strategy
+            if ($data->parsingstrategy != $BOT->get_parse_strategy()) {
+                $parsing_strategy = $data->parsingstrategy;
+            }
             // Set parsing strategy based on file type.
-            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type($content_data['file_type'], $BOT->get_parse_strategy());
+            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type($content_data['file_type'], $parsing_strategy);
 
             $results = $PARSER->execute($parsing_strategy, $path . '/' . $converted_file_name);
             if ($results['status'] != 200) {

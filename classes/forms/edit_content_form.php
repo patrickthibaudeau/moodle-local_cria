@@ -100,6 +100,14 @@ class edit_content_form extends \moodleform
             );
         }
 
+        // Parsing strategy select menu
+        $strategies = base::get_parsing_strategies();
+        $mform->addElement(
+            'select',
+            'parsingstrategy',
+            get_string('parse_strategy', 'local_cria'),
+            $strategies
+        );
 
 
         // Keywords multiselect element
@@ -111,55 +119,6 @@ class edit_content_form extends \moodleform
         );
         $keywords->setMultiple(true);
 
-
-        $mform->addElement(
-            'html',
-            '<h3>' . get_string('audience', 'local_cria') . '</h3>'
-        );
-        // Lang form element
-        $mform->addElement(
-            'select',
-            'lang',
-            get_string('language', 'local_cria'),
-            base::get_languages()
-        );
-        $mform->setType(
-            'lang',
-            PARAM_TEXT
-        );
-
-        // Faculty form element
-        $mform->addElement(
-            'select',
-            'faculty',
-            get_string('faculty', 'local_cria'),
-            base::get_faculties()
-        );
-        $mform->setType(
-            'faculty',
-            PARAM_TEXT
-        );
-
-        // Programs form element
-        $mform->addElement(
-            'select',
-            'program',
-            get_string('program', 'local_cria'),
-            base::get_programs()
-        );
-        $mform->setType(
-            'program',
-            PARAM_TEXT
-        );
-
-        // Add HTML Element to output template content_form_progress_bars
-        $mform->addElement(
-            'html',
-            $OUTPUT->render_from_template(
-                'local_cria/content_form_progress_bars',
-                []
-            )
-        );
 
         $this->add_action_buttons();
         $this->set_data($formdata);
