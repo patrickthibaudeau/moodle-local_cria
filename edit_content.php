@@ -5,7 +5,9 @@ require_once("../../config.php");
 require_once($CFG->dirroot . "/local/cria/classes/forms/edit_content_form.php");
 
 use local_cria\base;
+use local_cria\bot;
 use local_cria\criabot;
+use local_cria\criaparse;
 use local_cria\file;
 use local_cria\intent;
 
@@ -117,25 +119,85 @@ if ($mform->is_cancelled()) {
         'content',
         $data->intent_id
     );
+    // Iterate through each file
     foreach ($files as $file) {
         if ($file->get_filename() != '.' && $file->get_filename() != '') {
-            // Insert file name
-            $content_data['name'] = $file->get_filename();
-//            print_object($file->get_mimetype());
-//            die;
             // Insert file type
             $content_data['file_type'] = $FILE->get_file_type_from_mime_type($file->get_mimetype());
-
+            // get file name
             $file_name = $file->get_filename();
+            // Convert files to docx based on file type
+            $converted_file_name = '';
+            // Has file been converted
+            $file_was_converted = false;
+            // Copy file to path
+            $file->copy_content_to($path . '/' . $file_name);
+            // Convert file to docx if file is a pdf, html, or doc
+            // Otherwise leave as is
+            switch ($content_data['file_type']) {
+                case 'pdf':
+                    $converted_file = $FILE->convert_file_to_docx($path, $file_name, 'pdf');
+                    // Replace .pdf to docx in filename
+                    $converted_file_name = str_replace('.pdf', '.docx', $file_name);
+                    $content_data['file_type'] = 'docx';
+                    $content_data['name'] = $converted_file_name;
+                    $file_was_converted = true;
+                    break;
+                case 'html':
+                    $converted_file = $FILE->convert_file_to_docx($path, $file_name, 'html');
+                    // Replace .html to docx in filename
+                    $converted_file_name = str_replace('.html', '.docx', $file_name);
+                    $content_data['file_type'] = 'docx';
+                    $content_data['name'] = $converted_file_name;
+                    $file_was_converted = true;
+                    break;
+                case 'doc':
+                    $converted_file = $FILE->convert_file_to_docx($path, $file_name, 'doc');
+                    // Replace .doc to docx in filename
+                    $converted_file_name = str_replace('.doc', '.docx', $file_name);
+                    $content_data['file_type'] = 'docx';
+                    $content_data['name'] = $converted_file_name;
+                    $file_was_converted = true;
+                    break;
+                case 'rtf':
+                    $converted_file = $FILE->convert_file_to_docx($path, $file_name, 'rtf');
+                    // Replace .rtf to docx in filename
+                    $converted_file_name = str_replace('.rtf', '.docx', $file_name);
+                    $content_data['file_type'] = 'docx';
+                    $content_data['name'] = $converted_file_name;
+                    $file_was_converted = true;
+                default:
+                    $content_data['name'] = $file_name;
+                    if ($content_data['file_type'] == 'docx') {
+                        // Copy file to temp path
+                        $file->copy_content_to($path . '/' . $file_name);
+                    }
+                    $converted_file = $path . '/' . $file_name;
+                    $converted_file_name = $file_name;
+                    break;
+            }
+            $converted_file_path = $path . '/' . $converted_file_name;
+            // Save converted file to moodle
+            if ($file_was_converted) {
+                $fileinfo = [
+                    'contextid' => $context->id,   // ID of the context.
+                    'component' => 'local_cria', // Your component name.
+                    'filearea' => 'content',       // Usually = table name.
+                    'itemid' => $data->intent_id,              // Usually = ID of row in table.
+                    'filepath' => '/',            // Any path beginning and ending in /.
+                    'filename' => $converted_file_name,   // Any filename.
+                ];
+
+                $fs->create_file_from_pathname($fileinfo, $converted_file_path);
+                // Delete the original file from the file area
+                $file->delete();
+            }
             // Verification paramaters
             $content_verification = [
                 'name' => $file_name,
                 'intent_id' => $data->intent_id
             ];
             if (!$DB->get_record('local_cria_files', $content_verification)) {
-                $file_path = $path . '/' . $file_name;
-                // Copy to temp area
-                $file->copy_content_to($file_path);
                 // Insert the content into the database
                 $file_id = $DB->insert_record('local_cria_files', $content_data);
 
@@ -145,15 +207,28 @@ if ($mform->is_cancelled()) {
                 $DB->update_record('local_cria_files', $content_data);
                 $update = true;
             }
+// Pass converted file into preprocessing parser and get all nodes.
+            $PARSER = new criaparse();
+            $INTENT = new intent($data->intent_id);
+            $BOT = new bot($INTENT->get_bot_id());
+            // Set parsing strategy based on file type.
+            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type($content_data['file_type'], $BOT->get_parse_strategy());
 
-// Upload/update files to indexing server
-            $upload = $FILE->upload_files_to_indexing_server($bot_name, $file_path, $file_name, false);
-// Delete the file from the server
-//            unlink($file_path);
-            if ($upload->status != 200) {
-                \core\notification::error('Error uploading file to indexing server: ' . $upload->message);
+            $results = $PARSER->execute($parsing_strategy, $path . '/' . $converted_file_name);
+            if ($results['status'] != 200) {
+                \core\notification::error('Error parsing file: ' . $results['message']);
+            } else {
+
+                $nodes = $results['nodes'];
+                // Send nodes to indexing server
+                $upload = $FILE->upload_nodes_to_indexing_server($bot_name, $nodes, $file_name, $content_data['file_type'], false);
+                if ($upload->status != 200) {
+                    \core\notification::error('Error uploading file to indexing server: ' . $upload->message);
+                }
             }
-
+            // Delete the file from the server
+            base::delete_files($path);
+            redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $data->bot_id . '&intent_id=' . $data->intent_id);
 
         }
     }

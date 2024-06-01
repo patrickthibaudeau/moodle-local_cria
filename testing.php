@@ -7,6 +7,7 @@ require_once("$CFG->dirroot/local/cria/classes/gpttokenizer/Gpt3Tokenizer.php");
 require_once("$CFG->dirroot/local/cria/classes/gpttokenizer/Merges.php");
 require_once("$CFG->dirroot/local/cria/classes/gpttokenizer/Vocab.php");
 
+use local_cria\base;
 use local_cria\datatables;
 use local_cria\criadex;
 use local_cria\criabot;
@@ -14,6 +15,10 @@ use local_cria\criaembed;
 use local_cria\gpt;
 use local_cria\intent;
 use local_cria\questions;
+use local_cria\files;
+use local_cria\file;
+use local_cria\bot;
+use local_cria\criaparse;
 
 // CHECK And PREPARE DATA
 global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
@@ -36,17 +41,46 @@ $prompt = optional_param('prompt', '', PARAM_TEXT);
 //**********************
 echo $OUTPUT->header();
 
-$bot_id = 98;
-$prompt = "Who teaches the course?";
+//print_object(base::get_parsing_strategies());
+//$PARSER = new \local_cria\criaparse();
+//print_object($PARSER->get_strategies());
+//$results = $PARSER->execute('PARAGRAPH', '/var/www/moodledata/temp/wu.docx');
+//print_object($results);
+//file_put_contents('/var/www/moodledata/temp/wu.json', json_encode($results, JSON_PRETTY_PRINT));
+$FILE = new file();
+$path = '/var/www/moodledata/temp/';
+$filename = 'a_test.pdf';
+
+$FILE->convert_pdf_to_docx($path, $filename);
+die;
+
+$bot_id = 1;
+$content = file_get_contents('/var/www/html/local/cria/test_minutes.txt');
 $BOT = new \local_cria\bot($bot_id);
 
-$system_message = 'You are a business writer who writes RFPs for clients.';
-$full_prompt = 'Learning Management System Moodle Partner Secure network
-With the context provided, generate an RFP for York University.
-Based on the content above, write an RFP for York University';
+$bot_params = json_decode($BOT->get_bot_parameters_json());
+
+$content = str_replace("\n", ' ', $content);
 
 
-$result = criadex::query(1, $system_message, $full_prompt, 14384, 0.1, 0.1);
+$full_prompt = $content . ' Q: Create meeting notes from the context provided and separate the notes by topic. Each topic should be in a 
+        numbered list. Once done, create all action items from the context. Format the action items as a list having 
+        the following headings: Assigned to, Description, Date due';
+
+//$test = criadex::query(
+//    $bot_params->llm_model_id,
+//    $bot_params->system_message,
+//    $full_prompt,
+//    $bot_params->max_tokens,
+//    $bot_params->temperature,
+//    $bot_params->top_p
+//);
+//
+//print_object($test);
+//die;
+
+$result = gpt::get_response($bot_id, $full_prompt, $content, false);
+
 print_object($result);
 //$INTENT = new \local_cria\intent(2);
 //$INTENT->create_example_questions(11);

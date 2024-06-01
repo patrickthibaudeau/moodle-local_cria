@@ -279,6 +279,12 @@ class bot extends crud
     private $bot_locale;
 
     /**
+     * @var string
+     */
+    private $parse_strategy;
+
+
+    /**
      *
      *
      */
@@ -304,6 +310,7 @@ class bot extends crud
         $this->description = $result->description ?? '';
         $this->bot_type = $result->bot_type ?? 0;
         $this->system_reserved = $result->system_reserved ?? 0;
+        $this->parse_strategy = $result->parse_strategy ?? '';
         $this->plugin_path = $result->plugin_path ?? '';
         $this->model_id = $result->model_id ?? 0;
         $this->publish = $result->publish ?? 0;
@@ -390,6 +397,14 @@ class bot extends crud
     public function get_publish(): int
     {
         return $this->publish;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_parse_strategy(): string
+    {
+        return $this->parse_strategy;
     }
 
     /**

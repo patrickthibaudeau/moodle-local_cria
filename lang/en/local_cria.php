@@ -182,6 +182,8 @@ $string['no_context_email'] = 'No context notification email';
 $string['no_context_email_help'] = 'Enter the email address to receive notifications when the bot has no reply (context).';
 $string['no_context_llm_guess'] = 'Use LLM guess';
 $string['no_context_llm_guess_help'] = 'Select Yes if you want the bot to guess at an answer.';
+$string['parse_strategy'] = 'Preprocess strategy';
+$string['parse_strategy_help'] = 'Select the type of preprocessing you would like to use.';
 $string['paste_text'] = 'Paste your text here';
 $string['permissions'] = 'Permissions';
 $string['plugin_path'] = 'Plugin path';
@@ -312,8 +314,12 @@ $string['criadex_api_key'] = 'CriaDex API key';
 $string['criadex_api_key_help'] = 'Enter the API key for the CriaDex instance you are connecting too. ' .
     'Note: MUST BE A MASTER KEY<br> ' .
     '<a href="/local/cria/test-cria.php" class="btn btn-outline-primary btn-sm" target="_blank">Test Criaconnection</a>';
+$string['criaparse_url'] = 'CriaParse URL';
+$string['criaparse_url_help'] = 'Enter the URL for the CriaParse instance you are connecting too.';
 // MinutesMaster
 $string['convert'] = 'Convert';
+$string['convertapi_api_key'] = 'ConvertAPI API Key';
+$string['convertapi_api_key_help'] = 'You must get a ConverAPI API Key from convertapi_api_key';
 $string['date'] = 'Date';
 $string['date_help'] = 'Optional: Enter the time in your preferred format.';
 $string['info'] = 'MinutesMaster';

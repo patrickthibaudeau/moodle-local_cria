@@ -146,6 +146,28 @@ class edit_bot_form extends \moodleform
         );
         // Bot type form element
         if (is_siteadmin()) {
+            // Parse strategy select element
+            $mform->addElement(
+                'select',
+                'parse_strategy',
+                get_string('parse_strategy', 'local_cria'),
+                base::get_parsing_strategies()
+            );
+            // Add rule required for parse strategy
+            $mform->addRule(
+                'parse_strategy',
+                get_string('required'),
+                'required',
+                null,
+                'client'
+            );
+            // Add help button
+            $mform->addHelpButton(
+                'parse_strategy',
+                'parse_strategy',
+                'local_cria'
+            );
+
             $mform->addElement(
                 'select',
                 'bot_type',
@@ -166,15 +188,27 @@ class edit_bot_form extends \moodleform
                 'bot_type',
                 'local_cria'
             );
+
+
         } else {
             $mform->addElement(
                 'hidden',
                 'bot_type'
             );
+
+            $mform->addElement(
+                'hidden',
+                'parse_strategy'
+            );
         }
         $mform->setType(
             'bot_type',
             PARAM_INT
+        );
+
+        $mform->setType(
+            'parse_strategy',
+            PARAM_TEXT
         );
 
         // Bot system message form element

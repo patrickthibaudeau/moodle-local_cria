@@ -366,8 +366,8 @@ class intent extends crud
      */
     public function get_questions(): mixed
     {
-       $QUESTIONS = new questions($this->id);
-         return $QUESTIONS->get_questions();
+        $QUESTIONS = new questions($this->id);
+        return $QUESTIONS->get_questions();
     }
 
     /**
@@ -375,7 +375,8 @@ class intent extends crud
      * @return array|false
      * @throws \dml_exception
      */
-    public function publish_question($question_id) {
+    public function publish_question($question_id)
+    {
         global $DB;
         // Get the question
         $question = $DB->get_record('local_cria_question', ['id' => $question_id]);
@@ -398,18 +399,21 @@ class intent extends crud
         $return_generated_answer = $question->generate_answer ? true : false;
         // Create data set
         $data = array(
-            'question_examples' => explode(',', $question_examples_string),
-            'question_answer' => strip_tags($question->answer),
-            'llm_reply' => $return_generated_answer,
-            'file_metadata' => [
+            'file_contents' => array(
+                'questions' => explode(',', $question_examples_string),
+                'answer' => strip_tags($question->answer),
+                'llm_reply' => $return_generated_answer,
+            ),
+            'file_metadata' => array(
                 'keywords' => $keywords,
                 'question_id' => $question_id,
                 'return_generated_answer' => $return_generated_answer,
-            ]
+            )
         );
         // publish question to bot server
         if ($question->document_name) {
-            $question_content = criabot::question_update($this->get_bot_name(), $question->document_name, $data);
+            $data['file_name'] = $question->document_name;
+            $question_content = criabot::question_update($this->get_bot_name(), $data);
         } else {
             $question_content = criabot::question_create($this->get_bot_name(), $data);
         }
@@ -546,7 +550,8 @@ class intent extends crud
      * @return array
      * @throws \dml_exception
      */
-    public function get_files() {
+    public function get_files()
+    {
         global $DB;
         $files = $DB->get_records('local_cria_files', ['intent_id' => $this->id]);
         return $files;

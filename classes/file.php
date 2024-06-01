@@ -267,6 +267,9 @@ class file extends crud
             case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
                 $file_type = 'docx';
                 break;
+            case 'application/msword':
+                $file_type = 'doc';
+                break;
             case 'application/pdf':
                 $file_type = 'pdf';
                 break;
@@ -366,6 +369,24 @@ class file extends crud
         } else {
             // upload new file
             return criabot::document_create($bot_name, $file_path, $file_name);
+        }
+    }
+
+    /**
+     * @param $bot_name
+     * @param $nodes
+     * @param $file_name
+     * @param $update
+     * @return true
+     */
+    public function upload_nodes_to_indexing_server($bot_name, $nodes, $file_name, $file_type, $update = false)
+    {
+        if ($update) {
+            // update file
+            return criabot::document_update($bot_name, $nodes, $file_name, $file_type, true);
+        } else {
+            // upload new file
+            return criabot::document_create($bot_name, $nodes, $file_name, $file_type);
         }
     }
 
@@ -486,7 +507,8 @@ class file extends crud
      * @param $string
      * @return mixed
      */
-    public function delete_all_between($beginning, $end, $string) {
+    public function delete_all_between($beginning, $end, $string)
+    {
         $beginningPos = strpos($string, $beginning);
         $endPos = strpos($string, $end);
 
@@ -498,4 +520,23 @@ class file extends crud
         return delete_all_between($beginning, $end, str_replace($textToDelete, '', $string));
         // Recursion to ensure all occurrences are replaced
     }
+
+    /**
+     * Convert pdf to docx
+     * @param $pdf_file_path
+     * @param $pdf_file_name
+     * @return string
+     */
+    public function convert_file_to_docx($file_path, $file_name, $file_type = 'pdf')
+    {
+        global $CFG;
+        require_once($CFG->dirroot . '/local/cria/classes/convertapi/lib/ConvertApi/autoload.php');
+        $config = get_config('local_cria');
+        \ConvertApi\ConvertApi::setApiSecret($config->convertapi_api_key);
+        $result = \ConvertApi\ConvertApi::convert('docx', [
+            'File' => $file_path . '/' . $file_name],
+            $file_type);
+        $result->saveFiles($file_path);
+    }
+
 }

@@ -51,6 +51,13 @@ if ($hassiteconfig) {
         '', PARAM_TEXT, 255
     ));
 
+    $settings->add( new admin_setting_configtext(
+        'local_cria/criaparse_url',
+        get_string('criaparse_url', 'local_cria'),
+        get_string('criaparse_url_help', 'local_cria'),
+        '', PARAM_TEXT, 255
+    ));
+
     $settings->add( new admin_setting_configpasswordunmask(
         'local_cria/criadex_api_key',
         get_string('criadex_api_key', 'local_cria'),
@@ -86,6 +93,15 @@ if ($hassiteconfig) {
         'local_cria/cohere_api_key',
         get_string('cohere_api_key', 'local_cria'),
         get_string('cohere_api_key_help', 'local_cria'),
+        '', PARAM_TEXT, 255
+    ));
+
+    // ConvertApi api key
+    // https://www.convertapi.com
+    $settings->add( new admin_setting_configpasswordunmask(
+        'local_cria/convertapi_api_key',
+        get_string('convertapi_api_key', 'local_cria'),
+        get_string('convertapi_api_key_help', 'local_cria'),
         '', PARAM_TEXT, 255
     ));
 

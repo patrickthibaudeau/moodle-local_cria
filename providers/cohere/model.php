@@ -21,10 +21,7 @@ require_login(1, false);
 if ($id) {
     $formdata = $MODEL->get_result();
     $values = json_decode($formdata->value);
-    $formdata->api_resource = $values->api_resource;
-    $formdata->api_version = $values->api_version;
     $formdata->api_key = $values->api_key;
-    $formdata->api_deployment = $values->api_deployment;
     $formdata->api_model = $values->api_model;
 } else {
     $formdata = new stdClass();
@@ -40,10 +37,7 @@ if ($mform->is_cancelled()) {
 } else if ($data = $mform->get_data()) {
 
     $value = new stdClass();
-    $value->api_resource = $data->api_resource;
-    $value->api_version = $data->api_version;
     $value->api_key = $data->api_key;
-    $value->api_deployment = $data->api_deployment;
     $value->api_model = $data->api_model;
     $data->value = json_encode($value);
 

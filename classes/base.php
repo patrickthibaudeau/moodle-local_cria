@@ -454,4 +454,41 @@ class base
         $BOTS = new bots();
         return $BOTS->get_available_child_bots($bot_id);
     }
+
+
+    /**
+     * Returns the list of available parsing strategies
+     * @return array
+     */
+    public static function get_parsing_strategies() {
+        $CRIAPARSE = new criaparse();
+        $parse_strategies = $CRIAPARSE->get_strategies();
+
+        $strategies = [];
+        foreach ($parse_strategies['strategies'] as $key => $strategy) {
+            $strategies[$strategy] = $strategy;
+        }
+        return $strategies;
+    }
+
+    /**
+     * Deletes a folder and all file swithin it.
+     * @return array
+     */
+    public static function delete_files($path) {
+        if (!is_dir($path)) {
+            throw new InvalidArgumentException("$path must be a directory");
+        }
+        if (substr($path, strlen($path) - 1, 1) != '/') {
+            $path .= '/';
+        }
+        $files = glob($path . '*', GLOB_MARK);
+        foreach ($files as $file) {
+            if (is_dir($file)) {
+                deleteFolder($file);
+            } else {
+                unlink($file);
+            }
+        }
+    }
 }

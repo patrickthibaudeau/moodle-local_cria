@@ -101,44 +101,51 @@ class criabot
     /**
      * Upload a document associated to the bot
      * @param $bot_name String
-     * @param $file_path String
+     * @param $nodes Array
      * @param $file_name String
      * @return void
      */
-    public static function document_create($bot_name, $file_path, $file_name) {
+    public static function document_create($bot_name, $nodes, $file_name, $file_type) {
         // Get config
         $config = get_config('local_cria');
+
+        $data = [
+            'file_name' => $file_name,
+            'file_contents' =>  ['nodes' => $nodes],
+            'file_metadata' => ['file_type' => $file_type]
+        ];
         // create document
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            '',
+            json_encode($data),
             '/bots/'. $bot_name  . '/documents/upload',
-            'POST',
-            $file_path,
-            $file_name
+            'POST'
         );
     }
 
     /**
      * Update a document associated to the bot
      * @param $bot_name String
-     * @param $file_path String
+     * @param $nodes $Array
      * @param $file_name String
      * @return void
      */
-    public static function document_update($bot_name, $file_path, $file_name) {
+    public static function document_update($bot_name, $nodes, $file_name, $file_type) {
         // Get config
         $config = get_config('local_cria');
+        $data = [
+            'file_name' => $file_name,
+            'file_contents' =>  ['nodes' => $nodes],
+            'file_metadata' => ['file_type' => $file_type]
+        ];
         // Update document
         return gpt::_make_call(
             $config->criabot_url,
             $config->criadex_api_key,
-            '',
+            json_encode($data),
             '/bots/'. $bot_name  . '/documents/update',
-            'PATCH',
-            $file_path,
-            $file_name
+            'PATCH'
         );
     }
 
@@ -209,12 +216,11 @@ class criabot
 
     /**
      * @param $bot_name
-     * @param $document_name
      * @param $data
      * @return mixed
      * @throws \dml_exception
      */
-    public static function question_update($bot_name, $document_name, $data) {
+    public static function question_update($bot_name, $data) {
         // Get Config
         $config = get_config('local_cria');
 
@@ -223,7 +229,7 @@ class criabot
             $config->criabot_url,
             $config->criadex_api_key,
             json_encode($data),
-            '/bots/'. $bot_name  . '/questions/update?document_name=' . $document_name,
+            '/bots/'. $bot_name  . '/questions/update',
             'PATCH'
         );
     }

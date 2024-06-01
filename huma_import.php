@@ -70,7 +70,7 @@ function create_questions($intent_id, $key, $data)
     $INTENT = new \local_cria\intent($intent_id);
     $questions = $data->$key;
     echo $key . '<br>';
-    print_object($questions);
+
     $params = [];
     foreach ($questions as $question) {
         $params[$i]['value'] = $question->examples[0];

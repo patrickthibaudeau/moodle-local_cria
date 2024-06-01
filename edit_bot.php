@@ -62,6 +62,7 @@ if ($id) {
     $formdata->no_context_llm_guess = 0;
     $formdata->rerank_modle_id = 1;
     $formdata->botwatermark = 0;
+    $formdata->parse_strategy = 'GENERIC';
 }
 $formdata->return = $return;
 

@@ -24,16 +24,13 @@ function process_notes() {
         var prompt = `Create meeting notes from the context provided and separate the notes by topic.
         Also identify action items from the context add add them to the action_items object
         Return the results in the following valid JSON format:
-        @@topic_result@@
         [
             {
              "topic": Topic name,
              "topic_notes: [{"note": "Note 1"}],
-             "action_items": [{"assigned_to": "Person 1", "description": "Description 1", "date_due": "Date 1"}],
+             "action_items": [{"assigned_to": "Person 1", "description": "Description 1", "date_due": "Date 1"}]
             }
-        ]
-        @@/topic_result@@
-`;
+        ]`;
         if (language == 'fr') {
             prompt = `Create meeting notes from the context provided in french and separate the notes by topic. 
         Also identify action items from the context. 
