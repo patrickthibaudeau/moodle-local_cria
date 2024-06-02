@@ -131,5 +131,10 @@ class files {
                 unlink($file_path . '/' . $file->get_filename());
             }
         }
+        // Unset all class instances
+        unset($INTENT);
+        unset($PARSER);
+        unset($FILE);
+        unset($BOT);
     }
 }
