@@ -70,11 +70,9 @@ class local_cria_external_bot extends external_api
         self::validate_context($context);
         $BOT = new bot($id);
 
-        if ($BOT->use_bot_server()) {
-            // Delete bot on indexing server
-            $BOT = new bot($id);
-            $BOT->delete_record();
-        }
+        // Delete bot on indexing server
+        $BOT = new bot($id);
+        $BOT->delete_record();
 
         return true;
     }
