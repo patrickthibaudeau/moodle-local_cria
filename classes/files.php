@@ -83,8 +83,7 @@ class files {
         $FILE = new file();
         // Create a new instance of the Bot class with the bot_id from the current intent
         $BOT = new bot($INTENT->get_bot_id());
-
-// Get the bot name from the current intent
+        // Get the bot name from the current intent
         $bot_name = $INTENT->get_bot_name();
         // set bot parsing strategy
         $bot_parsing_strategy = $BOT->get_parse_strategy();
