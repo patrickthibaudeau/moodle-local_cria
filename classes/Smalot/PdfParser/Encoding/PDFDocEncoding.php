@@ -1,5 +1,9 @@
 <?php
 
+
+
+
+
 /**
  * @file    This file is part of the PdfParser library.
  *

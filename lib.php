@@ -1,5 +1,19 @@
 <?php
 
+/**
+* This file is part of Crai.
+* Cria is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+* Crai is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License along with Crai. If not, see <https://www.gnu.org/licenses/>.
+*
+* @package    local_cria
+* @author     Patrick Thibaudeau
+* @copyright  2024 onwards York University (https://yorku.ca)
+* @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+*/
+
+
+
 use theme_fakesmarts\navdrawer;
 use local_cria\bot_role;
 use local_cria\bot_roles;
@@ -28,16 +42,6 @@ function local_cria_navdrawer_items()
             null,
             new moodle_url('/local/cria/providers.php'),
             'bi-server',
-        );
-    }
-
-    // Link to conversation styles
-    if (has_capability('local/cria:view_conversation_styles', $context)) {
-        $items[] = navdrawer::add(
-            get_string('conversation_styles', 'local_cria'),
-            null,
-            new moodle_url('/local/cria/conversation_styles.php'),
-            'bi-chat-left',
         );
     }
 

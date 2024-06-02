@@ -1,5 +1,9 @@
 <?php
 
+
+
+
+
 namespace Smalot\PdfParser\Encoding;
 
 abstract class AbstractEncoding
