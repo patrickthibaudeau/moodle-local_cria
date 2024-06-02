@@ -1,10 +1,10 @@
 <?php
 
 /**
-* This file is part of Crai.
+* This file is part of Cria.
 * Cria is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-* Crai is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License along with Crai. If not, see <https://www.gnu.org/licenses/>.
+* Cria is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License along with Cria. If not, see <https://www.gnu.org/licenses/>.
 *
 * @package    local_cria
 * @author     Patrick Thibaudeau
@@ -89,7 +89,7 @@ class local_cria_external_cria extends external_api
      */
     public static function get_config_details() {
         $fields = array(
-            'bot_server_api_key' => new external_value(PARAM_TEXT, 'CraiBot API Key', false),
+            'bot_server_api_key' => new external_value(PARAM_TEXT, 'CriaBot API Key', false),
             'bot_server_url' => new external_value(PARAM_TEXT, 'CriaBot server url', true),
             'embedding_server_url' => new external_value(PARAM_TEXT, 'CriaEmbed server url', true)
         );
