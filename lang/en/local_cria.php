@@ -267,7 +267,11 @@ $string['use_bot_server'] = 'Requires uploading documents?';
 $string['use_bot_server_help'] = 'If you this type rqeuires uploading documents, select Yes.';
 $string['user_prompt'] = 'User prompt';
 $string['userid'] = 'User id';
-$string['web_page'] = 'Web Page';
+$string['web_page_help'] = 'Enter web page addresses including http/https. Separate each address with a new line.<br>'
+ . '<br>Please note that some web pages may not permit their content to be captured. '
+ . 'If you encounter a \'no content\' message while testing your bot, consider downloading the generated document to '
+ . 'check the content.';
+$string['web_pages'] = 'Web Pages';
 $string['welcome_message'] = 'Welcome message';
 $string['welcome_message_help'] = 'The welcome message to be displayed when the bot is used';
 $string['word_count'] = 'Word count';

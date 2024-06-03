@@ -545,6 +545,7 @@ class file extends crud
     {
         global $CFG;
         require_once($CFG->dirroot . '/local/cria/classes/convertapi/lib/ConvertApi/autoload.php');
+        $file_path = rtrim($file_path, '/');
         $config = get_config('local_cria');
         \ConvertApi\ConvertApi::setApiSecret($config->convertapi_api_key);
         $result = \ConvertApi\ConvertApi::convert('docx', [

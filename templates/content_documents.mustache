@@ -9,8 +9,15 @@
                     <i class="bi bi-plus-circle"></i>
                 </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="edit_content.php?intent_id={{id}}" title="{{#str}}upload_files, local_cria{{/str}}">{{#str}}upload_files, local_cria{{/str}}</a>
-<!--                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#urlModal" title="{{#str}}web_page, local_cria{{/str}}">{{#str}}web_page, local_cria{{/str}}</a>-->
+                    <a
+                            class="dropdown-item"
+                            href="edit_content.php?intent_id={{id}}"
+                            title="{{#str}}upload_files, local_cria{{/str}}">{{#str}}upload_files, local_cria{{/str}}</a>
+                    <a
+                            class="dropdown-item"
+                            href="#" data-toggle="modal"
+                            data-target="#urlModal"
+                            title="{{#str}}web_pages, local_cria{{/str}}">{{#str}}web_pages, local_cria{{/str}}</a>
                 </div>
             </div>
             </a>
@@ -65,20 +72,29 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="urlModalLabel">{{#str}}web_page, local_cria{{/str}}</h5>
+                <h5 class="modal-title" id="urlModalLabel">{{#str}}web_pages, local_cria{{/str}}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
+                <div class="alert alert-info" role="alert">
+                    {{#str}}web_page_help, local_cria{{/str}}
+                </div>
                 <div class="field-group">
                     <label for="url">URL</label>
-                    <input type="text" id="url" name="url" class="form-control" placeholder="https://example.com">
+                    <textarea
+                            id="local-cria-urls"
+                            name="local-cria-urls"
+                            class="form-control"
+                            placeholder="https://example.com"
+                            rows="10"
+                    ></textarea>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{#str}}close, local_cria{{/str}}</button>
-                <button type="button" id="btn-cria-save-url" data-intent_id="{{id}}" class="btn btn-primary">{{#str}}save, local_cria{{/str}}</button>
+                <button type="button" id="btn-cria-save-urls" data-intent_id="{{id}}" class="btn btn-primary">{{#str}}save, local_cria{{/str}}</button>
             </div>
         </div>
     </div>

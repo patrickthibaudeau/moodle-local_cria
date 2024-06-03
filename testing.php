@@ -55,106 +55,14 @@ $prompt = optional_param('prompt', '', PARAM_TEXT);
 //**********************
 echo $OUTPUT->header();
 
-//print_object(base::get_parsing_strategies());
-//$PARSER = new \local_cria\criaparse();
-//print_object($PARSER->get_strategies());
-//$results = $PARSER->execute('PARAGRAPH', '/var/www/moodledata/temp/wu.docx');
-//print_object($results);
-//file_put_contents('/var/www/moodledata/temp/wu.json', json_encode($results, JSON_PRETTY_PRINT));
-$FILE = new file();
-$path = '/var/www/moodledata/temp/';
-$filename = 'a_test.pdf';
+$urls = [
+    'https://openai.com/index/hello-gpt-4o/'
+];
 
-$FILE->convert_pdf_to_docx($path, $filename);
-die;
+$FILES = new files(75);
 
-$bot_id = 1;
-$content = file_get_contents('/var/www/html/local/cria/test_minutes.txt');
-$BOT = new \local_cria\bot($bot_id);
+$FILES->publish_urls($urls);
 
-$bot_params = json_decode($BOT->get_bot_parameters_json());
-
-$content = str_replace("\n", ' ', $content);
-
-
-$full_prompt = $content . ' Q: Create meeting notes from the context provided and separate the notes by topic. Each topic should be in a 
-        numbered list. Once done, create all action items from the context. Format the action items as a list having 
-        the following headings: Assigned to, Description, Date due';
-
-//$test = criadex::query(
-//    $bot_params->llm_model_id,
-//    $bot_params->system_message,
-//    $full_prompt,
-//    $bot_params->max_tokens,
-//    $bot_params->temperature,
-//    $bot_params->top_p
-//);
-//
-//print_object($test);
-//die;
-
-$result = gpt::get_response($bot_id, $full_prompt, $content, false);
-
-print_object($result);
-//$INTENT = new \local_cria\intent(2);
-//$INTENT->create_example_questions(11);
-//$BOT->delete_record();
-
-//$session = criabot::chat_start();
-//$chat_id = $session->chat_id;
-//print_object($chat_id);
-//$results = local_cria_external_gpt::response($bot_id,$chat_id,$prompt, '', '');
-//print_object($results);
-
-//$savy = file_get_contents('/var/www/html/local/cria/SAVY_entities_Keywords.json');
-////
-//$entities = json_decode( $savy );
-//
-//
-////print_object($entities);
-//
-//foreach($entities as $entity) {
-//    $entity->bot_id = $bot_id;
-//    $entity->name = $entity->entity;
-//    $entity->usermodified = $USER->id;
-//    $entity->timemodified = time();
-//    $entity->timecreated = time();
-//    $entity_id = $DB->insert_record('local_cria_entity', $entity);
-//    // Loop through all values and insert into the keyword table
-//    foreach($entity->values as $value) {
-//        $keyword = new \stdClass();
-//        $keyword->entity_id = $entity_id;
-//        $keyword->value = $value->value;
-//        $keyword->usermodified = $USER->id;
-//        $keyword->timemodified = time();
-//        $keyword->timecreated = time();
-//        $keyword_id = $DB->insert_record('local_cria_keyword', (array)$keyword);
-//        // Loop through all synonyms and insert into the synonym table
-//        foreach($value->synonyms as $key => $synonym) {
-//            $syn = new \stdClass();
-//            $syn->keyword_id = $keyword_id;
-//            $syn->value = $synonym;
-//            $syn->usermodified = $USER->id;
-//            $syn->timemodified = time();
-//            $syn->timecreated = time();
-//            $syn_id = $DB->insert_record('local_cria_synonyms', (array)$syn);
-//        }
-//    }
-//}
-
-
-//$intents_result = criadex::get_top_intent($bot_id, $prompt);
-//print_object($intents_result);
-//$session = criabot::chat_start($BOT->get_bot_name());
-//$chat_id = $session->chat_id;
-//print_object($chat_id);
-//$result = criabot::chat_send( $chat_id, $prompt, [], true );
-//print_object($result);
-
-//$json = file_get_contents('/var/www/moodledata/temp/chunk_result_0.json');
-//$content = json_decode($json);
-//$chunks = gpt::_split_into_chunks(55, $content);
-//print_object($content);
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

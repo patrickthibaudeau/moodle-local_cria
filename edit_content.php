@@ -207,28 +207,6 @@ if ($mform->is_cancelled()) {
             }
             $converted_file_path = $path . '/' . $converted_file_name;
 
-            // Save converted file to moodle
-            if ($file_was_converted) {
-                $fileinfo = [
-                    'contextid' => $context->id,   // ID of the context.
-                    'component' => 'local_cria', // Your component name.
-                    'filearea' => 'content',       // Usually = table name.
-                    'itemid' => $data->intent_id,              // Usually = ID of row in table.
-                    'filepath' => '/',            // Any path beginning and ending in /.
-                    'filename' => $converted_file_name,   // Any filename.
-                ];
-
-                $fs->create_file_from_pathname($fileinfo, $converted_file_path);
-                // Delete the original file from the file area
-                $file->delete();
-            }
-
-// Pass converted file into preprocessing parser and get all nodes.
-//            $PARSER = new criaparse();
-//            $INTENT = new intent($data->intent_id);
-//            $BOT = new bot($INTENT->get_bot_id());
-            // set bot parsing strategy
-//            $bot_parsing_strategy = $BOT->get_parse_strategy();
             // If $BOT->get_parse_strategy() is not equal to $data->parsingstrategy, then update $parsing_strategy
             if ($data->parsingstrategy != $BOT->get_parse_strategy()) {
                 $bot_parsing_strategy = $data->parsingstrategy;
@@ -245,6 +223,21 @@ if ($mform->is_cancelled()) {
                 if ($upload->status != 200) {
                     \core\notification::error('Error uploading file to indexing server: ' . $upload->message);
                 } else {
+                    // Save converted file to moodle
+                    if ($file_was_converted) {
+                        $fileinfo = [
+                            'contextid' => $context->id,   // ID of the context.
+                            'component' => 'local_cria', // Your component name.
+                            'filearea' => 'content',       // Usually = table name.
+                            'itemid' => $data->intent_id,              // Usually = ID of row in table.
+                            'filepath' => '/',            // Any path beginning and ending in /.
+                            'filename' => $converted_file_name,   // Any filename.
+                        ];
+
+                        $fs->create_file_from_pathname($fileinfo, $converted_file_path);
+                        // Delete the original file from the file area
+                        $file->delete();
+                    }
                     // Verification paramaters
                     $content_verification = [
                         'name' => $file_name,

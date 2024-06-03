@@ -104,34 +104,35 @@ class local_cria_external_content extends external_api {
         return new external_value(PARAM_TEXT, 'return code');
     }
 
-    //**************************** Add URL **********************
+    //**************************** PUBLISH URLS **********************
     /**
      * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function add_url_parameters() {
+    public static function publish_urls_parameters() {
         return new external_function_parameters(
             array(
                 'intent_id' => new external_value(PARAM_INT, 'Intent id', false, 0),
-                'url' => new external_value(PARAM_TEXT, 'Web page URL', false, '')
+                'urls' => new external_value(PARAM_RAW, 'Web page URLs', false, '')
             )
         );
     }
 
     /**
-     * @param $id
-     * @return true
+     * @param $intent_id
+     * @param $urls
+     * @return string
      * @throws dml_exception
      * @throws invalid_parameter_exception
      * @throws restricted_context_exception
      */
-    public static function add_url($intent_id, $url) {
+    public static function publish_urls($intent_id, $urls) {
         global $CFG, $USER, $DB, $PAGE;
 
         //Parameter validation
-        $params = self::validate_parameters(self::add_parameters(), array(
+        $params = self::validate_parameters(self::publish_urls_parameters(), array(
                 'intent_id' => $intent_id,
-                'url' => $url
+                'urls' => $urls
             )
         );
 
@@ -140,24 +141,27 @@ class local_cria_external_content extends external_api {
         $context = \context_system::instance();
         self::validate_context($context);
 
+        // Convert urls to an array of urls seperated by new line
+        $urls = explode("\n", $urls);
+        $FILES = new files($intent_id);
 
-//        if ($result->status == 200) {
-//            return $result->status;
-//        } else {
-//            $error = 'Status: ' . $result->status .
-//                ' Code: ' . $result->code .
-//                ' Message: ' . $result->message;
-//            return  $error;
-//        }
-        return '200';
+        $result = $FILES->publish_urls($urls);
+        if ($result->status == 200) {
+            return $result->status;
+        } else {
+            $error = 'Status = ' . $result->status .
+                '<br> Message =  ' . $result->message;
+            return  $error;
+        }
+
     }
 
     /**
      * Returns description of method result value
      * @return external_description
      */
-    public static function add_url_returns() {
-        return new external_value(PARAM_TEXT, 'return code');
+    public static function publish_urls_returns() {
+        return new external_value(PARAM_RAW, 'return code');
     }
 
     //**************************** Republish all files **********************

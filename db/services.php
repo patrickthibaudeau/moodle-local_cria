@@ -23,9 +23,9 @@ $functions = array(
         'capabilities' => '',
         'ajax' => true
     ),
-    'cria_content_add_url' => array(
+    'cria_content_publish_urls' => array(
         'classname' => 'local_cria_external_content',
-        'methodname' => 'add_url',
+        'methodname' => 'publish_urls',
         'classpath' => 'local/cria/classes/external/content.php',
         'description' => 'Add Web Page',
         'type' => 'write',
