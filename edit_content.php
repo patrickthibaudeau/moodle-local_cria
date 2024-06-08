@@ -1,17 +1,16 @@
 <?php
 
 /**
-* This file is part of Cria.
-* Cria is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-* Cria is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License along with Cria. If not, see <https://www.gnu.org/licenses/>.
-*
-* @package    local_cria
-* @author     Patrick Thibaudeau
-* @copyright  2024 onwards York University (https://yorku.ca)
-* @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-*/
-
+ * This file is part of Cria.
+ * Cria is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * Cria is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License along with Cria. If not, see <https://www.gnu.org/licenses/>.
+ *
+ * @package    local_cria
+ * @author     Patrick Thibaudeau
+ * @copyright  2024 onwards York University (https://yorku.ca)
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 
 
 require_once("../../config.php");
@@ -84,14 +83,10 @@ if ($mform->is_cancelled()) {
 
     // Does the folder exist for cria
     $path = $CFG->dataroot . '/temp/cria';
-    if (!is_dir($path)) {
-        mkdir($path);
-    }
+    base::create_directory_if_not_exists($path);
     // Does the folder exist for the bot
     $path = $CFG->dataroot . '/temp/cria/' . $data->intent_id;
-    if (!is_dir($path)) {
-        mkdir($path);
-    }
+    base::create_directory_if_not_exists($path);
 
     // If id, then simple upload the file using file picker
     if ($data->id) {
@@ -105,6 +100,17 @@ if ($mform->is_cancelled()) {
         redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $data->bot_id . '&intent_id=' . $data->intent_id);
     } else {
         $FILE = new file();
+
+        // Get draft_area_files
+        $draft_area_files = file_get_all_files_in_draftarea($data->importedFile, '/');
+
+        // loop through each file and add filename to drat_area_filenames array
+        // Draft_area_filenames will be used to compare with the files in the file area
+        $draft_area_filenames = [];
+        foreach ($draft_area_files as $file) {
+            $draft_area_filenames[] = $file->filename;
+        }
+
         // Save all files to the server
         // Then add each individual file to the database
         file_save_draft_area_files(
@@ -141,9 +147,10 @@ if ($mform->is_cancelled()) {
     $BOT = new bot($INTENT->get_bot_id());
     // set bot parsing strategy
     $bot_parsing_strategy = $BOT->get_parse_strategy();
+
     // Iterate through each file
     foreach ($files as $file) {
-        if ($file->get_filename() != '.' && $file->get_filename() != '') {
+        if ($file->get_filename() != '.' && $file->get_filename() != '' && in_array($file->get_filename(), $draft_area_filenames)) {
             // Insert file type
             $content_data['file_type'] = $FILE->get_file_type_from_mime_type($file->get_mimetype());
             // get file name
@@ -164,36 +171,16 @@ if ($mform->is_cancelled()) {
                 // Otherwise leave as is
                 switch ($content_data['file_type']) {
                     case 'pdf':
-                        $converted_file = $FILE->convert_file_to_docx($path, $file_name, 'pdf');
-                        // Replace .pdf to docx in filename
-                        $converted_file_name = str_replace('.pdf', '.docx', $file_name);
-                        $content_data['file_type'] = 'docx';
-                        $content_data['name'] = $converted_file_name;
-                        $file_was_converted = true;
-                        break;
                     case 'html':
-                        $converted_file = $FILE->convert_file_to_docx($path, $file_name, 'html');
-                        // Replace .html to docx in filename
-                        $converted_file_name = str_replace('.html', '.docx', $file_name);
-                        $content_data['file_type'] = 'docx';
-                        $content_data['name'] = $converted_file_name;
-                        $file_was_converted = true;
-                        break;
                     case 'doc':
-                        $converted_file = $FILE->convert_file_to_docx($path, $file_name, 'doc');
-                        // Replace .doc to docx in filename
-                        $converted_file_name = str_replace('.doc', '.docx', $file_name);
+                    case 'rtf':
+                        $converted_file = $FILE->convert_file_to_docx($path, $file_name, $content_data['file_type']);
+                        // Replace .pdf to docx in filename
+                        $converted_file_name = str_replace('.' . $content_data['file_type'], '.docx', $file_name);
                         $content_data['file_type'] = 'docx';
                         $content_data['name'] = $converted_file_name;
                         $file_was_converted = true;
                         break;
-                    case 'rtf':
-                        $converted_file = $FILE->convert_file_to_docx($path, $file_name, 'rtf');
-                        // Replace .rtf to docx in filename
-                        $converted_file_name = str_replace('.rtf', '.docx', $file_name);
-                        $content_data['file_type'] = 'docx';
-                        $content_data['name'] = $converted_file_name;
-                        $file_was_converted = true;
                     default:
                         $content_data['name'] = $file_name;
                         if ($content_data['file_type'] == 'docx') {
@@ -257,8 +244,6 @@ if ($mform->is_cancelled()) {
             }
             // Delete the file from the server
             base::delete_files($path);
-            redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $data->bot_id . '&intent_id=' . $data->intent_id);
-
         }
     }
     // Redirect to content page

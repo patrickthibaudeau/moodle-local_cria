@@ -554,4 +554,39 @@ class file extends crud
         $result->saveFiles($file_path);
     }
 
+    public function handle_file_conversion($file, $path, $file_name, $content_data, $config) {
+        $converted_file_name = '';
+        $file_was_converted = false;
+        $file->copy_content_to($path . '/' . $file_name);
+
+        if ($config->convertapi_api_key == '') {
+            $content_data['name'] = $file_name;
+            $converted_file_name = $file_name;
+        } else {
+            // Convert file to docx if file is a pdf, html, or doc
+            // Otherwise leave as is
+            switch ($content_data['file_type']) {
+                case 'pdf':
+                case 'html':
+                case 'doc':
+                case 'rtf':
+                    $converted_file = $FILE->convert_file_to_docx($path, $file_name, $content_data['file_type']);
+                    $converted_file_name = str_replace('.' . $content_data['file_type'], '.docx', $file_name);
+                    $content_data['file_type'] = 'docx';
+                    $content_data['name'] = $converted_file_name;
+                    $file_was_converted = true;
+                    break;
+                default:
+                    $content_data['name'] = $file_name;
+                    if ($content_data['file_type'] == 'docx') {
+                        $file->copy_content_to($path . '/' . $file_name);
+                    }
+                    $converted_file = $path . '/' . $file_name;
+                    $converted_file_name = $file_name;
+                    break;
+            }
+        }
+        return [$converted_file_name, $file_was_converted];
+    }
+
 }

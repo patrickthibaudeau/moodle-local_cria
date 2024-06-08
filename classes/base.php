@@ -505,4 +505,14 @@ class base
             }
         }
     }
+
+    /**
+     * Returns the list of available parsing strategies
+     * @return array
+     */
+    public static function create_directory_if_not_exists($path) {
+        if (!is_dir($path)) {
+            mkdir($path);
+        }
+    }
 }
