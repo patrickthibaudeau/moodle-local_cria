@@ -28,11 +28,11 @@ global $CFG, $OUTPUT, $USER, $PAGE, $DB, $SITE;
 $context = CONTEXT_SYSTEM::instance();
 
 require_login(1, false);
-$entity_id = required_param('entity_id', PARAM_INT);
+//$entity_id = required_param('entity_id', PARAM_INT);÷
 $id = optional_param('id', 0, PARAM_INT);
 
-
-$ENTITY = new entity($entity_id);
+$KEYWORD = new keyword($id);
+$ENTITY = new entity($KEYWORD->get_entity_id());
 
 if ($id != 0) {
     $formdata = $DB->get_record('local_cria_keyword', array('id' => $id));

@@ -78,15 +78,6 @@ datatables::set_action_column('id');
 datatables::set_action_class_name('keyword');
 datatables::set_start($start);
 datatables::set_end($end);
-//datatables::set_action_item_buttons([
-//    0 => [
-//        'title' => get_string('keywords', 'local_cria'),
-//        'class' => 'btn btn-outline-primary btn-sm',
-//        'href' => '/local/cria/keywords.php',
-//        'data-original-title' => '<i class="bi bi-key"></i>',
-//        'query_strings' => ['id']
-//    ]
-//]);
 // Get results
 $data = datatables::get_records();
 

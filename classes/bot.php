@@ -1215,7 +1215,6 @@ class bot extends crud
     {
         $ENTITIES = new entities($this->id);
         $keywords = [];
-        $i = 0;
         foreach ($ENTITIES->get_records() as $entity) {
             $KEYWORDS = new keywords($entity->id);
             $entity_keywords = $KEYWORDS->get_records();
@@ -1226,7 +1225,7 @@ class bot extends crud
             $keywords[$entity->name] = $options;
 
             unset($KEYWORDS);
-            $i++;
+
         }
         unset($ENTITIES);
 

@@ -263,9 +263,15 @@ class datatables
             foreach ($action_item_button['query_strings'] as $query_string => $column_name) {
                 $query_strings[$query_string] = $data->$column_name;
             }
+            // If href is empty, set the vlaue to javascript:void(0);
+            if (empty($action_item_button['href'])) {
+                $action_item_button['href'] = 'javascript:void(0);';
+            } else {
+                $action_item_button['href'] = new \moodle_url($action_item_button['href'], $query_strings);
+            }
             $action_item_buttons[$i] = [
                 'title' => $action_item_button['title'],
-                'href' => new \moodle_url($action_item_button['href'], $query_strings),
+                'href' => $action_item_button['href'],
                 'class' => $action_item_button['class'],
                 'data-original-title' => $action_item_button['data-original-title']
             ];

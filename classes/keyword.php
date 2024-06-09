@@ -240,7 +240,7 @@ class keyword extends crud
         // Add to logs
         $this->insert_log_record($ENTITY->get_bot_id(), $results, $prompt);
 
-        $synonyms = json_decode($results->response->message->content);
+        $synonyms = json_decode($results->agent_response->chat_response->message->content);
         foreach ($synonyms as $synonym) {
             $data = new \stdClass();
             $data->keyword_id = $this->id;
@@ -262,7 +262,7 @@ class keyword extends crud
     public function insert_log_record($bot_id, $results, $prompt)
     {
         // Get token usage
-        $token_usage = $results->response->raw->usage;
+        $token_usage = $results->agent_response->chat_response->raw->usage;
         // loop through token usage and add the prompt tokens and completion tokens
         $prompt_tokens = 0;
         $completion_tokens = 0;
@@ -277,7 +277,7 @@ class keyword extends crud
         logs::insert(
             $bot_id,
             $prompt,
-            $results->response->message->content,
+            $results->agent_response->chat_response->message->content,
             $prompt_tokens,
             $completion_tokens,
             $total_tokens,

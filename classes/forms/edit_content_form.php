@@ -71,12 +71,21 @@ class edit_content_form extends \moodleform
             PARAM_TEXT
         );
 
-        //Header: General
-        $mform->addElement(
-            'header',
-            'add_content_form',
-            get_string('add_content', 'local_cria')
-        );
+        // Set content header
+        if ($formdata->id) {
+            $mform->addElement(
+                'header',
+                'edit_content_form',
+                get_string('edit_content', 'local_cria')
+            );
+        } else {
+            $mform->addElement(
+                'header',
+                'add_content_form',
+                get_string('add_content', 'local_cria')
+            );
+        }
+
 
         $file_options = [
             'maxbytes' => $CFG->maxbytes,
@@ -86,17 +95,17 @@ class edit_content_form extends \moodleform
             ]
         ];
         if ($formdata->id) {
-            $mform->addElement(
-                'filepicker',
-                'importedFile', get_string('file', 'local_cria'),
-                null,
-                $file_options
-            );
-            $mform->addRule(
-                'importedFile',
-                get_string('error_importfile', 'local_cria'),
-                'required'
-            );
+//            $mform->addElement(
+//                'filepicker',
+//                'importedFile', get_string('file', 'local_cria'),
+//                null,
+//                $file_options
+//            );
+//            $mform->addRule(
+//                'importedFile',
+//                get_string('error_importfile', 'local_cria'),
+//                'required'
+//            );
         } else {
             // Add filemanger element
             $mform->addElement(
@@ -112,16 +121,17 @@ class edit_content_form extends \moodleform
                 get_string('error_importfile', 'local_cria'),
                 'required'
             );
+            // Parsing strategy select menu
+            $strategies = base::get_parsing_strategies();
+            $mform->addElement(
+                'select',
+                'parsingstrategy',
+                get_string('parse_strategy', 'local_cria'),
+                $strategies
+            );
+
         }
 
-        // Parsing strategy select menu
-        $strategies = base::get_parsing_strategies();
-        $mform->addElement(
-            'select',
-            'parsingstrategy',
-            get_string('parse_strategy', 'local_cria'),
-            $strategies
-        );
 
 
         // Keywords multiselect element

@@ -70,9 +70,3 @@ $(document).ready(function () {
 
 });
 
-
-//$('#ScheduledCoursesTable').DataTable({
-//    dom: 'lrtip',
-//    stateSave: true
-//});
-

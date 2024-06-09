@@ -34,6 +34,13 @@ require_login(1, false);
 $intent_id = required_param('intent_id', PARAM_INT);
 $id = optional_param('id', 0, PARAM_INT);
 
+// Set page title
+if ($id != 0) {
+    $page_title = get_string('edit_content', 'local_cria');
+} else {
+    $page_title = get_string('add_content', 'local_cria');
+}
+
 $INTENT = new intent($intent_id);
 $BOT = new bot($INTENT->get_bot_id());
 
@@ -254,9 +261,10 @@ if ($mform->is_cancelled()) {
 }
 
 
+
 base::page(
     new moodle_url('/local/cria/edit_content.php'),
-    get_string('add_content', 'local_cria'),
+    $page_title,
     '',
     $context,
     'standard'

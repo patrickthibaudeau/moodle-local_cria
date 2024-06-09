@@ -158,6 +158,7 @@ class intents
                 );
 
                 $documents[$i]['id'] = $file->id;
+                $documents[$i]['intent_id'] = $r->id;
                 $documents[$i]['name'] = $file->name;
                 $documents[$i]['file_type'] = $file->file_type;
                 $documents[$i]['file_url'] = $url;

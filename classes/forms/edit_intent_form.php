@@ -92,57 +92,17 @@ class edit_intent_form extends \moodleform
             null,
             'client'
         );
-        // Add published element to form
+
+        // add hidden element for publish with defautl value = 1
         $mform->addElement(
-            'selectyesno',
+            'hidden',
             'published',
-            get_string('publish', 'local_cria')
+            1
         );
+
         $mform->setType(
             'published',
             PARAM_INT
-        );
-
-
-        $mform->addElement(
-            'html',
-            '<h3>Default audience settings</h3>'
-        );
-
-        // Lang form element
-        $mform->addElement(
-            'select',
-            'lang',
-            get_string('language', 'local_cria'),
-            base::get_languages()
-        );
-        $mform->setType(
-            'lang',
-            PARAM_TEXT
-        );
-
-        // Faculty form element
-        $mform->addElement(
-            'select',
-            'faculty',
-            get_string('faculty', 'local_cria'),
-            base::get_faculties()
-        );
-        $mform->setType(
-            'faculty',
-            PARAM_TEXT
-        );
-
-        // Programs form element
-        $mform->addElement(
-            'select',
-            'program',
-            get_string('program', 'local_cria'),
-            base::get_programs()
-        );
-        $mform->setType(
-            'program',
-            PARAM_TEXT
         );
 
         $this->add_action_buttons();
