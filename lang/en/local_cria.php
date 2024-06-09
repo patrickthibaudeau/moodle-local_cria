@@ -398,3 +398,6 @@ $string['bottom_right'] = 'Bottom right';
 $string['top_left'] = 'Top left';
 $string['top_right'] = 'Top right';
 
+// Tasks
+$string['update_url_content'] = 'Update URL content';
+

@@ -193,11 +193,9 @@ class files
 
         $content_data = [
             'intent_id' => $this->intent_id,
-            'content' => '',
             'keywords' => '',
             'usermodified' => $USER->id,
             'timemodified' => time(),
-            'timecreated' => time(),
         ];
         $errors = '';
 
@@ -294,26 +292,37 @@ class files
                 $errors .= 'Error parsing file: ' . $results['message'] . '<br>';
             } else {
                 $nodes = $results['nodes'];
+                // set variable to update nodes
+                $update_nodes = false;
+
+                // Verification paramaters
+                $content_verification = [
+                    'name' => $file_name,
+                    'intent_id' => $this->intent_id
+                ];
+                // get existing record
+                $record = $DB->get_record('local_cria_files', $content_verification);
+                // If record exists, set update_nodes to true
+                if ($record) {
+                    $update_nodes = true;
+                }
                 // Send nodes to indexing server
-                $upload = $FILE->upload_nodes_to_indexing_server($bot_name, $nodes, $file_name, $file_type, false);
+                $upload = $FILE->upload_nodes_to_indexing_server($bot_name, $nodes, $file_name, $file_type, $update_nodes);
                 if ($upload->status != 200) {
                     $errors .= 'Error uploading file to indexing server: ' . $upload->message . '<br>';
                 } else {
-                    // Verification paramaters
-                    $content_verification = [
-                        'name' => $file_name,
-                        'intent_id' => $this->intent_id
-                    ];
                     $content_data['name'] = $file_name;
-                    if (!$DB->get_record('local_cria_files', $content_verification)) {
-                        // Insert the content into the database
-                        $file_id = $DB->insert_record('local_cria_files', $content_data);
 
+                    if (!$record) {
+                        // Insert the content into the database
+                        $content_data['content'] = $url;
+                        $content_data['timecreated'] = time();
+                        $DB->insert_record('local_cria_files', $content_data);
                     } else {
                         // Update the content into the database
-                        $content_data['id'] = $data->id;
+                        $content_data['id'] = $record->id;
+                        $content_data['content'] = $url;
                         $DB->update_record('local_cria_files', $content_data);
-                        $update = true;
                     }
                 }
             }

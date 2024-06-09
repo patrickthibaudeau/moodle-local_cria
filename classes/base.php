@@ -12,21 +12,6 @@
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 
-
-/**
- * *************************************************************************
- * *                           YULearn ELMS                               **
- * *************************************************************************
- * @package     local                                                     **
- * @subpackage  yulearn                                                   **
- * @name        YULearn ELMS                                              **
- * @copyright   UIT - Innovation lab & EAAS                               **
- * @link                                                                  **
- * @author      Patrick Thibaudeau                                        **
- * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later  **
- * *************************************************************************
- * ************************************************************************ */
-
 namespace local_cria;
 
 use local_cria\bot;
