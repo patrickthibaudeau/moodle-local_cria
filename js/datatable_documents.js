@@ -14,24 +14,28 @@ $(document).ready(function () {
             },
             "complete": function () {
 
-                // $('.delete-content').off();
-                // $('.delete-content').on('click', function () {
-                //     id = $(this).data('id');
-                //     $('#cria-delete-modal').modal('toggle');
-                //     $('#cria-modal-delete-confirm').off();
-                //     $('#cria-modal-delete-confirm').on('click', function () {
-                //         $('#cria-delete-modal').modal('toggle');
-                //         $.ajax({
-                //             url: wwwroot + '/local/cria/ajax/delete_keyword.php?id=' + id,
-                //             type: 'POST',
-                //             success: function (results) {
-                //                 let row = table.row($(this).parents('tr'));
-                //                 row.remove()
-                //                     .draw(false);
-                //             }
-                //         });
-                //     });
-                // });
+                $('.delete-content').off();
+                $('.delete-content').on('click', function () {
+                    id = $(this).data('id');
+                    // Insert title into modal
+                    $('#cria-delete-modal-title').html('Document');
+                    // Insert delete message into modal
+                    $('#cria-delete-modal-message').html('Are you sure you want to delete this document?');
+                    $('#cria-delete-modal').modal('toggle');
+                    $('#cria-modal-delete-confirm').off();
+                    $('#cria-modal-delete-confirm').on('click', function () {
+                        $('#cria-delete-modal').modal('toggle');
+                        $.ajax({
+                            url: wwwroot + '/local/cria/ajax/delete_document.php?id=' + id,
+                            type: 'POST',
+                            success: function (results) {
+                                let row = table.row($(this).parents('tr'));
+                                row.remove()
+                                    .draw(false);
+                            }
+                        });
+                    });
+                });
                 //
                 // // Edit entity
                 // $('.keyword-dt-edit').off();

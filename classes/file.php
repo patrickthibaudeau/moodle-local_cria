@@ -442,8 +442,10 @@ class file extends crud
             );
             $file->delete();
             // Delete on local database
-            return $DB->delete_records($this->table, array('id' => $this->get_id()));
+            $DB->delete_records($this->table, array('id' => $this->get_id()));
+            return true;
         } else {
+            $DB->delete_records($this->table, array('id' => $this->get_id()));
             return false;
         }
     }
