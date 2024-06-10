@@ -56,6 +56,24 @@ class datatables
     public static $orderDirection = 'ASC';
 
     /**
+     * Select option
+     * @var bool
+     */
+    public static $select_option = false;
+
+    /**
+     * Select option column
+     * @var string
+     */
+    public static $select_option_column = 'id';
+
+    /**
+     * Select option class name
+     * @var string
+     */
+    public static $select_option_class_name = '';
+
+    /**
      * columns array/stdClass
      * These are the columns returned by the query
      * @var array
@@ -134,6 +152,24 @@ class datatables
         self::$columns = $columns;
     }
 
+    // Set select option
+    public static function set_select_option($select_option): void
+    {
+        self::$select_option = $select_option;
+    }
+
+    // Set select option column
+    public static function set_select_option_column($select_option_column): void
+    {
+        self::$select_option_column = $select_option_column;
+    }
+
+    // Set select option class name
+    public static function set_select_option_class_name($select_option_class_name): void
+    {
+        self::$select_option_class_name = $select_option_class_name;
+    }
+
     // Set table name
     public static function set_table($table): void
     {
@@ -159,7 +195,26 @@ class datatables
     }
 
     /**
-     * Array of buttons to display in action column [[url, title, name, class, action_column]]
+     * Array of buttons to display in action column
+     * [
+     *      [
+     *          href,
+     *          title,
+     *          display-title,
+     *          class,
+     *          query_strings,
+     *          file => [
+     *              'context_id',
+     *              'component',
+     *              'filearea',
+     *              'itemid',
+     *              'filepath',
+     *              'filename',
+     *              'forcedownload =? true'
+     *         ]
+     * ],
+     *      ],
+     * ]
      * @param $action_item_buttons
      * @return void
      */
@@ -229,6 +284,11 @@ class datatables
         $i = 0;
         // Loop through records and add them to $results based on columns
         foreach ($records as $record) {
+            if (self::$select_option) {
+                $results[$i]['select'] = '<input type="checkbox" 
+                name="select_option" class="' . self::$select_option_class_name . 'dt-select-box"
+                 data-' . self::$select_option_column.'="' . $record->{self::$select_option_column} . '">';
+            }
             foreach (self::$columns as $column) {
                 $results[$i][$column] = $record->$column;
             }
@@ -249,7 +309,6 @@ class datatables
     /**
      * Draw actions
      * @param $data stdClass
-     * @param int $id
      * @return string
      */
     public static function draw_actions($data)
@@ -263,20 +322,46 @@ class datatables
             foreach ($action_item_button['query_strings'] as $query_string => $column_name) {
                 $query_strings[$query_string] = $data->$column_name;
             }
-            // If href is empty, set the vlaue to javascript:void(0);
+            // If href is empty, set the value to javascript:void(0);
+            $is_button = false;
             if (empty($action_item_button['href'])) {
-                $action_item_button['href'] = 'javascript:void(0);';
+                if (isset($action_item_button['file'])) {
+                    $action_item_button['href'] = \moodle_url::make_pluginfile_url(
+                        $action_item_button['file']['context_id'],
+                        'local_cria',
+                        'content',
+                        $data->intent_id,
+                        '/',
+                        $data->name,
+                        true
+                    );
+
+                } else {
+                    $is_button = true;
+                }
             } else {
-                $action_item_button['href'] = new \moodle_url($action_item_button['href'], $query_strings);
+                // Build query strings.
+                $x = 0;
+                foreach ($action_item_button['query_strings'] as $query_string => $column_name) {
+                    $search_query_strings[$column_name] = $query_strings[$x];
+                    $x++;
+                }
+                $url = new \moodle_url($action_item_button['href'], $search_query_strings);
+                // Make url ready for href by removing %amp;
+                $new_url = str_replace('&amp;', '&', $url->out());
+                $action_item_button['href'] = $new_url;
             }
+
             $action_item_buttons[$i] = [
+                'is_button' => $is_button,
                 'title' => $action_item_button['title'],
-                'href' => $action_item_button['href'],
+                'href' => str_replace('&amp;', '&', $action_item_button['href']),
                 'class' => $action_item_button['class'],
-                'data-original-title' => $action_item_button['data-original-title']
+                'display-title' => $action_item_button['display-title']
             ];
             $i++;
         }
+
         // Unique identifier
         $identifier = self::$action_column;
         $params = [

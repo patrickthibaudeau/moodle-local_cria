@@ -1,20 +1,39 @@
+{{^action_buttons}}
 <button
         type="button"
         class="btn btn-outline-primary btn-sm {{action_class_name}}-dt-edit"
         data-id="{{id}}">
     <i class="bi bi-pencil-square"></i>
 </button>
+{{/action_buttons}}
 {{#action_buttons}}
+    {{^is_button}}
     <a href="{{href}}"
        class="{{class}}"
        title="{{title}}"
        data-toggle="{{data_toggle}}"
-       data-placement="{{data-placement}}"
+       data-placement="{{data_placement}}"
        data-container="{{data_container}}"
-       >{{{data-original-title}}}</a>
+       >{{{display-title}}}</a>
+    {{/is_button}}
+    {{#is_button}}
+    <button
+            type="button"
+            class="{{class}}"
+            title="{{title}}"
+            data-id="{{id}}"
+            data-toggle="{{data_toggle}}"
+            data-placement="{{data_placement}}"
+            data-container="{{data_container}}"
+            >{{{display-title}}}</button>
+    {{/is_button}}
 {{/action_buttons}}
+
+{{^action_buttons}}
 <button
         type="button"
         class="btn btn-outline-danger btn-sm {{action_class_name}}-dt-delete"
         data-id="{{id}}">
     <i class="bi bi-trash"></i>
+</button>
+{{/action_buttons}}

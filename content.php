@@ -34,7 +34,8 @@ $BOT = new \local_cria\bot($bot_id);
 );
 
 $PAGE->requires->css('/local/cria/css/content.css');
-$PAGE->requires->js_call_amd('local_cria/content', 'init');
+//$PAGE->requires->js_call_amd('local_cria/content', 'init');
+$PAGE->requires->js('/local/cria/js/datatable_documents.js');
 
 // Add secondary navigation
 include_once('bot_secondaray_nav.php');

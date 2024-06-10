@@ -96,10 +96,32 @@ class files
      */
     public function publish_all_files()
     {
-        global $CFG;
+        global $CFG, $DB;
 
         // Create a new instance of the Intent class with the current intent_id
         $INTENT = new intent($this->intent_id);
+        // Get all files for intent
+        $files = $DB->get_records('local_cria_files', ['intent_id' => $this->intent_id]);
+        // loop through files and publish them
+        foreach ($files as $file) {
+            $this->publish_file($file->id);
+        }
+    }
+
+
+    /**
+     * @param $file_id
+     * @return void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public function publish_file($file_id)
+    {
+        global $CFG, $DB;
+        // Get teh file record
+        $file_to_publish = $DB->get_record('local_cria_files', ['id' => $file_id]);
+        // Create a new instance of the Intent class with the current intent_id
+        $INTENT = new intent($file_to_publish->intent_id);
         // Create a new instance of the Criaparse class
         $PARSER = new criaparse();
         // Create a new instance of the File class
@@ -110,54 +132,74 @@ class files
         $bot_name = $INTENT->get_bot_name();
         // set bot parsing strategy
         $bot_parsing_strategy = $BOT->get_parse_strategy();
+        // Set status
+        $status = new \stdClass();
 
         // Set context
         $context = \context_system::instance();
-        // Get all filearea files for the intent
-        $fs = get_file_storage();
-        $files = $fs->get_area_files(
-            $context->id,
-            'local_cria',
-            'content',
-            $this->intent_id
-        );
 
-        if (!is_dir($CFG->dataroot . '/temp/cria')) {
-            mkdir($CFG->dataroot . '/temp/cria');
-        }
-        if (!is_dir($CFG->dataroot . '/temp/cria/' . $this->intent_id)) {
-            mkdir($CFG->dataroot . '/temp/cria/' . $this->intent_id);
-        }
-        $file_path = $CFG->dataroot . '/temp/cria/' . $this->intent_id;
-        foreach ($files as $file) {
-            if ($file->get_filename() != '.' && $file->get_filename() != '') {
-                $file->copy_content_to($file_path . '/' . $file->get_filename());
-                // Set parsing strategy based on file type.
-                $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type($file->get_mimetype(), $bot_parsing_strategy);
-                // Get parsed results
-                $results = $PARSER->execute($parsing_strategy, $file_path . '/' . $file->get_filename());
-                // Delete file from CriaBot
-                criabot::document_delete($bot_name, $file->get_filename());
-                if ($results['status'] != 200) {
-                    \core\notification::error('Error parsing file: ' . $results['message']);
-                } else {
-                    // Get nodes from parsed results
-                    $nodes = $results['nodes'];
-                    // Send nodes to indexing server
-                    $upload = $FILE->upload_nodes_to_indexing_server($bot_name, $nodes, $file->get_filename(), $FILE->get_file_type_from_mime_type($file->get_mimetype()), false);
-                    if ($upload->status != 200) {
-                        \core\notification::error('Error uploading file to indexing server: ' . $upload->message);
-                    }
-                }
+        // Does the content field contain a URL?
+        if (filter_var($file_to_publish->content, FILTER_VALIDATE_URL)) {
+            $urls = [$file_to_publish->content];
+            $status = $this->publish_urls($urls);
+            return $status;
+        } else {
+            // Get all filearea files for the intent
+            $fs = get_file_storage();
 
-                unlink($file_path . '/' . $file->get_filename());
+            $file = $fs->get_file(
+                $context->id,
+                'local_cria',
+                'content',
+                $file_to_publish->intent_id,
+                '/',
+                $file_to_publish->name
+            );
+
+            if (!$file) {
+                $status->status = 404;
+                $status->message = 'File not found: ' . $file_to_publish->name;
+                $status->id = $file_id;
+                $status->file = $file_to_publish->name;
+                return $status;
             }
+
+            base::create_directory_if_not_exists($CFG->dataroot . '/temp/cria');
+            base::create_directory_if_not_exists($CFG->dataroot . '/temp/cria/' . $this->intent_id);
+
+            $file_path = $CFG->dataroot . '/temp/cria/' . $this->intent_id;
+            // Copy file content to temp folder
+            $file->copy_content_to($file_path . '/' . $file->get_filename());
+            // Set parsing strategy based on file type.
+            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type($file->get_mimetype(), $bot_parsing_strategy);
+            // Get parsed results
+            $results = $PARSER->execute($parsing_strategy, $file_path . '/' . $file->get_filename());
+            // Delete file from CriaBot
+            criabot::document_delete($bot_name, $file->get_filename());
+            if ($results['status'] != 200) {
+                \core\notification::error('Error parsing file: ' . $results['message']);
+            } else {
+                // Get nodes from parsed results
+                $nodes = $results['nodes'];
+                // Send nodes to indexing server
+                $upload = $FILE->upload_nodes_to_indexing_server($bot_name, $nodes, $file->get_filename(), $FILE->get_file_type_from_mime_type($file->get_mimetype()), false);
+                if ($upload->status != 200) {
+                    \core\notification::error('Error uploading file to indexing server: ' . $upload->message);
+                }
+            }
+
+            unlink($file_path . '/' . $file->get_filename());
+            // Unset all class instances
+            unset($INTENT);
+            unset($PARSER);
+            unset($FILE);
+            unset($BOT);
+
+            $status->status = 200;
+            $status->message = 'File published: ' . $file_to_publish->name;
+            $status->id = $file_id;
+            $status->file = $file_to_publish->name;
         }
-        // Unset all class instances
-        unset($INTENT);
-        unset($PARSER);
-        unset($FILE);
-        unset($BOT);
     }
 
     /**
@@ -210,7 +252,7 @@ class files
 
             $content = curl_exec($ch);
 
-            if(curl_errno($ch)){
+            if (curl_errno($ch)) {
                 echo 'Curl error: ' . curl_error($ch);
             }
 
@@ -314,10 +356,11 @@ class files
                     $content_data['name'] = $file_name;
 
                     if (!$record) {
+                        $record = new \stdClass();
                         // Insert the content into the database
                         $content_data['content'] = $url;
                         $content_data['timecreated'] = time();
-                        $DB->insert_record('local_cria_files', $content_data);
+                        $record->id  = $DB->insert_record('local_cria_files', $content_data);
                     } else {
                         // Update the content into the database
                         $content_data['id'] = $record->id;
@@ -331,11 +374,14 @@ class files
             unlink($original_file_path);
 
             if (!empty($errors)) {
-                $status->status = 400;
+                $status->status = 404;
                 $status->message = $errors;
             } else {
                 $status->status = 200;
-                $status->message = 'Files uploaded successfully';
+                $status->message = 'URLs published successfully';
+                $status->id = $record->id;
+                $status->file = $file_name;
+
             }
         }
         return $status;
