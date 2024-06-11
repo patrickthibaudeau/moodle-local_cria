@@ -17,15 +17,6 @@ export const init = () => {
 function process_content() {
     $("#id_submitbutton").off();
     $("#id_submitbutton").on('click', function () {
-        var id = $('[name="bot_id"]').val();
-        $('#starting-process').show();
-        setTimeout(function () {
-            $('#starting-process').hide();
-            $('#almost-done').show();
-        }, 4000);
-        setTimeout(function () {
-            $('#almost-done').hide();
-            $('#process-complete').show();
-        }, 20000);
+        document.getElementById('cria-loader').style.display = 'flex';
     });
 }

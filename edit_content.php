@@ -98,15 +98,37 @@ if ($mform->is_cancelled()) {
     // If id, then simple upload the file using file picker
     if ($data->id) {
         $FILE = new file($id);
-
-        $data->path = $path;
-        $data->file_content = $mform->get_file_content('importedFile');
+//        $data->path = $path;
+//        $data->file_content = $mform->get_file_content('importedFile');
 
         $FILE->update_record($data);
         // Redirect to content page
         redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $data->bot_id . '&intent_id=' . $data->intent_id);
     } else {
         $FILE = new file();
+
+        // Let's get all files from the file area
+        $fs = get_file_storage();
+
+        // Get existing files in the file area
+        $existing_files = $fs->get_area_files(
+            $context->id,
+            'local_cria',
+            'content',
+            $data->intent_id
+        );
+        // Store existing files. This is required because if these files are not in the draftarea, they will be deleted
+        // when the save_draft_area_files is called. We will recreate these files after the save_draft_area_files is called.
+        $original_files = [];
+        foreach ($existing_files as $temp_file) {
+            if ($temp_file->get_filename() == '.' || $temp_file->get_filename() == '') {
+                continue;
+            } else {
+                $temp_file->copy_content_to($path . '/' . $temp_file->get_filename());
+                // Add file to original_files array
+                $original_files[] = $temp_file->get_filename();
+            }
+        }
 
         // Get draft_area_files
         $draft_area_files = file_get_all_files_in_draftarea($data->importedFile, '/');
@@ -137,23 +159,34 @@ if ($mform->is_cancelled()) {
                 'maxfiles' => -1,
             ]
         );
-    }
-// Save file information
-    // Let's get all files from the file area
-    $fs = get_file_storage();
 
-    $files = $fs->get_area_files(
-        $context->id,
-        'local_cria',
-        'content',
-        $data->intent_id
-    );
+        // Recreate the original files
+        foreach ($original_files as $file) {
+            $fileinfo = [
+                'contextid' => $context->id,   // ID of the context.
+                'component' => 'local_cria', // Your component name.
+                'filearea' => 'content',       // Usually = table name.
+                'itemid' => $data->intent_id,              // Usually = ID of row in table.
+                'filepath' => '/',            // Any path beginning and ending in /.
+                'filename' => $file,   // Any filename.
+            ];
+            $fs->create_file_from_pathname($fileinfo, $path . '/' . $file);
+        }
+    }
+    // Now, index the files
     // Create various objects
     $PARSER = new criaparse();
     $INTENT = new intent($data->intent_id);
     $BOT = new bot($INTENT->get_bot_id());
     // set bot parsing strategy
     $bot_parsing_strategy = $BOT->get_parse_strategy();
+    // Once again, get area files
+    $files = $fs->get_area_files(
+        $context->id,
+        'local_cria',
+        'content',
+        $data->intent_id
+    );
 
     // Iterate through each file
     foreach ($files as $file) {
@@ -253,13 +286,13 @@ if ($mform->is_cancelled()) {
             base::delete_files($path);
         }
     }
+
     // Redirect to content page
     redirect($CFG->wwwroot . '/local/cria/content.php?bot_id=' . $data->bot_id . '&intent_id=' . $data->intent_id);
 } else {
     // Show form
     $mform->set_data($mform);
 }
-
 
 
 base::page(
@@ -278,7 +311,7 @@ echo $OUTPUT->header();
 //*** DISPLAY HEADER ***
 //
 $mform->display();
-
+echo $OUTPUT->render_from_template('local_cria/loader', []);
 //**********************
 //*** DISPLAY FOOTER ***
 //**********************

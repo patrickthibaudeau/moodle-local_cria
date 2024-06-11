@@ -102,6 +102,9 @@ $(document).ready(function () {
                 $('#cria-modal-publish-confirm').off();
                 $('#cria-modal-publish-confirm').on('click', function () {
                     $('#cria-publish-modal').modal('toggle');
+                    document.getElementById('cria-loader').style.display = 'flex';
+                    // Show the loader
+                    $('#cria-loader').show();
                     $.ajax({
                         url: wwwroot + '/local/cria/ajax/publish_documents.php',
                         type: 'POST',
@@ -113,6 +116,8 @@ $(document).ready(function () {
                         success: function (results) {
                             // Convert json into object
                             results = JSON.parse(results);
+                            // Hide the loader
+                            document.getElementById('cria-loader').style.display = 'none';
                             $('#cria-publish-document-modal').modal('toggle');
                             if (results.status === 404) {
                                 alert(results.message);
