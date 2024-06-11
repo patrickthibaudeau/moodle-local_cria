@@ -79,12 +79,12 @@ datatables::set_action_class_name('entity');
 datatables::set_start($start);
 datatables::set_end($end);
 datatables::set_action_item_buttons([
-    0 => [
+     [
         'title' => get_string('keywords', 'local_cria'),
         'class' => 'btn btn-outline-primary btn-sm',
         'href' => '/local/cria/bot_keywords.php',
-        'data-original-title' => '<i class="bi bi-key"></i>',
-        'query_strings' => ['entity_id' => 'id']
+        'display-title' => '<i class="bi bi-key"></i>',
+        'query_strings' => ['id']
     ]
 ]);
 // Get results

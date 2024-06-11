@@ -30,9 +30,14 @@ $context = CONTEXT_SYSTEM::instance();
 require_login(1, false);
 //$entity_id = required_param('entity_id', PARAM_INT);÷
 $id = optional_param('id', 0, PARAM_INT);
+$entity_id = optional_param('entity_id', 0, PARAM_INT);
 
 $KEYWORD = new keyword($id);
-$ENTITY = new entity($KEYWORD->get_entity_id());
+if ($id) {
+    $ENTITY = new entity($KEYWORD->get_entity_id());
+} else {
+    $ENTITY = new entity($entity_id);
+}
 
 if ($id != 0) {
     $formdata = $DB->get_record('local_cria_keyword', array('id' => $id));
@@ -56,7 +61,7 @@ if ($id != 0) {
 $mform = new \local_cria\edit_keyword_form(null, array('formdata' => $formdata));
 if ($mform->is_cancelled()) {
     //Handle form cancel operation, if cancel button is present on form
-    redirect($CFG->wwwroot . '/local/cria/bot_keywords.php?entity_id=' . $formdata->entity_id);
+    redirect($CFG->wwwroot . '/local/cria/bot_keywords.php?id=' . $formdata->entity_id);
 } else if ($data = $mform->get_data()) {
     $data->usermodified = $USER->id;
     $data->timemodified = time();

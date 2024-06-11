@@ -22,7 +22,7 @@ global $CFG, $OUTPUT, $SESSION, $PAGE, $DB, $COURSE, $USER;
 require_login(1, false);
 $context = context_system::instance();
 
-$entity_id = required_param('entity_id', PARAM_INT);
+$entity_id = required_param('id', PARAM_INT);
 
 $ENTITY = new entity($entity_id);
 $BOT = new bot($ENTITY->get_bot_id());
