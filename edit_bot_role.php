@@ -51,7 +51,7 @@ if (isset($data->save)) {
     } else {
         $BOT_ROLE->insert_record($data);
     }
-    redirect(new moodle_url('/local/cria/bot_permissions.php', ['id' => $data->botid]));
+    redirect(new moodle_url('/local/cria/bot_permissions.php', ['bot_id' => $data->botid]));
 }
 
 $output = $PAGE->get_renderer('local_cria');
