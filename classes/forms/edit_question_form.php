@@ -69,13 +69,6 @@ class edit_question_form extends \moodleform
             PARAM_INT
         );
 
-//        //Header: General
-//        $mform->addElement(
-//            'header',
-//            'add_content_form',
-//            get_string('edit_question', 'local_cria')
-//        );
-
         // If there is a record
         if ($formdata->id) {
             // add row and col-md-6
@@ -169,46 +162,6 @@ class edit_question_form extends \moodleform
             $BOT->get_available_keywords()
         );
         $keywords->setMultiple(true);
-
-        $mform->addElement(
-            'html',
-        '<h3>' . get_string('audience', 'local_cria') . '</h3>'
-        );
-        // Lang form element
-        $mform->addElement(
-            'select',
-            'lang',
-            get_string('language', 'local_cria'),
-            base::get_languages()
-        );
-        $mform->setType(
-            'lang',
-            PARAM_TEXT
-        );
-
-        // Faculty form element
-        $mform->addElement(
-            'select',
-            'faculty',
-            get_string('faculty', 'local_cria'),
-            base::get_faculties()
-        );
-        $mform->setType(
-            'faculty',
-            PARAM_TEXT
-        );
-
-        // Programs form element
-        $mform->addElement(
-            'select',
-            'program',
-            get_string('program', 'local_cria'),
-            base::get_programs()
-        );
-        $mform->setType(
-            'program',
-            PARAM_TEXT
-        );
 
         $mform->addElement(
             'html',
