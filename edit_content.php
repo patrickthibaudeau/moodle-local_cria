@@ -19,11 +19,9 @@ require_once($CFG->dirroot . "/local/cria/classes/forms/edit_content_form.php");
 
 use local_cria\base;
 use local_cria\bot;
-use local_cria\criabot;
 use local_cria\criaparse;
 use local_cria\file;
 use local_cria\intent;
-
 
 global $CFG, $OUTPUT, $USER, $PAGE, $DB, $SITE;
 

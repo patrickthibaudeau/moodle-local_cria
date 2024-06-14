@@ -94,7 +94,6 @@ class intents
              ci.name";
         $results = $DB->get_records_sql($sql, [$this->bot_id]);
 
-
         foreach ($results as $r) {
             if ($r->id == $active_intent_id) {
                 $r->active = true;

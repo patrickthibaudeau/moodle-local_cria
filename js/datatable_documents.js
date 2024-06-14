@@ -130,6 +130,36 @@ $(document).ready(function () {
             }
         }
     });
+
+    // When element with id btn-cria-save-urls is clicked, capture the vaalue of the element with id local-cria-urls
+    // and send an ajax call to ajax\publish_urls.php
+    $('#btn-cria-save-urls').click(function () {
+        let urls = $('#local-cria-urls').val();
+        let intent_id = $(this).data('intent_id');
+        document.getElementById('cria-loader').style.display = 'flex';
+        $.ajax({
+            url: wwwroot + '/local/cria/ajax/publish_urls.php',
+            type: 'POST',
+            data: {
+                urls: urls,
+                intent_id: intent_id
+            },
+            success: function (data) {
+                // convert data to JSON
+                data = JSON.parse(data);
+                if (data.status === 404) {
+                    alert(data.message);
+                } else {
+                    // Hide modla
+                    $('#urlModal').modal('toggle');
+                    // Hide loader
+                    document.getElementById('cria-loader').style.display = 'none';
+                    // Reload the table
+                    table.ajax.reload();
+                }
+            }
+        });
+    });
 });
 
 
