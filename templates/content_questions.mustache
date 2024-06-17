@@ -6,7 +6,7 @@
         <div class="col">
             <button type="button"
                     class="btn btn-link btn-lg float-right
-                                                delete-all-questions text-danger"
+                                                cria-delete-all-questions text-danger"
                     data-intent_id="{{id}}"
                     title="{{#str}}delete_all, local_cria{{/str}}"
             >
@@ -45,7 +45,7 @@
             </a>
 
             <a type="button"
-                    class="btn btn-link btn-lg ml-2 float-right publish-questions"
+                    class="btn btn-link btn-lg ml-2 float-right cria-publish-questions"
                     title="{{#str}}publish_questions, local_cria{{/str}}"
             >
                 <i class="bi bi-cloud-arrow-up"></i>
@@ -63,60 +63,34 @@
             <thead>
             <tr>
                 <th>
-                    <input type="checkbox" id="select-questions"/>
-<!--                    <a-->
-<!--                        href="javascript:void(e);"-->
-<!--                        id="select-all-questions"-->
-<!--                >-->
-<!--                    Select All-->
-<!--                </a>/<a-->
-<!--                        href="javascript:void(e);"-->
-<!--                        id="deselect-all-questions">-->
-<!--                    Deselect all-->
-<!--                </a>-->
+                    <input type="checkbox" id="cria-question-select-all">
                 </th>
-                <th>{{#str}}question, local_cria{{/str}}</th>
-                <th style="width: 30%;">{{#str}}actions, local_cria{{/str}}</th>
+                <th>{{#str}}name, local_cria{{/str}}</th>
+                <th>{{#str}}actions, local_cria{{/str}}</th>
             </tr>
             </thead>
             <tbody>
-            {{#questions}}
-                <tr>
-
-                    <td>
-                        {{^published}}
-                            <input type="checkbox" class="question-select"
-                                   data-id="{{id}}"/>
-                        {{/published}}
-                    </td>
-
-                    <td>{{name}}</td>
-                    <td style="width: 30%;">
-                        <a href="edit_question.php?id={{id}}&intent_id={{intent_id}}"
-                        class="btn btn-link btn-lg"
-                        title="{{#str}}update, local_cria{{/str}}"
-                        >
-                        <i class="bi bi-pencil"></i>
-                        </a>
-                        {{#show_linked}}
-                            <button
-                                    type="button"
-                                    class="btn link btn-lg"
-                                    title="{{link_text}}"
-
-                            >
-                                <i class="bi bi-link-45deg"></i>
-                            </button>
-                        {{/show_linked}}
-                        <button class="btn btn-link btn-lg text-danger delete-question"
-                                title="{{#str}}delete, local_cria{{/str}}"
-                                data-id="{{id}}">
-                            <i class="bi bi-x-circle"></i>
-                        </button>
-                    </td>
-                </tr>
-            {{/questions}}
             </tbody>
         </table>
+    </div>
+</div>
+
+<div class="modal fade" id="cria-publish-question-modal" tabindex="-1" aria-labelledby="cria-publish-question-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cria-publish-question-modal-label">{{#str}}publish, local_cria{{/str}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{#str}}publish_questions_confirmation, local_cria{{/str}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">{{#str}}close, local_cria{{/str}}</button>
+                <button type="button" id="cria-modal-publish-question-confirm" data-intent_id="{{id}}" class="btn btn-primary">{{#str}}publish, local_cria{{/str}}</button>
+            </div>
+        </div>
     </div>
 </div>

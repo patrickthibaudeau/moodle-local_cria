@@ -222,6 +222,7 @@ $string['publish'] = 'Publish';
 $string['publish_all'] = 'Publish all files';
 $string['publish_document_confirm'] = 'Are you sure you want to publish the selected document(s)?';
 $string['publish_questions'] = 'Publish questions';
+$string['publish_questions_confirmation'] = 'Are you sure you want to publish the selected question(s)?';
 $string['question'] = 'Question';
 $string['questions'] = 'Questions';
 $string['question_for'] = 'Questions for';
