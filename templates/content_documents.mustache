@@ -5,7 +5,8 @@
         </div>
         <div class="col">
             <div class="btn-group float-right" role="group">
-                <button type="button" class="btn btn-outline-primary dropdown-toggle" title="{{#str}}add, local_cria{{/str}}" data-toggle="dropdown" aria-expanded="false">
+
+                <button type="button" class="btn btn-link btn-lg dropdown-toggle" title="{{#str}}add, local_cria{{/str}}" data-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-plus-circle"></i>
                 </button>
                 <div class="dropdown-menu">
@@ -19,9 +20,17 @@
                             data-target="#urlModal"
                             title="{{#str}}web_pages, local_cria{{/str}}">{{#str}}web_pages, local_cria{{/str}}</a>
                 </div>
+                <button type="button"
+                        id="criaDeleteSelectedDocuments"
+                        class="btn btn-link btn-lg  text-danger"
+                        data-intent_id="{{id}}"
+                        title="{{#str}}delete_selected, local_cria{{/str}}"
+                >
+                    <i class="bi bi-x-circle"></i>
+                </button>
             </div>
             </a>
-            <button id="cria-publish-all-files" class="btn btn-outline-primary float-right mr-1"
+            <button id="cria-publish-all-files" class="btn btn-link btn-lg float-right mr-1"
                     data-intent_id="{{id}}"
                     title="{{#str}}publish_all, local_cria{{/str}}">
                 <i id="icon-document-publish-all" class="bi bi-cloud-upload"></i>

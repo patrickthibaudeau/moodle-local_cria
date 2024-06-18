@@ -392,6 +392,7 @@ class intent extends crud
     public function publish_question($question_id)
     {
         global $DB;
+
         // Get the question
         $question = $DB->get_record('local_cria_question', ['id' => $question_id]);
         // Get keywords and synonyms
@@ -424,6 +425,7 @@ class intent extends crud
                 'return_generated_answer' => $return_generated_answer,
             )
         );
+
         // publish question to bot server
         if ($question->document_name) {
             $data['file_name'] = $question->document_name;

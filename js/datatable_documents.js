@@ -160,11 +160,49 @@ $(document).ready(function () {
             }
         });
     });
+
+    // When element with id criaDeleteSelectedDocuments is clicked, delete all selected documents based on .cria-document-dt-select-box that are checked
+    $('#criaDeleteSelectedDocuments').off();
+    $('#criaDeleteSelectedDocuments').on('click', function () {
+        let selected = [];
+        $('.cria-document-dt-select-box').each(function () {
+            if ($(this).is(':checked')) {
+                selected.push($(this).data('id'));
+            }
+        });
+        // If no check boxes are selected, alert that no documents are selected else open the modal
+        if (selected.length === 0) {
+            alert('No documents selected. You  must select at least one document to delete.');
+        } else {
+            $('#cria-delete-modal-title').html('Document');
+            $('#cria-delete-modal-message').html('Are you sure you want to delete the selected documents?');
+            $('#cria-delete-modal').modal('toggle');
+            $('#cria-modal-delete-confirm').off();
+            $('#cria-modal-delete-confirm').on('click', function () {
+                $('#cria-delete-modal').modal('toggle');
+                document.getElementById('cria-loader').style.display = 'flex';
+                $.ajax({
+                    url: wwwroot + '/local/cria/ajax/delete_document.php',
+                    type: 'POST',
+                    data: {
+                        'bot_id': $('#bot_id').val(),
+                        'intent_id': $('#intent_id').val(),
+                        'documents': selected
+                    },
+                    success: function (results) {
+                        // Convert json into object
+                        results = JSON.parse(results);
+                        // Hide the loader
+                        document.getElementById('cria-loader').style.display = 'none';
+                        if (results.status === 404) {
+                            alert(results.message);
+                        } else {
+                            table.ajax.reload();
+                        }
+                    }
+                });
+            });
+        }
+    });
 });
-
-
-//$('#ScheduledCoursesTable').DataTable({
-//    dom: 'lrtip',
-//    stateSave: true
-//});
 
