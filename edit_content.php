@@ -237,8 +237,16 @@ if ($mform->is_cancelled()) {
                 $bot_parsing_strategy = $data->parsingstrategy;
             }
             // Set parsing strategy based on file type.
-            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type($content_data['file_type'], $bot_parsing_strategy);
-            $results = $PARSER->execute($parsing_strategy, $path . '/' . $converted_file_name);
+            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type(
+                $content_data['file_type'],
+                $bot_parsing_strategy
+            );
+            $results = $PARSER->execute(
+                $BOT->get_model_id(),
+                $BOT->get_embedding_id(),
+                $parsing_strategy,
+                $path . '/' . $converted_file_name
+            );
             if ($results['status'] != 200) {
                 \core\notification::error('Error parsing file: ' . $results['message']);
             } else {

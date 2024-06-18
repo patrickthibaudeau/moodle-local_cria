@@ -47,16 +47,20 @@ class criaparse
 
     /******** Document Content ********/
     /**
-     * Upload a document associated to the bot
-     * @param $bot_name String
+     * Parse document content
+     * @param $llm_model_id String
+     * @param $embedding_model_id String
+     * @param $strategy String
      * @param $file_path String
-     * @param $file_name String
-     * @return void
+     * @param $mime_type String
+     * @return Array
      */
-    public static function execute($strategy, $file_path, $mime_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+    public static function execute($llm_model_id, $embedding_model_id, $strategy, $file_path, $mime_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
         // Get config
         $config = get_config('local_cria');
-        $endpoint = $config->criaparse_url . '/parser/parse?strategy=' . $strategy . '&x-api-key=' . $config->criadex_api_key;
+        $endpoint = $config->criaparse_url . '/parser/parse?strategy=' . $strategy
+            . '&llm_model_id=' . $llm_model_id . '&embedding_model_id=' . $embedding_model_id
+            .  '&x-api-key=' . $config->criadex_api_key;
 
         // Create a cURL handle
         $ch = curl_init();

@@ -171,9 +171,17 @@ class files
             // Copy file content to temp folder
             $file->copy_content_to($file_path . '/' . $file->get_filename());
             // Set parsing strategy based on file type.
-            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type($file->get_mimetype(), $bot_parsing_strategy);
+            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type(
+                $file->get_mimetype(),
+                $bot_parsing_strategy
+            );
             // Get parsed results
-            $results = $PARSER->execute($parsing_strategy, $file_path . '/' . $file->get_filename());
+            $results = $PARSER->execute(
+                $BOT->get_model_id(),
+                $BOT->get_embedding_id(),
+                $parsing_strategy,
+                $file_path . '/' . $file->get_filename()
+            );
             // Delete file from CriaBot
             criabot::document_delete($bot_name, $file->get_filename());
             if ($results['status'] != 200) {
@@ -327,8 +335,16 @@ class files
                 $fs->create_file_from_pathname($fileinfo, $path . $file_name);
             }
             // Parse the file
-            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type($file_type, $bot_parsing_strategy);
-            $results = $PARSER->execute($parsing_strategy, $path . $file_name);
+            $parsing_strategy = $PARSER->set_parsing_strategy_based_on_file_type(
+                $file_type,
+                $bot_parsing_strategy
+            );
+            $results = $PARSER->execute(
+                $BOT->get_model_id(),
+                $BOT->get_embedding_id(),
+                $parsing_strategy,
+                $path . $file_name
+            );
 
             if ($results['status'] != 200) {
                 $errors .= 'Error parsing file: ' . $results['message'] . '<br>';

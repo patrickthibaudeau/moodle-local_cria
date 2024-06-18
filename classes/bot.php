@@ -457,6 +457,22 @@ class bot extends crud
     }
 
     /**
+     * @return int
+     */
+    public function get_model_id(): int
+    {
+        return $this->model_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function get_embedding_id(): int
+    {
+        return $this->embedding_id;
+    }
+
+    /**
      * @return string
      */
     public function get_user_prompt(): string
