@@ -147,13 +147,13 @@ $(document).ready(function () {
             success: function (data) {
                 // convert data to JSON
                 data = JSON.parse(data);
+                // Hide modla
+                $('#urlModal').modal('toggle');
+                // Hide loader
+                document.getElementById('cria-loader').style.display = 'none';
                 if (data.status === 404) {
                     alert(data.message);
                 } else {
-                    // Hide modla
-                    $('#urlModal').modal('toggle');
-                    // Hide loader
-                    document.getElementById('cria-loader').style.display = 'none';
                     // Reload the table
                     table.ajax.reload();
                 }

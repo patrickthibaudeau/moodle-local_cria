@@ -13,9 +13,9 @@
 */
 
 
-$plugin->version = 2024061400; // Prototype version 1.0
+$plugin->version = 2024061800; // version 1.0
 // Moodle version required
 $plugin->requires = 2022112800; //Moodle 4.1
 $plugin->maturity = MATURITY_RC;
-$plugin->release = '1.0.3';
+$plugin->release = '1.0.4';
 $plugin->component = 'local_cria';
