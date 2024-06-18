@@ -19,8 +19,8 @@ such as Gemini, Llama, Bedrock etc.
 * [Moodle](https://download.moodle.org/) 3.11 or later
 * [moodle-theme_cria](https://github.com/itinnovationyorku/moodle-theme_cria)
 * [CriaBot](https://github.com/YorkUITInnovation/criabot)
-* [Criadex](https://github.com/YorkUITInnovation/criadex)
-* [CriaParse](https://github.com/YorkUITInnovation/criaparse)
+* [Criadex](https://github.com/YorkUITInnovation/Criadex)
+* [CriaParse](https://github.com/YorkUITInnovation/CriaParse)
 * [CriaEmbed](https://github.com/YorkUITInnovation/criaembed)
 * [Scrapper](https://github.com/amerkurev/scrapper)
 * [Cohere AI](https://cohere.com) for reranking.
