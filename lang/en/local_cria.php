@@ -334,8 +334,7 @@ $string['criaembed_url'] = 'CriaEmbed URL';
 $string['criaembed_url_help'] = 'Enter the URL for the CriaEmbed instance you are connecting too.';
 $string['criadex_api_key'] = 'CriaDex API key';
 $string['criadex_api_key_help'] = 'Enter the API key for the CriaDex instance you are connecting too. ' .
-    'Note: MUST BE A MASTER KEY<br> ' .
-    '<a href="/local/cria/test-cria.php" class="btn btn-outline-primary btn-sm" target="_blank">Test Criaconnection</a>';
+    'Note: MUST BE A MASTER KEY<br> ';
 $string['criaparse_url'] = 'CriaParse URL';
 $string['criaparse_url_help'] = 'Enter the URL for the CriaParse instance you are connecting too.';
 // MinutesMaster
